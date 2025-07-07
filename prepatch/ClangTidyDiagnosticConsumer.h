@@ -144,6 +144,9 @@ public:
   /// diagnostic ID.
   std::string getCheckName(unsigned DiagnosticID) const;
 
+
+  bool isCheckEnabled2(StringRef CheckName) const;
+
   /// Returns \c true if the check is enabled for the \c CurrentFile.
   ///
   /// The \c CurrentFile can be changed using \c setCurrentFile.

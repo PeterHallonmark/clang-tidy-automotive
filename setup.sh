@@ -39,3 +39,4 @@ cp prepatch/ClangTidyForceLinker.h llvm-project-llvmorg-20.1.7/clang-tools-extra
 cp prepatch/ClangTidy.cpp llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/ClangTidy.cpp
 cp prepatch/CMakeLists.txt llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/CMakeLists.txt
 cp prepatch/ClangTidyDiagnosticConsumer.h llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/ClangTidyDiagnosticConsumer.h
+cp prepatch/ClangTidyDiagnosticConsumer.cpp llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/ClangTidyDiagnosticConsumer.cpp

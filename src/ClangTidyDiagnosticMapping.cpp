@@ -35,7 +35,7 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
   if (Context.DiagEngine) {
       Context.DiagEngine->setClient(&DiagConsumer, false);
 
-      Context.diag("automotive-avoid-line-splicing-within-comment", Info.getLocation(), "testing testing");
+      Context.diag("testing", Info.getLocation(), "testing testing");
 
       Context.DiagEngine->setClient(this, false);
       
