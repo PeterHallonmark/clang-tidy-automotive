@@ -1,4 +1,4 @@
-# ðDiagnostic Mapping Design
+# Diagnostic Mapping Design
 
 ## Overview
 
