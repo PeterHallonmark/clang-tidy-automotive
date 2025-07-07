@@ -378,7 +378,7 @@ static CheckersList getAnalyzerCheckersAndPackages(ClangTidyContext &Context,
       AnalyzerOptions::getRegisteredCheckers(IncludeExperimental);
   const bool AnalyzerChecksEnabled =
       llvm::any_of(RegisteredCheckers, [&](StringRef CheckName) -> bool {
-        return Context.isCheckEnabled(
+        return Context.isCheckEnabled2(
             (AnalyzerCheckNamePrefix + CheckName).str());
       });
 
@@ -394,7 +394,7 @@ static CheckersList getAnalyzerCheckersAndPackages(ClangTidyContext &Context,
     std::string ClangTidyCheckName((AnalyzerCheckNamePrefix + CheckName).str());
 
     if (CheckName.starts_with("core") ||
-        Context.isCheckEnabled(ClangTidyCheckName)) {
+        Context.isCheckEnabled2(ClangTidyCheckName)) {
       List.emplace_back(std::string(CheckName), true);
     }
   }
@@ -582,6 +582,7 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
                        DiagnosticConsumer *DiagConsumer) override {
       // Explicitly ask to define __clang_analyzer__ macro.
       Invocation->getPreprocessorOpts().SetUpStaticAnalyzer = true;
+      Invocation->getDiagnosticOpts().Warnings.push_back("comment");
       return FrontendActionFactory::runInvocation(
           Invocation, Files, PCHContainerOps, DiagConsumer);
     }
