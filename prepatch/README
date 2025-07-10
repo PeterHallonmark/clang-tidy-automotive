@@ -1,4 +1,4 @@
-These are prepatch files from the LLVM release 19.1.7. They are prepatched with the MISRA support
-https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-19.1.7.tar.gz
+These are prepatch files from the LLVM release 20.1.7. They are prepatched with the MISRA support
+https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-20.1.7.tar.gz
 
 TODO: Fix the prepatch to a more patch like functionality.
