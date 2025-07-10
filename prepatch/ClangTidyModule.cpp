@@ -24,7 +24,7 @@ std::vector<std::unique_ptr<ClangTidyCheck>>
 ClangTidyCheckFactories::createChecks(ClangTidyContext *Context) const {
   std::vector<std::unique_ptr<ClangTidyCheck>> Checks;
   for (const auto &Factory : Factories) {
-    if (Context->isCheckEnabled2(Factory.getKey()))
+    if (Context->isCheckEnabled(Factory.getKey()))
       Checks.emplace_back(Factory.getValue()(Factory.getKey(), Context));
   }
   return Checks;
@@ -36,7 +36,7 @@ ClangTidyCheckFactories::createChecksForLanguage(
   std::vector<std::unique_ptr<ClangTidyCheck>> Checks;
   const LangOptions &LO = Context->getLangOpts();
   for (const auto &Factory : Factories) {
-    if (!Context->isCheckEnabled2(Factory.getKey()))
+    if (!Context->isCheckEnabled(Factory.getKey()))
       continue;
     std::unique_ptr<ClangTidyCheck> Check =
         Factory.getValue()(Factory.getKey(), Context);

@@ -378,7 +378,7 @@ static CheckersList getAnalyzerCheckersAndPackages(ClangTidyContext &Context,
       AnalyzerOptions::getRegisteredCheckers(IncludeExperimental);
   const bool AnalyzerChecksEnabled =
       llvm::any_of(RegisteredCheckers, [&](StringRef CheckName) -> bool {
-        return Context.isCheckEnabled2(
+        return Context.isCheckEnabled(
             (AnalyzerCheckNamePrefix + CheckName).str());
       });
 
@@ -394,7 +394,7 @@ static CheckersList getAnalyzerCheckersAndPackages(ClangTidyContext &Context,
     std::string ClangTidyCheckName((AnalyzerCheckNamePrefix + CheckName).str());
 
     if (CheckName.starts_with("core") ||
-        Context.isCheckEnabled2(ClangTidyCheckName)) {
+        Context.isCheckEnabled(ClangTidyCheckName)) {
       List.emplace_back(std::string(CheckName), true);
     }
   }

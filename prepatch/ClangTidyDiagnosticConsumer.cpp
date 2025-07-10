@@ -282,16 +282,14 @@ ClangTidyContext::getProfileStorageParams() const {
   return ClangTidyProfiling::StorageParams(ProfilePrefix, CurrentFile);
 }
 
-bool ClangTidyContext::isCheckEnabled2(StringRef CheckName) const {
-  assert(CheckFilter != nullptr);
-  return CheckFilter->contains(CheckName);
-  //return true;
+bool ClangTidyContext::isDiagnosticEnabled(StringRef CheckName) const {
+  // TODO: Add own filter here.
+  return true;
 }
 
 bool ClangTidyContext::isCheckEnabled(StringRef CheckName) const {
   assert(CheckFilter != nullptr);
-  //return CheckFilter->contains(CheckName);
-  return true;
+  return CheckFilter->contains(CheckName);
 }
 
 bool ClangTidyContext::treatAsError(StringRef CheckName) const {
@@ -325,7 +323,7 @@ void ClangTidyDiagnosticConsumer::finalizeLastError() {
     ClangTidyError &Error = Errors.back();
     if (Error.DiagnosticName == "clang-tidy-config") {
       // Never ignore these.
-    } else if (!Context.isCheckEnabled(Error.DiagnosticName) &&
+    } else if (!Context.isDiagnosticEnabled(Error.DiagnosticName) &&
                Error.DiagLevel != ClangTidyError::Error) {
       ++Context.Stats.ErrorsIgnoredCheckFilter;
       Errors.pop_back();
