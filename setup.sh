@@ -40,4 +40,3 @@ cp prepatch/ClangTidy.cpp llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-ti
 cp prepatch/CMakeLists.txt llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/CMakeLists.txt
 cp prepatch/ClangTidyDiagnosticConsumer.h llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/ClangTidyDiagnosticConsumer.h
 cp prepatch/ClangTidyDiagnosticConsumer.cpp llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/ClangTidyDiagnosticConsumer.cpp
-cp prepatch/ClangTidyModule.cpp llvm-project-llvmorg-20.1.7/clang-tools-extra/clang-tidy/ClangTidyModule.cpp
