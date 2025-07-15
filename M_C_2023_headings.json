@@ -1,0 +1,11 @@
+{
+  "license": "TBD"
+  "guidelines":
+  [
+    {
+      "id": "rule 3.2",
+      "heading": "Line-splicing shall not be used in // comments",
+      "category": "required"
+    }
+  ]
+}

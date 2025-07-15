@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "metadata": "M_C_2023_headings.json",
+  "diagnostic-mappings":
+  [
+    {
+      "name": "misra-c2023-3.2",
+      "flag": "-Wcomment",
+      "replace": "comment",
+      "ref": "rule 3.2"
+    }
+  ]
+}
