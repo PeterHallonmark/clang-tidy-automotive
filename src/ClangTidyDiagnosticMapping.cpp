@@ -36,11 +36,10 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
       Context.DiagEngine->setClient(&DiagConsumer, false);
 
       Context.diag("testing", Info.getLocation(), "testing testing");
-
-      Context.DiagEngine->setClient(this, false);
       
       llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
                    << "\n";
+      Context.DiagEngine->setClient(this, false);
 
   } else {
     llvm::outs() << "Fail: " << Info.getID() << " " << "\n";
