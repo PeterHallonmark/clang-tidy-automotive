@@ -33,6 +33,11 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     DiagnosticsEngine::Level DiagLevel, const Diagnostic &Info) {
 
   if (Context.DiagEngine) {
+    // Temporary change the diagnostic client to avoid recursion and to
+    // avoid diagnostic messages that are created by DiagnosticMapping
+    // to be analyzed by DiagnosticMapping. This will make so only
+    // all diagnostics that are emitted from other locations will
+    // be analyzed and maybe mapped against a different id.
     Context.DiagEngine->setClient(&DiagConsumer, false);
 
     Context.diag("testing", Info.getLocation(), "testing testing");
