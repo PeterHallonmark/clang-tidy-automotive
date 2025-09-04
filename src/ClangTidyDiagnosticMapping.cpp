@@ -31,15 +31,15 @@ bool ClangTidyDiagnosticMapping::IncludeInDiagnosticCounts() const {
 
 void ClangTidyDiagnosticMapping::HandleDiagnostic(
     DiagnosticsEngine::Level DiagLevel, const Diagnostic &Info) {
-  
-  if (Context.DiagEngine) {
-      Context.DiagEngine->setClient(&DiagConsumer, false);
 
-      Context.diag("testing", Info.getLocation(), "testing testing");
-      
-      llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
-                   << "\n";
-      Context.DiagEngine->setClient(this, false);
+  if (Context.DiagEngine) {
+    Context.DiagEngine->setClient(&DiagConsumer, false);
+
+    Context.diag("testing", Info.getLocation(), "testing testing");
+
+    llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
+                 << "\n";
+    Context.DiagEngine->setClient(this, false);
 
   } else {
     llvm::outs() << "Fail: " << Info.getID() << " " << "\n";
