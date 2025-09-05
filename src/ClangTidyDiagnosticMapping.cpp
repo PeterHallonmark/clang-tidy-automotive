@@ -12,6 +12,12 @@
 
 namespace clang::tidy {
 
+ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
+    ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
+    : Context(Context), DiagConsumer(DiagConsumer) {
+  //
+}
+
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
 
 void ClangTidyDiagnosticMapping::BeginSourceFile(const LangOptions &LangOpts,
@@ -52,6 +58,12 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
   DiagConsumer.HandleDiagnostic(DiagLevel, Info);
   NumWarnings = DiagConsumer.getNumWarnings();
   NumErrors = DiagConsumer.getNumErrors();
+}
+
+void ClangTidyDiagnosticMapping::addCustomDiagnostic(StringRef CheckName,
+                                                     StringRef NewName) {
+  // Simplified implementation to start with something.
+  DiagnosticMapping[CheckName] = NewName;
 }
 
 } // namespace clang::tidy

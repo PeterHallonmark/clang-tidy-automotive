@@ -11,12 +11,13 @@
 
 #include "ClangTidyDiagnosticConsumer.h"
 #include "clang/Basic/Diagnostic.h"
+#include "llvm/ADT/DenseMap.h"
 
 namespace clang::tidy {
 
 class CustomDiagnostic {
 public:
-  CustomDiagnostic(StringRef CheckName, StringRef Message)
+  CustomDiagnostic(std::string CheckName, std::string Message)
       : CheckName(CheckName), Message(Message) {}
 
   StringRef getCheckName() { return CheckName; }
@@ -30,8 +31,7 @@ private:
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {
 public:
   ClangTidyDiagnosticMapping(ClangTidyContext &Context,
-                             DiagnosticConsumer &DiagConsumer)
-      : Context(Context), DiagConsumer(DiagConsumer) {}
+                             DiagnosticConsumer &DiagConsumer);
 
   void clear() override;
   void BeginSourceFile(const LangOptions &LangOpts,
@@ -42,9 +42,12 @@ public:
   void HandleDiagnostic(DiagnosticsEngine::Level DiagLevel,
                         const Diagnostic &Info) override;
 
+  void addCustomDiagnostic(StringRef CheckName, StringRef NewName);
+
 private:
   ClangTidyContext &Context;
   DiagnosticConsumer &DiagConsumer;
+  llvm::DenseMap<StringRef, StringRef> DiagnosticMapping;
 };
 
 } // namespace clang::tidy
