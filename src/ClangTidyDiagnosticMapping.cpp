@@ -15,7 +15,9 @@ namespace clang::tidy {
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
     : Context(Context), DiagConsumer(DiagConsumer) {
-  //
+
+  addCustomDiagnostic("clang-diagnostic-comment", "testing");
+  addCustomDiagnostic("unused", "testing2");
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
@@ -45,7 +47,13 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     // are analyzed and potentially remapped to a different ID.
     Context.DiagEngine->setClient(&DiagConsumer, false);
 
-    Context.diag("testing", Info.getLocation(), "testing testing");
+    auto CheckName = Context.getCheckName(Info.getID());
+    auto it = DiagnosticMapping.find(CheckName);
+
+    if (it != DiagnosticMapping.end()) {
+      llvm::StringRef value = it->second;
+      Context.diag(value, Info.getLocation(), "testing testing");
+    }
 
     llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
                  << "\n";
