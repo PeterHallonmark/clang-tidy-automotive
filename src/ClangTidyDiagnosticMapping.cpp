@@ -16,8 +16,10 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
     : Context(Context), DiagConsumer(DiagConsumer) {
 
-  addCustomDiagnostic("clang-diagnostic-comment", "testing");
-  addCustomDiagnostic("unused", "testing2");
+  addCustomDiagnostic(
+      "clang-diagnostic-comment",
+      std::make_unique<CustomDiagnostic>("Testing", "Hello world"));
+  // addCustomDiagnostic("unused", "testing2");
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
@@ -51,8 +53,13 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     auto it = DiagnosticMapping.find(CheckName);
 
     if (it != DiagnosticMapping.end()) {
-      llvm::StringRef value = it->second;
-      Context.diag(value, Info.getLocation(), "testing testing");
+      const CustomDiagnosticEntry &Entry = it->second;
+
+      for (const auto &DiagPtr : Entry.getDiagnostics()) {
+        const CustomDiagnostic &Diag = *DiagPtr;
+        Context.diag(Diag.getCheckName(), Info.getLocation(),
+                     Diag.getMessage());
+      }
     }
 
     llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
@@ -68,10 +75,11 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
   NumErrors = DiagConsumer.getNumErrors();
 }
 
-void ClangTidyDiagnosticMapping::addCustomDiagnostic(StringRef CheckName,
-                                                     StringRef NewName) {
-  // Simplified implementation to start with something.
-  DiagnosticMapping[CheckName] = NewName;
+void ClangTidyDiagnosticMapping::addCustomDiagnostic(
+    StringRef CheckName, std::unique_ptr<CustomDiagnostic> Diagnostic) {
+
+  CustomDiagnosticEntry &Entry = DiagnosticMapping[CheckName];
+  Entry.addDiagnostic(std::move(Diagnostic));
 }
 
 } // namespace clang::tidy
