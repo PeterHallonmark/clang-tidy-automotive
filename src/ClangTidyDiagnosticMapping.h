@@ -17,7 +17,7 @@ namespace clang::tidy {
 
 class CustomDiagnostic {
 public:
-  CustomDiagnostic(std::string CheckName, std::string Message)
+  CustomDiagnostic(StringRef CheckName, StringRef Message)
       : CheckName(CheckName), Message(Message) {}
 
   StringRef getCheckName() const { return CheckName; }
