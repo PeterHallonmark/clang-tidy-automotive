@@ -45,7 +45,8 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     DiagnosticsEngine::Level DiagLevel, const Diagnostic &Info) {
 
   // The mapping functionality does not work without a diagnostic engine.
-  assert(Context.DiagEngine);
+  assert(Context.DiagEngine &&
+         "diagnostic mapping requires a diagnostic engine to work");
 
   auto CheckName = Context.getCheckName(Info.getID());
   auto it = DiagnosticMapping.find(CheckName);
@@ -69,8 +70,8 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
       Context.diag(Diag.getCheckName(), Info.getLocation(), Diag.getMessage());
     }
 
-    // Restore the diagnostic client to be able to intercept with
-    // DiagnosticMapping class.
+    // Restore the diagnostic client to be able to intercept all
+    // diagnostics with the DiagnosticMapping class.
     Context.DiagEngine->setClient(this, false);
   } else {
     DiagConsumer.HandleDiagnostic(DiagLevel, Info);
@@ -79,8 +80,8 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
   // TODO: remove temporary printout.
   llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
                << "\n";
-  // Update all the diagnostic statistics since this class is unaware
-  // of it.
+  // Update all the diagnostic statistics from the original diagnostic consumer
+  // since this class is unaware of it.
   NumWarnings = DiagConsumer.getNumWarnings();
   NumErrors = DiagConsumer.getNumErrors();
 }
