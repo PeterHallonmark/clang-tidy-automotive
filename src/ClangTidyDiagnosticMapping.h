@@ -34,6 +34,11 @@ public:
     Diagnostics.push_back(std::move(D));
   }
 
+  bool keepOriginalDiagnostic() const {
+    // TODO: Add a real condition here.
+    return true;
+  }
+
   llvm::ArrayRef<std::unique_ptr<CustomDiagnostic>> getDiagnostics() const {
     return Diagnostics;
   }
