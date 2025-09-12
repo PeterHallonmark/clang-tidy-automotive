@@ -15,9 +15,9 @@
 
 namespace clang::tidy {
 
-class CustomDiagnostic {
+class ClangTidyCustomDiagnostic {
 public:
-  CustomDiagnostic(StringRef CheckName, StringRef Message)
+  ClangTidyCustomDiagnostic(StringRef CheckName, StringRef Message)
       : CheckName(CheckName), Message(Message) {}
 
   StringRef getCheckName() const { return CheckName; }
@@ -28,9 +28,9 @@ private:
   StringRef Message;
 };
 
-class CustomDiagnosticEntry {
+class ClangTidyCustomDiagnosticEntry {
 public:
-  void addDiagnostic(std::unique_ptr<CustomDiagnostic> D) {
+  void addDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> D) {
     Diagnostics.push_back(std::move(D));
   }
 
@@ -39,12 +39,13 @@ public:
     return true;
   }
 
-  llvm::ArrayRef<std::unique_ptr<CustomDiagnostic>> getDiagnostics() const {
+  llvm::ArrayRef<std::unique_ptr<ClangTidyCustomDiagnostic>>
+  getDiagnostics() const {
     return Diagnostics;
   }
 
 private:
-  std::vector<std::unique_ptr<CustomDiagnostic>> Diagnostics;
+  std::vector<std::unique_ptr<ClangTidyCustomDiagnostic>> Diagnostics;
 };
 
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {
@@ -61,13 +62,14 @@ public:
   void HandleDiagnostic(DiagnosticsEngine::Level DiagLevel,
                         const Diagnostic &Info) override;
 
-  void addCustomDiagnostic(StringRef CheckName,
-                           std::unique_ptr<CustomDiagnostic> Diagnostic);
+  void
+  addCustomDiagnostic(StringRef CheckName,
+                      std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
 
 private:
   ClangTidyContext &Context;
   DiagnosticConsumer &DiagConsumer;
-  llvm::DenseMap<StringRef, CustomDiagnosticEntry> DiagnosticMapping;
+  llvm::DenseMap<StringRef, ClangTidyCustomDiagnosticEntry> DiagnosticMapping;
 };
 
 } // namespace clang::tidy

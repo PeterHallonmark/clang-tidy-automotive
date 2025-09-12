@@ -18,10 +18,10 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
 
   addCustomDiagnostic(
       "clang-diagnostic-comment",
-      std::make_unique<CustomDiagnostic>("Testing", "Hello world"));
+      std::make_unique<ClangTidyCustomDiagnostic>("Testing", "Hello world"));
   addCustomDiagnostic(
       "clang-diagnostic-comment",
-      std::make_unique<CustomDiagnostic>("Testing2", "Hello world2"));
+      std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
@@ -52,7 +52,7 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
   auto it = DiagnosticMapping.find(CheckName);
 
   if (it != DiagnosticMapping.end()) {
-    const CustomDiagnosticEntry &Entry = it->second;
+    const ClangTidyCustomDiagnosticEntry &Entry = it->second;
 
     // Check if the original diagnostic message should remain.
     if (Entry.keepOriginalDiagnostic()) {
@@ -66,7 +66,7 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     Context.DiagEngine->setClient(&DiagConsumer, false);
 
     for (const auto &DiagPtr : Entry.getDiagnostics()) {
-      const CustomDiagnostic &Diag = *DiagPtr;
+      const ClangTidyCustomDiagnostic &Diag = *DiagPtr;
       Context.diag(Diag.getCheckName(), Info.getLocation(), Diag.getMessage());
     }
 
@@ -87,9 +87,10 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
 }
 
 void ClangTidyDiagnosticMapping::addCustomDiagnostic(
-    StringRef CheckName, std::unique_ptr<CustomDiagnostic> Diagnostic) {
+    StringRef CheckName,
+    std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic) {
 
-  CustomDiagnosticEntry &Entry = DiagnosticMapping[CheckName];
+  ClangTidyCustomDiagnosticEntry &Entry = DiagnosticMapping[CheckName];
   Entry.addDiagnostic(std::move(Diagnostic));
 }
 
