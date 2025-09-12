@@ -28,26 +28,6 @@ private:
   StringRef Message;
 };
 
-class ClangTidyCustomDiagnosticEntry {
-public:
-  void addDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> D) {
-    Diagnostics.push_back(std::move(D));
-  }
-
-  bool keepOriginalDiagnostic() const {
-    // TODO: Add a real condition here.
-    return true;
-  }
-
-  llvm::ArrayRef<std::unique_ptr<ClangTidyCustomDiagnostic>>
-  getDiagnostics() const {
-    return Diagnostics;
-  }
-
-private:
-  std::vector<std::unique_ptr<ClangTidyCustomDiagnostic>> Diagnostics;
-};
-
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {
 public:
   ClangTidyDiagnosticMapping(ClangTidyContext &Context,
@@ -67,6 +47,26 @@ public:
                       std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
 
 private:
+  class ClangTidyCustomDiagnosticEntry {
+  public:
+    void addDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> D) {
+      Diagnostics.push_back(std::move(D));
+    }
+
+    bool keepOriginalDiagnostic() const {
+      // TODO: Add a real condition here.
+      return true;
+    }
+
+    llvm::ArrayRef<std::unique_ptr<ClangTidyCustomDiagnostic>>
+    getDiagnostics() const {
+      return Diagnostics;
+    }
+
+  private:
+    std::vector<std::unique_ptr<ClangTidyCustomDiagnostic>> Diagnostics;
+  };
+
   ClangTidyContext &Context;
   DiagnosticConsumer &DiagConsumer;
   llvm::DenseMap<StringRef, ClangTidyCustomDiagnosticEntry> DiagnosticMapping;
