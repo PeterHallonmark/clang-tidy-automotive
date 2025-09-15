@@ -47,7 +47,7 @@ public:
                       std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
 
 private:
-  class ClangTidyCustomDiagnosticEntry {
+  class CustomDiagnosticEntry {
   public:
     void addDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> D) {
       Diagnostics.push_back(std::move(D));
@@ -69,7 +69,7 @@ private:
 
   ClangTidyContext &Context;
   DiagnosticConsumer &DiagConsumer;
-  llvm::DenseMap<StringRef, ClangTidyCustomDiagnosticEntry> DiagnosticMapping;
+  llvm::DenseMap<StringRef, CustomDiagnosticEntry> DiagnosticMapping;
 };
 
 } // namespace clang::tidy
