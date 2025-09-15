@@ -12,6 +12,7 @@
 #include "ClangTidyDiagnosticConsumer.h"
 #include "clang/Basic/Diagnostic.h"
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/SmallVector.h"
 
 namespace clang::tidy {
 
@@ -64,7 +65,8 @@ private:
     }
 
   private:
-    std::vector<std::unique_ptr<ClangTidyCustomDiagnostic>> Diagnostics;
+    llvm::SmallVector<std::unique_ptr<ClangTidyCustomDiagnostic>, 4>
+        Diagnostics;
   };
 
   ClangTidyContext &Context;
