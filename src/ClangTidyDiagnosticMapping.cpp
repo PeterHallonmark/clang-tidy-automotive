@@ -52,7 +52,7 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
   auto it = DiagnosticMapping.find(CheckName);
 
   if (it != DiagnosticMapping.end()) {
-    const ClangTidyCustomDiagnosticEntry &Entry = it->second;
+    const CustomDiagnosticEntry &Entry = it->second;
 
     // Check if the original diagnostic message should remain.
     if (Entry.keepOriginalDiagnostic()) {
@@ -90,7 +90,7 @@ void ClangTidyDiagnosticMapping::addCustomDiagnostic(
     StringRef CheckName,
     std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic) {
 
-  ClangTidyCustomDiagnosticEntry &Entry = DiagnosticMapping[CheckName];
+  CustomDiagnosticEntry &Entry = DiagnosticMapping[CheckName];
   Entry.addDiagnostic(std::move(Diagnostic));
 }
 
