@@ -9,8 +9,21 @@
 #include "ClangTidyDiagnosticMapping.h"
 #include "ClangTidy.h"
 #include "clang/Basic/DiagnosticIDs.h"
+#include "llvm/Support/Error.h"
+#include "llvm/Support/JSON.h"
+#include "llvm/Support/MemoryBuffer.h"
 
 namespace clang::tidy {
+
+llvm::Expected<llvm::json::Value> loadJSON(llvm::StringRef Path) {
+  // Läs filen
+  auto BufferOrErr = llvm::MemoryBuffer::getFile(Path);
+  if (!BufferOrErr)
+    return llvm::errorCodeToError(BufferOrErr.getError());
+
+  // Parsar JSON till llvm::json::Value
+  return llvm::json::parse(BufferOrErr.get()->getBuffer());
+}
 
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
@@ -22,6 +35,19 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
   addCustomDiagnostic(
       "clang-diagnostic-comment",
       std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
+
+  auto ParsedOrErr = loadJSON("M_C_2023_mapping.json");
+  if (!ParsedOrErr) {
+    llvm::errs() << "Error parsing JSON: "
+                 << llvm::toString(ParsedOrErr.takeError()) << "\n";
+    return;
+  }
+
+  if (auto *Obj = ParsedOrErr->getAsObject()) {
+    if (auto Val = Obj->getString("metadata")) {
+      llvm::outs() << "key = " << *Val << "\n";
+    }
+  }
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
