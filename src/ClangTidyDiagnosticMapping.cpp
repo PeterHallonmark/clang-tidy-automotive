@@ -16,12 +16,10 @@
 namespace clang::tidy {
 
 llvm::Expected<llvm::json::Value> loadJSON(llvm::StringRef Path) {
-  // Läs filen
   auto BufferOrErr = llvm::MemoryBuffer::getFile(Path);
   if (!BufferOrErr)
     return llvm::errorCodeToError(BufferOrErr.getError());
 
-  // Parsar JSON till llvm::json::Value
   return llvm::json::parse(BufferOrErr.get()->getBuffer());
 }
 
