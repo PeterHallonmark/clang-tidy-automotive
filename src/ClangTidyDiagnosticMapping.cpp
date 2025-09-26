@@ -21,12 +21,22 @@ class DiagnosticMappingReader {
 public:
   DiagnosticMappingReader() {}
   
+  
+
 private:
   void setFlag(llvm::StringRef Flag) {}
   void setName(llvm::StringRef Name) {}
   void setRef(llvm::StringRef Ref) {}
   void setReplace(llvm::StringRef Replace) {}
 
+  static const llvm::StringMap<void(DiagnosticMappingReader::*)(llvm::StringRef)> Mapping;
+};
+
+const llvm::StringMap<void(DiagnosticMappingReader::*)(llvm::StringRef)> DiagnosticMappingReader::Mapping = {
+    {"flag",    &DiagnosticMappingReader::setFlag},
+    {"name",    &DiagnosticMappingReader::setName},
+    {"ref",     &DiagnosticMappingReader::setRef},
+    {"replace", &DiagnosticMappingReader::setReplace}
 };
 
 }
@@ -51,6 +61,7 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
       "clang-diagnostic-comment",
       std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
 
+  DiagnosticMappingReader Reader;
 
   
   auto ParsedOrErr = loadJSON("M_C_2023_mapping.json");
@@ -58,6 +69,17 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     llvm::errs() << "Error parsing JSON: "
                  << llvm::toString(ParsedOrErr.takeError()) << "\n";
     return;
+  }
+
+  if (auto *Obj = ParsedOrErr->getAsObject()) {
+    if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
+      for (auto &Elem : *Arr) {
+        llvm::outs() << "a\n";
+        if (auto *aa = Elem.getAsObject()) {      
+          llvm::outs() << aa->getString("name");
+        }
+      }
+    }
   }
 
 
