@@ -54,15 +54,20 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     return;
   }
 
+  
+
   if (auto *Obj = ParsedOrErr->getAsObject()) {
     if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
-      for (auto &Elem : *Arr) {
-        if (auto *Item = Elem.getAsObject()) {      
+      auto Iter = Arr->begin();
+
+      while (Iter != Arr->end()) {
+        if (auto *Item = Iter->getAsObject()) {      
           llvm::outs() << Item->getString("name") << "\n";
           llvm::outs() << Item->getString("flag") << "\n";
           llvm::outs() << Item->getString("replace") << "\n";
           llvm::outs() << Item->getString("ref") << "\n";
         }
+        Iter++;
       }
     }
   }
