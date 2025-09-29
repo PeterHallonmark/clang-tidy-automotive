@@ -20,23 +20,6 @@ namespace {
 class DiagnosticMappingReader {
 public:
   DiagnosticMappingReader() {}
-  
-  
-
-private:
-  void setFlag(llvm::StringRef Flag) {}
-  void setName(llvm::StringRef Name) {}
-  void setRef(llvm::StringRef Ref) {}
-  void setReplace(llvm::StringRef Replace) {}
-
-  static const llvm::StringMap<void(DiagnosticMappingReader::*)(llvm::StringRef)> Mapping;
-};
-
-const llvm::StringMap<void(DiagnosticMappingReader::*)(llvm::StringRef)> DiagnosticMappingReader::Mapping = {
-    {"flag",    &DiagnosticMappingReader::setFlag},
-    {"name",    &DiagnosticMappingReader::setName},
-    {"ref",     &DiagnosticMappingReader::setRef},
-    {"replace", &DiagnosticMappingReader::setReplace}
 };
 
 }
@@ -74,19 +57,13 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
   if (auto *Obj = ParsedOrErr->getAsObject()) {
     if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
       for (auto &Elem : *Arr) {
-        llvm::outs() << "a\n";
-        if (auto *aa = Elem.getAsObject()) {      
-          llvm::outs() << aa->getString("name");
+        if (auto *Item = Elem.getAsObject()) {      
+          llvm::outs() << Item->getString("name") << "\n";
+          llvm::outs() << Item->getString("flag") << "\n";
+          llvm::outs() << Item->getString("replace") << "\n";
+          llvm::outs() << Item->getString("ref") << "\n";
         }
       }
-    }
-  }
-
-
-  if (auto *Obj = ParsedOrErr->getAsObject()) {
-    for (auto &KV : *Obj) {
-        llvm::outs() << "Key: " << KV.first << ", Value: " 
-                     << KV.second << "\n";
     }
   }
 }
