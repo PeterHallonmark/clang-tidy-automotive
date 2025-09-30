@@ -17,13 +17,6 @@ namespace clang::tidy {
 
 namespace {
 
-class DiagnosticMappingReader {
-public:
-  DiagnosticMappingReader() {}
-};
-
-}
-
 llvm::Expected<llvm::json::Value> loadJSON(llvm::StringRef Path) {
   auto BufferOrErr = llvm::MemoryBuffer::getFile(Path);
   if (!BufferOrErr)
@@ -32,29 +25,20 @@ llvm::Expected<llvm::json::Value> loadJSON(llvm::StringRef Path) {
   return llvm::json::parse(BufferOrErr.get()->getBuffer());
 }
 
+class DiagnosticMappingReader {
+public:
+  DiagnosticMappingReader() {}
 
-ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
-    ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
-    : Context(Context), DiagConsumer(DiagConsumer) {
+  void readMapping();
+};
 
-  addCustomDiagnostic(
-      "clang-diagnostic-comment",
-      std::make_unique<ClangTidyCustomDiagnostic>("Testing", "Hello world"));
-  addCustomDiagnostic(
-      "clang-diagnostic-comment",
-      std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
-
-  DiagnosticMappingReader Reader;
-
-  
+void DiagnosticMappingReader::readMapping() {
   auto ParsedOrErr = loadJSON("M_C_2023_mapping.json");
   if (!ParsedOrErr) {
     llvm::errs() << "Error parsing JSON: "
                  << llvm::toString(ParsedOrErr.takeError()) << "\n";
     return;
   }
-
-  
 
   if (auto *Obj = ParsedOrErr->getAsObject()) {
     if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
@@ -71,6 +55,23 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
       }
     }
   }
+}
+
+}
+
+ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
+    ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
+    : Context(Context), DiagConsumer(DiagConsumer) {
+
+  addCustomDiagnostic(
+      "clang-diagnostic-comment",
+      std::make_unique<ClangTidyCustomDiagnostic>("Testing", "Hello world"));
+  addCustomDiagnostic(
+      "clang-diagnostic-comment",
+      std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
+
+  DiagnosticMappingReader Reader;
+  Reader.readMapping();
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
