@@ -1,3 +1,4 @@
+
 {
   "name": "",
   "metadata": "M_C_2023_headings.json",
@@ -6,8 +7,14 @@
     {
       "name": "misra-c2023-3.2",
       "flag": "-Wcomment",
-      "replace": "comment",
+      "replace": "clang-diagnostic-comment",
       "ref": "rule 3.2"
+    },
+    {
+      "name": "misra-c2023-3.3",
+      "flag": "-Wcomment",
+      "replace": "clang-diagnostic-comment",
+      "ref": "rule 3.3"
     }
   ]
 }
