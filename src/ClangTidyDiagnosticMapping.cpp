@@ -9,9 +9,9 @@
 #include "ClangTidyDiagnosticMapping.h"
 #include "ClangTidy.h"
 #include "clang/Basic/DiagnosticIDs.h"
+#include "llvm/Support/Error.h"
 #include "llvm/Support/JSON.h"
 #include "llvm/Support/MemoryBuffer.h"
-#include "llvm/Support/Error.h"
 
 namespace clang::tidy {
 
@@ -19,10 +19,11 @@ namespace {
 
 class DiagnosticMappingReader {
 public:
-  DiagnosticMappingReader(ClangTidyDiagnosticMapping *Mapping) : Mapping(Mapping) {}
-  
+  DiagnosticMappingReader(ClangTidyDiagnosticMapping *Mapping)
+      : Mapping(Mapping) {}
+
   void readMapping(llvm::StringRef Path);
-  
+
 private:
   ClangTidyDiagnosticMapping *Mapping;
 };
@@ -31,36 +32,38 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
   auto Buffer = llvm::MemoryBuffer::getFile(Path);
   if (Buffer) {
     auto JSONData = llvm::json::parse(Buffer.get()->getBuffer());
-  
+
     if (JSONData) {
       if (auto *Obj = JSONData->getAsObject()) {
         if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
           auto Iter = Arr->begin();
-          
+
           while (Iter != Arr->end()) {
-            if (auto *Item = Iter->getAsObject()) {      
+            if (auto *Item = Iter->getAsObject()) {
               auto Name = Item->getString("name");
               auto Flag = Item->getString("flag");
               auto ReplaceDiagnostic = Item->getString("replace");
               auto Ref = Item->getString("ref");
-              
+
               /* Check all the required fields. */
               if (Name && ReplaceDiagnostic) {
-                Mapping->addCustomDiagnostic(ReplaceDiagnostic.value(),
-                  std::make_unique<ClangTidyCustomDiagnostic>(Name.value(), "TODO"));                
+                Mapping->addCustomDiagnostic(
+                    ReplaceDiagnostic.value(),
+                    std::make_unique<ClangTidyCustomDiagnostic>(Name.value(),
+                                                                "TODO"));
               } else {
                 // TODO: Log the fault via diagnostic
               }
             }
             Iter++;
-          }   
+          }
         }
       }
     }
   }
 }
 
-}
+} // namespace
 
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
