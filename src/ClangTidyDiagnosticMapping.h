@@ -19,14 +19,14 @@ namespace clang::tidy {
 class ClangTidyCustomDiagnostic {
 public:
   ClangTidyCustomDiagnostic(StringRef CheckName, StringRef Message)
-      : CheckName(CheckName), Message(Message) {}
+      : CheckName(CheckName.str()), Message(Message.str()) {}
 
   StringRef getCheckName() const { return CheckName; }
   StringRef getMessage() const { return Message; }
 
 private:
-  StringRef CheckName;
-  StringRef Message;
+  std::string CheckName;
+  std::string Message;
 };
 
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {

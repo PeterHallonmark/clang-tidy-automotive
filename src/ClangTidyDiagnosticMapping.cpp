@@ -17,41 +17,44 @@ namespace clang::tidy {
 
 namespace {
 
-llvm::Expected<llvm::json::Value> loadJSON(llvm::StringRef Path) {
-  auto BufferOrErr = llvm::MemoryBuffer::getFile(Path);
-  if (!BufferOrErr)
-    return llvm::errorCodeToError(BufferOrErr.getError());
-
-  return llvm::json::parse(BufferOrErr.get()->getBuffer());
-}
-
 class DiagnosticMappingReader {
 public:
-  DiagnosticMappingReader() {}
-
-  void readMapping();
+  DiagnosticMappingReader(ClangTidyDiagnosticMapping *Mapping) : Mapping(Mapping) {}
+  
+  void readMapping(llvm::StringRef Path);
+  
+private:
+  ClangTidyDiagnosticMapping *Mapping;
 };
 
-void DiagnosticMappingReader::readMapping() {
-  auto ParsedOrErr = loadJSON("M_C_2023_mapping.json");
-  if (!ParsedOrErr) {
-    llvm::errs() << "Error parsing JSON: "
-                 << llvm::toString(ParsedOrErr.takeError()) << "\n";
-    return;
-  }
-
-  if (auto *Obj = ParsedOrErr->getAsObject()) {
-    if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
-      auto Iter = Arr->begin();
-
-      while (Iter != Arr->end()) {
-        if (auto *Item = Iter->getAsObject()) {      
-          llvm::outs() << Item->getString("name") << "\n";
-          llvm::outs() << Item->getString("flag") << "\n";
-          llvm::outs() << Item->getString("replace") << "\n";
-          llvm::outs() << Item->getString("ref") << "\n";
+void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
+  auto Buffer = llvm::MemoryBuffer::getFile(Path);
+  if (Buffer) {
+    auto JSONData = llvm::json::parse(Buffer.get()->getBuffer());
+  
+    if (JSONData) {
+      if (auto *Obj = JSONData->getAsObject()) {
+        if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
+          auto Iter = Arr->begin();
+          
+          while (Iter != Arr->end()) {
+            if (auto *Item = Iter->getAsObject()) {      
+              auto Name = Item->getString("name");
+              auto Flag = Item->getString("flag");
+              auto ReplaceDiagnostic = Item->getString("replace");
+              auto Ref = Item->getString("ref");
+              
+              /* Check all the required fields. */
+              if (Name && ReplaceDiagnostic) {
+                Mapping->addCustomDiagnostic(ReplaceDiagnostic.value(),
+                  std::make_unique<ClangTidyCustomDiagnostic>(Name.value(), "TODO"));                
+              } else {
+                // TODO: Log the fault via diagnostic
+              }
+            }
+            Iter++;
+          }   
         }
-        Iter++;
       }
     }
   }
@@ -70,8 +73,8 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
       "clang-diagnostic-comment",
       std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
 
-  DiagnosticMappingReader Reader;
-  Reader.readMapping();
+  DiagnosticMappingReader Reader(this);
+  Reader.readMapping("M_C_2023_mapping.json");
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
