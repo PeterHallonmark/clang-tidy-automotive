@@ -47,6 +47,7 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 
               /* Check all the required fields. */
               if (Name && ReplaceDiagnostic) {
+
                 Mapping->addCustomDiagnostic(
                     ReplaceDiagnostic.value(),
                     std::make_unique<ClangTidyCustomDiagnostic>(Name.value(),
@@ -68,13 +69,6 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
     : Context(Context), DiagConsumer(DiagConsumer) {
-
-  addCustomDiagnostic(
-      "clang-diagnostic-comment",
-      std::make_unique<ClangTidyCustomDiagnostic>("Testing", "Hello world"));
-  addCustomDiagnostic(
-      "clang-diagnostic-comment",
-      std::make_unique<ClangTidyCustomDiagnostic>("Testing2", "Hello world2"));
 
   DiagnosticMappingReader Reader(this);
   Reader.readMapping("M_C_2023_mapping.json");
