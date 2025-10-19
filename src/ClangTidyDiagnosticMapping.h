@@ -18,15 +18,17 @@ namespace clang::tidy {
 
 class ClangTidyCustomDiagnostic {
 public:
-  ClangTidyCustomDiagnostic(StringRef CheckName, StringRef Message)
-      : CheckName(CheckName.str()), Message(Message.str()) {}
+  ClangTidyCustomDiagnostic(StringRef OrigDiagName, StringRef AltDiagName)
+      : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()) {}
 
-  StringRef getCheckName() const { return CheckName; }
-  StringRef getMessage() const { return Message; }
+  StringRef getOrigDiagName() const { return OrigDiagName; }
+  StringRef getAltDiagName() const { return AltDiagName; }
+
+  StringRef getMessage() const { return OrigDiagName; }
 
 private:
-  std::string CheckName;
-  std::string Message;
+  std::string OrigDiagName;
+  std::string AltDiagName;
 };
 
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {
@@ -44,8 +46,7 @@ public:
                         const Diagnostic &Info) override;
 
   void
-  addCustomDiagnostic(StringRef CheckName,
-                      std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
+  addCustomDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
 
 private:
   class CustomDiagnosticEntry {

@@ -34,12 +34,11 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
     auto JSONData = llvm::json::parse(Buffer.get()->getBuffer());
 
     if (JSONData) {
-      if (auto *Obj = JSONData->getAsObject()) {
-        if (auto *Arr = Obj->getArray("diagnostic-mappings")) {
-          auto Iter = Arr->begin();
+      if (auto *Root = JSONData->getAsObject()) {
+        if (auto *Array = Root->getArray("diagnostic-mappings")) {
 
-          while (Iter != Arr->end()) {
-            if (auto *Item = Iter->getAsObject()) {
+          for (const auto &Element : *Array) {
+            if (auto *Item = Element.getAsObject()) {
               auto Name = Item->getString("name");
               auto Flag = Item->getString("flag");
               auto ReplaceDiagnostic = Item->getString("replace");
@@ -47,16 +46,13 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 
               /* Check all the required fields. */
               if (Name && ReplaceDiagnostic) {
-
                 Mapping->addCustomDiagnostic(
-                    ReplaceDiagnostic.value(),
-                    std::make_unique<ClangTidyCustomDiagnostic>(Name.value(),
-                                                                "TODO"));
+                    std::make_unique<ClangTidyCustomDiagnostic>(
+                        ReplaceDiagnostic.value(), Name.value()));
               } else {
                 // TODO: Log the fault via diagnostic
               }
             }
-            Iter++;
           }
         }
       }
@@ -117,7 +113,8 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
 
     for (const auto &DiagPtr : Entry.getDiagnostics()) {
       const ClangTidyCustomDiagnostic &Diag = *DiagPtr;
-      Context.diag(Diag.getCheckName(), Info.getLocation(), Diag.getMessage());
+      Context.diag(Diag.getAltDiagName(), Info.getLocation(),
+                   Diag.getMessage());
     }
 
     // Restore the diagnostic client to be able to intercept all
@@ -137,10 +134,10 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
 }
 
 void ClangTidyDiagnosticMapping::addCustomDiagnostic(
-    StringRef CheckName,
     std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic) {
 
-  CustomDiagnosticEntry &Entry = DiagnosticMapping[CheckName];
+  CustomDiagnosticEntry &Entry =
+      DiagnosticMapping[Diagnostic->getOrigDiagName()];
   Entry.addDiagnostic(std::move(Diagnostic));
 }
 
