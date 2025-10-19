@@ -39,16 +39,16 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 
           for (const auto &Element : *Array) {
             if (auto *Item = Element.getAsObject()) {
-              auto Name = Item->getString("name");
+              auto AltDiagName = Item->getString("name");
+              auto OrgDiagName = Item->getString("replace");
               auto Flag = Item->getString("flag");
-              auto ReplaceDiagnostic = Item->getString("replace");
               auto Ref = Item->getString("ref");
 
               /* Check all the required fields. */
-              if (Name && ReplaceDiagnostic) {
+              if (OrgDiagName && AltDiagName) {
                 auto CustomDiagnostic =
                     std::make_unique<ClangTidyCustomDiagnostic>(
-                        ReplaceDiagnostic.value(), Name.value());
+                        OrgDiagName.value(), AltDiagName.value());
 
                 CustomDiagnostic->setMessage("TODO");
 
