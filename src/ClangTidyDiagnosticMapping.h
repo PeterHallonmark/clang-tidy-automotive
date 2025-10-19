@@ -19,16 +19,19 @@ namespace clang::tidy {
 class ClangTidyCustomDiagnostic {
 public:
   ClangTidyCustomDiagnostic(StringRef OrigDiagName, StringRef AltDiagName)
-      : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()) {}
+      : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()),
+        Message("") {}
+
+  void setMessage(StringRef Message) { this->Message = Message; }
 
   StringRef getOrigDiagName() const { return OrigDiagName; }
   StringRef getAltDiagName() const { return AltDiagName; }
-
-  StringRef getMessage() const { return OrigDiagName; }
+  StringRef getMessage() const { return Message; }
 
 private:
   std::string OrigDiagName;
   std::string AltDiagName;
+  std::string Message;
 };
 
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {

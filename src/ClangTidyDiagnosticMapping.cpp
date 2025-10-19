@@ -46,9 +46,13 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 
               /* Check all the required fields. */
               if (Name && ReplaceDiagnostic) {
-                Mapping->addCustomDiagnostic(
+                auto CustomDiagnostic =
                     std::make_unique<ClangTidyCustomDiagnostic>(
-                        ReplaceDiagnostic.value(), Name.value()));
+                        ReplaceDiagnostic.value(), Name.value());
+
+                CustomDiagnostic->setMessage("TODO");
+
+                Mapping->addCustomDiagnostic(std::move(CustomDiagnostic));
               } else {
                 // TODO: Log the fault via diagnostic
               }
