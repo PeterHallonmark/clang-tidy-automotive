@@ -19,8 +19,7 @@ namespace clang::tidy {
 class ClangTidyCustomDiagnostic {
 public:
   ClangTidyCustomDiagnostic(StringRef OrigDiagName, StringRef AltDiagName)
-      : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()),
-        Message("") {}
+      : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()) {}
 
   void setMessage(StringRef Message) { this->Message = Message; }
 
