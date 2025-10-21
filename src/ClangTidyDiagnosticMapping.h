@@ -23,7 +23,7 @@ public:
 
   void setMessage(StringRef Message) { this->Message = Message; }
   void setDiagFlag(std::optional<StringRef> DiagFlag);
-  
+
   StringRef getOrigDiagName() const { return OrigDiagName; }
   StringRef getAltDiagName() const { return AltDiagName; }
   StringRef getMessage() const { return Message; }
