@@ -22,15 +22,18 @@ public:
       : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()) {}
 
   void setMessage(StringRef Message) { this->Message = Message; }
-
+  void setDiagFlag(std::optional<StringRef> DiagFlag);
+  
   StringRef getOrigDiagName() const { return OrigDiagName; }
   StringRef getAltDiagName() const { return AltDiagName; }
   StringRef getMessage() const { return Message; }
+  std::optional<StringRef> getDiagFlag() const;
 
 private:
   std::string OrigDiagName;
   std::string AltDiagName;
   std::string Message;
+  std::optional<std::string> DiagFlag;
 };
 
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {

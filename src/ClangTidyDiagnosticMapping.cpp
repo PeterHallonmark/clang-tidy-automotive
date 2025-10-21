@@ -41,7 +41,7 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
             if (auto *Item = Element.getAsObject()) {
               auto AltDiagName = Item->getString("name");
               auto OrgDiagName = Item->getString("replace");
-              auto Flag = Item->getString("flag");
+              auto DiagFlag = Item->getString("flag");
               auto Ref = Item->getString("ref");
 
               /* Check all the required fields. */
@@ -51,6 +51,7 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
                         OrgDiagName.value(), AltDiagName.value());
 
                 CustomDiagnostic->setMessage("TODO");
+                CustomDiagnostic->setDiagFlag(DiagFlag);
 
                 Mapping->addCustomDiagnostic(std::move(CustomDiagnostic));
               } else {
@@ -65,6 +66,22 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 }
 
 } // namespace
+
+void ClangTidyCustomDiagnostic::setDiagFlag(std::optional<StringRef> DiagFlag) {
+  if (DiagFlag) {
+    this->DiagFlag = DiagFlag->str();
+  } else {
+    this->DiagFlag.reset();
+  }
+}
+
+std::optional<StringRef> ClangTidyCustomDiagnostic::getDiagFlag() const {
+  if (DiagFlag) {
+    return llvm::StringRef(*DiagFlag);
+  } else {
+    return std::nullopt;
+  }
+}
 
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
