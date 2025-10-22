@@ -6,6 +6,7 @@
   [
     {
       "name": "misra-c2023-3.2",
+      "message": "comment",
       "flag": "-Wcomment",
       "replace": "clang-diagnostic-comment",
       "ref": "rule 3.2"

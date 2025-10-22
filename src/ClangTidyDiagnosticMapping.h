@@ -21,7 +21,7 @@ public:
   ClangTidyCustomDiagnostic(StringRef OrigDiagName, StringRef AltDiagName)
       : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()) {}
 
-  void setMessage(StringRef Message) { this->Message = Message; }
+  void setMessage(std::optional<StringRef> Message);
   void setDiagFlag(std::optional<StringRef> DiagFlag);
 
   StringRef getOrigDiagName() const { return OrigDiagName; }

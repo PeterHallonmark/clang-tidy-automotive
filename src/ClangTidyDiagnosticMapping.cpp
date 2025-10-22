@@ -43,6 +43,7 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
               auto OrgDiagName = Item->getString("replace");
               auto DiagFlag = Item->getString("flag");
               auto Ref = Item->getString("ref");
+              auto Message = Item->getString("message");
 
               /* Check all the required fields. */
               if (OrgDiagName && AltDiagName) {
@@ -50,7 +51,7 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
                     std::make_unique<ClangTidyCustomDiagnostic>(
                         OrgDiagName.value(), AltDiagName.value());
 
-                CustomDiagnostic->setMessage("TODO");
+                CustomDiagnostic->setMessage(Message);
                 CustomDiagnostic->setDiagFlag(DiagFlag);
 
                 Mapping->addCustomDiagnostic(std::move(CustomDiagnostic));
@@ -72,6 +73,14 @@ void ClangTidyCustomDiagnostic::setDiagFlag(std::optional<StringRef> DiagFlag) {
     this->DiagFlag = DiagFlag->str();
   } else {
     this->DiagFlag.reset();
+  }
+}
+
+void ClangTidyCustomDiagnostic::setMessage(std::optional<StringRef> Message) {
+  if (Message) {
+    this->Message = Message->str();
+  } else {
+    this->Message = "";
   }
 }
 
