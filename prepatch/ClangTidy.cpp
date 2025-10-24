@@ -557,6 +557,11 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
 
   Tool.appendArgumentsAdjuster(PerFileExtraArgumentsInserter);
   Tool.appendArgumentsAdjuster(getStripPluginsAdjuster());
+
+  ArgumentsAdjuster Experimental =
+    getInsertArgumentAdjuster("-Wcomment", ArgumentInsertPosition::BEGIN);
+  Tool.appendArgumentsAdjuster(Experimental);
+
   Context.setEnableProfiling(EnableCheckProfile);
   Context.setProfileStoragePrefix(StoreCheckProfile);
 

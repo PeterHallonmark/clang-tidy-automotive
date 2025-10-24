@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-build/bin/clang-tidy test.c -- -Wcomment
+build/bin/clang-tidy test.c --
