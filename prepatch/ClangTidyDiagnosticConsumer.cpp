@@ -63,7 +63,7 @@ protected:
     // using getCustomDiagID.
     std::string CheckNameInMessage = " [" + Error.DiagnosticName + "]";
     Message.consume_back(CheckNameInMessage);
-
+  
     auto TidyMessage =
         Loc.isValid()
             ? tooling::DiagnosticMessage(Message, Loc.getManager(), Loc)
@@ -283,7 +283,8 @@ ClangTidyContext::getProfileStorageParams() const {
 }
 
 bool ClangTidyContext::isDiagnosticEnabled(StringRef CheckName) const {
-  // TODO: Add own filter here.
+  assert(CheckFilter != nullptr);
+  //return CheckFilter->contains(CheckName) && 
   return true;
 }
 
