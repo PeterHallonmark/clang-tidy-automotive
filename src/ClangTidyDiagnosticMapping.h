@@ -11,6 +11,7 @@
 
 #include "ClangTidyDiagnosticConsumer.h"
 #include "clang/Basic/Diagnostic.h"
+#include "clang/Tooling/ArgumentsAdjusters.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallVector.h"
 
@@ -22,18 +23,15 @@ public:
       : OrigDiagName(OrigDiagName.str()), AltDiagName(AltDiagName.str()) {}
 
   void setMessage(std::optional<StringRef> Message);
-  void setDiagFlag(std::optional<StringRef> DiagFlag);
 
   StringRef getOrigDiagName() const { return OrigDiagName; }
   StringRef getAltDiagName() const { return AltDiagName; }
   StringRef getMessage() const { return Message; }
-  std::optional<StringRef> getDiagFlag() const;
 
 private:
   std::string OrigDiagName;
   std::string AltDiagName;
   std::string Message;
-  std::optional<std::string> DiagFlag;
 };
 
 class ClangTidyDiagnosticMapping : public DiagnosticConsumer {
@@ -52,6 +50,9 @@ public:
 
   void
   addCustomDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
+  void addDiagnosticFlag(StringRef DiagnosticFlag);
+
+  clang::tooling::ArgumentsAdjuster getArgumentsAdjuster() const;
 
 private:
   class CustomDiagnosticEntry {
@@ -78,6 +79,7 @@ private:
   ClangTidyContext &Context;
   DiagnosticConsumer &DiagConsumer;
   llvm::DenseMap<StringRef, CustomDiagnosticEntry> DiagnosticMapping;
+  llvm::StringSet<> DiagnosticFlags;
 };
 
 } // namespace clang::tidy

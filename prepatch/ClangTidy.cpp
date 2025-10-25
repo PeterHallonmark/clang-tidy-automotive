@@ -558,15 +558,13 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
   Tool.appendArgumentsAdjuster(PerFileExtraArgumentsInserter);
   Tool.appendArgumentsAdjuster(getStripPluginsAdjuster());
 
-  ArgumentsAdjuster Experimental =
-    getInsertArgumentAdjuster("-Wcomment", ArgumentInsertPosition::BEGIN);
-  Tool.appendArgumentsAdjuster(Experimental);
-
   Context.setEnableProfiling(EnableCheckProfile);
   Context.setProfileStoragePrefix(StoreCheckProfile);
 
   ClangTidyDiagnosticConsumer DiagConsumer(Context, nullptr, true, ApplyAnyFix);
   ClangTidyDiagnosticMapping DiagMapping(Context, DiagConsumer);
+  Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
+  
   DiagnosticsEngine DE(new DiagnosticIDs(), new DiagnosticOptions(),
                        &DiagMapping, /*ShouldOwnClient=*/false);
   Context.setDiagnosticsEngine(&DE);

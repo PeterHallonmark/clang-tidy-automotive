@@ -41,20 +41,24 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
             if (auto *Item = Element.getAsObject()) {
               auto AltDiagName = Item->getString("name");
               auto OrgDiagName = Item->getString("replace");
-              auto DiagFlag = Item->getString("flag");
-              auto Ref = Item->getString("ref");
-              auto Message = Item->getString("message");
 
               /* Check all the required fields. */
               if (OrgDiagName && AltDiagName) {
+                auto Ref = Item->getString("ref");
+                auto Message = Item->getString("message");
+                auto DiagnosticFlag = Item->getString("flag");
+
                 auto CustomDiagnostic =
                     std::make_unique<ClangTidyCustomDiagnostic>(
                         OrgDiagName.value(), AltDiagName.value());
 
                 CustomDiagnostic->setMessage(Message);
-                CustomDiagnostic->setDiagFlag(DiagFlag);
-
                 Mapping->addCustomDiagnostic(std::move(CustomDiagnostic));
+
+                if (DiagnosticFlag) {
+                  Mapping->addDiagnosticFlag(DiagnosticFlag.value());
+                }
+
               } else {
                 // TODO: Log the fault via diagnostic
               }
@@ -68,27 +72,11 @@ void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
 
 } // namespace
 
-void ClangTidyCustomDiagnostic::setDiagFlag(std::optional<StringRef> DiagFlag) {
-  if (DiagFlag) {
-    this->DiagFlag = DiagFlag->str();
-  } else {
-    this->DiagFlag.reset();
-  }
-}
-
 void ClangTidyCustomDiagnostic::setMessage(std::optional<StringRef> Message) {
   if (Message) {
     this->Message = Message->str();
   } else {
     this->Message = "";
-  }
-}
-
-std::optional<StringRef> ClangTidyCustomDiagnostic::getDiagFlag() const {
-  if (DiagFlag) {
-    return llvm::StringRef(*DiagFlag);
-  } else {
-    return std::nullopt;
   }
 }
 
@@ -169,6 +157,24 @@ void ClangTidyDiagnosticMapping::addCustomDiagnostic(
   CustomDiagnosticEntry &Entry =
       DiagnosticMapping[Diagnostic->getOrigDiagName()];
   Entry.addDiagnostic(std::move(Diagnostic));
+}
+
+void ClangTidyDiagnosticMapping::addDiagnosticFlag(StringRef DiagnosticFlag) {
+  DiagnosticFlags.insert(DiagnosticFlag);
+}
+
+clang::tooling::ArgumentsAdjuster
+ClangTidyDiagnosticMapping::getArgumentsAdjuster() const {
+  return [Flags =
+              DiagnosticFlags](const clang::tooling::CommandLineArguments &Args,
+                               llvm::StringRef /* unused */) {
+    clang::tooling::CommandLineArguments NewArgs = Args;
+    for (const auto &Flag : Flags) {
+      llvm::outs() << Flag.getKey().str() << "\n";
+      NewArgs.push_back(Flag.getKey().str());
+    }
+    return NewArgs;
+  };
 }
 
 } // namespace clang::tidy
