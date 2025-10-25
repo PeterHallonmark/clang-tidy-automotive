@@ -16,6 +16,12 @@
       "flag": "-Wcomment",
       "replace": "clang-diagnostic-comment",
       "ref": "rule 3.3"
+    },
+    {
+      "name": "misra-c2023-5.3",
+      "flag": "-Wshadow",
+      "replace": "clang-diagnostic-shadow",
+      "ref": "rule 5.3"
     }
   ]
 }
