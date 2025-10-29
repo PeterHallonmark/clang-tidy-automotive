@@ -13,7 +13,7 @@
 #include "llvm/Support/JSON.h"
 #include "llvm/Support/MemoryBuffer.h"
 
-namespace clang::tidy { 
+namespace clang::tidy {
 
 namespace {
 
@@ -82,8 +82,7 @@ void ClangTidyCustomDiagnostic::setMessage(std::optional<StringRef> Message) {
 
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
-    : Context(Context), DiagConsumer(DiagConsumer) {
-}
+    : Context(Context), DiagConsumer(DiagConsumer) {}
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
 
@@ -164,7 +163,8 @@ void ClangTidyDiagnosticMapping::addDiagnosticFlag(StringRef DiagnosticFlag) {
 
 clang::tooling::ArgumentsAdjuster
 ClangTidyDiagnosticMapping::getArgumentsAdjuster() const {
-  return [Flags = DiagnosticFlags](const clang::tooling::CommandLineArguments &Args,
+  return [Flags =
+              DiagnosticFlags](const clang::tooling::CommandLineArguments &Args,
                                llvm::StringRef /* unused */) {
     clang::tooling::CommandLineArguments AdjustedArgs = Args;
     for (const auto &Flag : Flags) {
