@@ -48,6 +48,7 @@ public:
   void HandleDiagnostic(DiagnosticsEngine::Level DiagLevel,
                         const Diagnostic &Info) override;
 
+  void readMappingFile(StringRef Filename);
   void
   addCustomDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> Diagnostic);
   void addDiagnosticFlag(StringRef DiagnosticFlag);

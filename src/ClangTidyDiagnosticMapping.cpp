@@ -13,7 +13,7 @@
 #include "llvm/Support/JSON.h"
 #include "llvm/Support/MemoryBuffer.h"
 
-namespace clang::tidy {
+namespace clang::tidy { 
 
 namespace {
 
@@ -83,9 +83,6 @@ void ClangTidyCustomDiagnostic::setMessage(std::optional<StringRef> Message) {
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
     : Context(Context), DiagConsumer(DiagConsumer) {
-
-  DiagnosticMappingReader Reader(this);
-  Reader.readMapping("M_C_2023_mapping.json");
 }
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
@@ -142,13 +139,15 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     DiagConsumer.HandleDiagnostic(DiagLevel, Info);
   }
 
-  // TODO: remove temporary printout.
-  llvm::outs() << Info.getID() << " " << Context.getCheckName(Info.getID())
-               << "\n";
   // Update all the diagnostic statistics from the original diagnostic consumer
   // since this class is unaware of it.
   NumWarnings = DiagConsumer.getNumWarnings();
   NumErrors = DiagConsumer.getNumErrors();
+}
+
+void ClangTidyDiagnosticMapping::readMappingFile(StringRef Filename) {
+  DiagnosticMappingReader Reader(this);
+  Reader.readMapping(Filename);
 }
 
 void ClangTidyDiagnosticMapping::addCustomDiagnostic(
@@ -165,15 +164,13 @@ void ClangTidyDiagnosticMapping::addDiagnosticFlag(StringRef DiagnosticFlag) {
 
 clang::tooling::ArgumentsAdjuster
 ClangTidyDiagnosticMapping::getArgumentsAdjuster() const {
-  return [Flags =
-              DiagnosticFlags](const clang::tooling::CommandLineArguments &Args,
+  return [Flags = DiagnosticFlags](const clang::tooling::CommandLineArguments &Args,
                                llvm::StringRef /* unused */) {
-    clang::tooling::CommandLineArguments NewArgs = Args;
+    clang::tooling::CommandLineArguments AdjustedArgs = Args;
     for (const auto &Flag : Flags) {
-      llvm::outs() << Flag.getKey().str() << "\n";
-      NewArgs.push_back(Flag.getKey().str());
+      AdjustedArgs.push_back(Flag.getKey().str());
     }
-    return NewArgs;
+    return AdjustedArgs;
   };
 }
 
