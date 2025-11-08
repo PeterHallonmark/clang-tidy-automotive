@@ -89,12 +89,12 @@ ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
 
 void ClangTidyDiagnosticMapping::readMappingOptions() {
   const auto &Options = Context.getOptions();
-  
+
   if (Options.MappingFiles) {
     llvm::outs() << "mapping" << "\n";
-    
+
     for (const auto &MappingFilename : *Options.MappingFiles) {
-      llvm::outs() << MappingFilename << "\n";     
+      llvm::outs() << MappingFilename << "\n";
     }
 
   } else {

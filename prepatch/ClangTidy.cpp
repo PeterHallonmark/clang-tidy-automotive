@@ -563,14 +563,22 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
 
   ClangTidyDiagnosticConsumer DiagConsumer(Context, nullptr, true, ApplyAnyFix);
   ClangTidyDiagnosticMapping DiagMapping(Context, DiagConsumer);
-
+  
+  
   DiagMapping.readMappingFile("M_C_2023_mapping.json");
-  Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
-
+  if (!DiagMapping.empty()) {
+    Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
+  }
+  
   DiagnosticsEngine DE(new DiagnosticIDs(), new DiagnosticOptions(),
                        &DiagMapping, /*ShouldOwnClient=*/false);
   Context.setDiagnosticsEngine(&DE);
-  Tool.setDiagnosticConsumer(&DiagMapping);
+
+  if (!DiagMapping.empty()) {
+    Tool.setDiagnosticConsumer(&DiagMapping);
+  } else {
+    Tool.setDiagnosticConsumer(&DiagConsumer);
+  }
 
   class ActionFactory : public FrontendActionFactory {
   public:

@@ -39,6 +39,8 @@ public:
   ClangTidyDiagnosticMapping(ClangTidyContext &Context,
                              DiagnosticConsumer &DiagConsumer);
 
+  bool empty() {return DiagnosticMapping.empty();}
+
   void clear() override;
   void BeginSourceFile(const LangOptions &LangOpts,
                        const Preprocessor *PP = nullptr) override;
