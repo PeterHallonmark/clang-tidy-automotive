@@ -37,6 +37,8 @@ done
 # Copy the prepatched files to activate Automotive support
 cp prepatch/ClangTidyForceLinker.h llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/ClangTidyForceLinker.h
 cp prepatch/ClangTidy.cpp llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/ClangTidy.cpp
+cp prepatch/ClangTidy.cpp llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/ClangTidyOptions.cpp
+cp prepatch/ClangTidy.cpp llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/ClangTidyOptions.h
 cp prepatch/CMakeLists.txt llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/CMakeLists.txt
 cp prepatch/ClangTidyDiagnosticConsumer.h llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/ClangTidyDiagnosticConsumer.h
 cp prepatch/ClangTidyDiagnosticConsumer.cpp llvm-project-llvmorg-20.1.8/clang-tools-extra/clang-tidy/ClangTidyDiagnosticConsumer.cpp
