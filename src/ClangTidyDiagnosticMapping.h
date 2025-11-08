@@ -56,6 +56,8 @@ public:
   clang::tooling::ArgumentsAdjuster getArgumentsAdjuster() const;
 
 private:
+  void readMappingOptions();
+
   class CustomDiagnosticEntry {
   public:
     void addDiagnostic(std::unique_ptr<ClangTidyCustomDiagnostic> D) {

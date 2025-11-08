@@ -95,6 +95,7 @@ protected:
                                                ToCharRange(SourceRange));
       return;
     }
+
     assert(Error.Message.Message.empty() && "Overwriting a diagnostic message");
     Error.Message = TidyMessage;
     for (const CharSourceRange &SourceRange : ValidRanges)
@@ -444,6 +445,7 @@ void ClangTidyDiagnosticConsumer::HandleDiagnostic(
     else if (Context.DiagEngine->hasSourceManager())
       Loc = FullSourceLoc(Info.getLocation(),
                           Context.DiagEngine->getSourceManager());
+  
     Converter.emitDiagnostic(Loc, DiagLevel, Message, Info.getRanges(),
                              Info.getFixItHints());
   }

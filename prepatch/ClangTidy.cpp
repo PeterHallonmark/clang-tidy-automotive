@@ -563,8 +563,10 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
 
   ClangTidyDiagnosticConsumer DiagConsumer(Context, nullptr, true, ApplyAnyFix);
   ClangTidyDiagnosticMapping DiagMapping(Context, DiagConsumer);
+
+  DiagMapping.readMappingFile("M_C_2023_mapping.json");
   Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
-  
+
   DiagnosticsEngine DE(new DiagnosticIDs(), new DiagnosticOptions(),
                        &DiagMapping, /*ShouldOwnClient=*/false);
   Context.setDiagnosticsEngine(&DE);

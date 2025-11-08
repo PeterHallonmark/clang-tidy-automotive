@@ -82,7 +82,25 @@ void ClangTidyCustomDiagnostic::setMessage(std::optional<StringRef> Message) {
 
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
     ClangTidyContext &Context, DiagnosticConsumer &DiagConsumer)
-    : Context(Context), DiagConsumer(DiagConsumer) {}
+    : Context(Context), DiagConsumer(DiagConsumer) {
+
+  readMappingOptions();
+}
+
+void ClangTidyDiagnosticMapping::readMappingOptions() {
+  const auto &Options = Context.getOptions();
+  
+  if (Options.MappingFiles) {
+    llvm::outs() << "mapping" << "\n";
+    
+    for (const auto &MappingFilename : *Options.MappingFiles) {
+      llvm::outs() << MappingFilename << "\n";     
+    }
+
+  } else {
+    llvm::outs() << "no mapping" << "\n";
+  }
+}
 
 void ClangTidyDiagnosticMapping::clear() { DiagConsumer.clear(); }
 
@@ -138,8 +156,8 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
     DiagConsumer.HandleDiagnostic(DiagLevel, Info);
   }
 
-  // Update all the diagnostic statistics from the original diagnostic consumer
-  // since this class is unaware of it.
+  // Update all the diagnostic statistics from the original diagnostic
+  // consumer since this class is unaware of it.
   NumWarnings = DiagConsumer.getNumWarnings();
   NumErrors = DiagConsumer.getNumErrors();
 }
