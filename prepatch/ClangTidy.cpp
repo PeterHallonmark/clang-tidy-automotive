@@ -564,19 +564,12 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
   ClangTidyDiagnosticConsumer DiagConsumer(Context, nullptr, true, ApplyAnyFix);
   ClangTidyDiagnosticMapping DiagMapping(Context, DiagConsumer);
   
-  if (!DiagMapping.empty()) {
-    Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
-  }
-  
-  DiagnosticsEngine DE(new DiagnosticIDs(), new DiagnosticOptions(),
-                       &DiagMapping, /*ShouldOwnClient=*/false);
-  Context.setDiagnosticsEngine(&DE);
+  Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
 
-  if (!DiagMapping.empty()) {
-    Tool.setDiagnosticConsumer(&DiagMapping);
-  } else {
-    Tool.setDiagnosticConsumer(&DiagConsumer);
-  }
+  DiagnosticsEngine DE(new DiagnosticIDs(), new DiagnosticOptions(),
+                      DiagMapping.getDiagnosticConsumer(), /*ShouldOwnClient=*/false);
+  Context.setDiagnosticsEngine(&DE);
+  Tool.setDiagnosticConsumer(DiagMapping.getDiagnosticConsumer());
 
   class ActionFactory : public FrontendActionFactory {
   public:

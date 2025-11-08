@@ -39,7 +39,13 @@ public:
   ClangTidyDiagnosticMapping(ClangTidyContext &Context,
                              DiagnosticConsumer &DiagConsumer);
 
-  bool empty() { return DiagnosticMapping.empty(); }
+  DiagnosticConsumer *getDiagnosticConsumer() {
+    if (DiagnosticMapping.empty()) {
+      return &DiagConsumer;
+    } else {
+      return this;
+    }
+  }
 
   void clear() override;
   void BeginSourceFile(const LangOptions &LangOpts,
