@@ -564,8 +564,6 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
   ClangTidyDiagnosticConsumer DiagConsumer(Context, nullptr, true, ApplyAnyFix);
   ClangTidyDiagnosticMapping DiagMapping(Context, DiagConsumer);
   
-  
-  DiagMapping.readMappingFile("M_C_2023_mapping.json");
   if (!DiagMapping.empty()) {
     Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
   }
