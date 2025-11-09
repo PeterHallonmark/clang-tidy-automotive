@@ -40,9 +40,9 @@ public:
                              DiagnosticConsumer &DiagConsumer);
 
   DiagnosticConsumer *getDiagnosticConsumer() {
-    // If there are no diagnostc mappings active and the diagnostc mapping 
-    // layer is not used in practice, then make sure that the original 
-    // DiagnosticConsumer is used instead. 
+    // If there are no diagnostc mappings active and the diagnostc mapping
+    // layer is not used in practice, then make sure that the original
+    // DiagnosticConsumer is used instead.
     if (DiagnosticMapping.empty()) {
       return &DiagConsumer;
     } else {
