@@ -22,48 +22,52 @@ public:
   DiagnosticMappingReader(ClangTidyDiagnosticMapping *Mapping)
       : Mapping(Mapping) {}
 
-  void readMapping(llvm::StringRef Path);
+  void readMappingFile(llvm::StringRef Path);
 
 private:
+  void readMappingArray(llvm::json::Object *Root);
+
   ClangTidyDiagnosticMapping *Mapping;
 };
 
-void DiagnosticMappingReader::readMapping(llvm::StringRef Path) {
+void DiagnosticMappingReader::readMappingFile(llvm::StringRef Path) {
   auto Buffer = llvm::MemoryBuffer::getFile(Path);
   if (Buffer) {
     auto JSONData = llvm::json::parse(Buffer.get()->getBuffer());
 
     if (JSONData) {
       if (auto *Root = JSONData->getAsObject()) {
-        if (auto *Array = Root->getArray("diagnostic-mappings")) {
+        readMappingArray(Root);
+      }
+    }
+  }
+}
 
-          for (const auto &Element : *Array) {
-            if (auto *Item = Element.getAsObject()) {
-              auto AltDiagName = Item->getString("name");
-              auto OrgDiagName = Item->getString("replace");
+void DiagnosticMappingReader::readMappingArray(llvm::json::Object *Root) {
+  if (auto *Array = Root->getArray("diagnostic-mappings")) {
+    for (const auto &Element : *Array) {
+      if (auto *Item = Element.getAsObject()) {
+        auto AltDiagName = Item->getString("name");
+        auto OrgDiagName = Item->getString("replace");
 
-              /* Check all the required fields. */
-              if (OrgDiagName && AltDiagName) {
-                auto Ref = Item->getString("ref");
-                auto Message = Item->getString("message");
-                auto DiagnosticFlag = Item->getString("flag");
+        /* Check all the required fields. */
+        if (OrgDiagName && AltDiagName) {
+          auto Ref = Item->getString("ref");
+          auto Message = Item->getString("message");
+          auto DiagnosticFlag = Item->getString("flag");
 
-                auto CustomDiagnostic =
-                    std::make_unique<ClangTidyCustomDiagnostic>(
-                        OrgDiagName.value(), AltDiagName.value());
+          auto CustomDiagnostic = std::make_unique<ClangTidyCustomDiagnostic>(
+              OrgDiagName.value(), AltDiagName.value());
 
-                CustomDiagnostic->setMessage(Message);
-                Mapping->addCustomDiagnostic(std::move(CustomDiagnostic));
+          CustomDiagnostic->setMessage(Message);
+          Mapping->addCustomDiagnostic(std::move(CustomDiagnostic));
 
-                if (DiagnosticFlag) {
-                  Mapping->addDiagnosticFlag(DiagnosticFlag.value());
-                }
-
-              } else {
-                // TODO: Log the fault via diagnostic
-              }
-            }
+          if (DiagnosticFlag) {
+            Mapping->addDiagnosticFlag(DiagnosticFlag.value());
           }
+
+        } else {
+          // TODO: Log the fault via diagnostic
         }
       }
     }
@@ -91,7 +95,6 @@ void ClangTidyDiagnosticMapping::readMappingOptions() {
   const auto &Options = Context.getOptions();
 
   if (Options.MappingFiles) {
-    llvm::outs() << "mapping" << "\n";
 
     for (const auto &MappingFilename : *Options.MappingFiles) {
       llvm::outs() << MappingFilename << "\n";
@@ -99,8 +102,6 @@ void ClangTidyDiagnosticMapping::readMappingOptions() {
       // TODO: This needs to read the relative file path somehow.
       readMappingFile(MappingFilename);
     }
-  } else {
-    llvm::outs() << "no mapping" << "\n";
   }
 }
 
@@ -166,7 +167,7 @@ void ClangTidyDiagnosticMapping::HandleDiagnostic(
 
 void ClangTidyDiagnosticMapping::readMappingFile(StringRef Filename) {
   DiagnosticMappingReader Reader(this);
-  Reader.readMapping(Filename);
+  Reader.readMappingFile(Filename);
 }
 
 void ClangTidyDiagnosticMapping::addCustomDiagnostic(
