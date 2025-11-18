@@ -22,6 +22,11 @@
       "flag": "-Wshadow",
       "replace": "clang-diagnostic-shadow",
       "ref": "rule 5.3"
+    },
+    {
+      "name": "misra-c2023-X.Y",
+      "replace": "automotive-unused-macro",
+      "ref": "rule X.Y"
     }
   ]
 }
