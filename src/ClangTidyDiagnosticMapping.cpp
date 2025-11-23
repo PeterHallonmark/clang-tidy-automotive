@@ -67,6 +67,7 @@ void DiagnosticMappingReader::readMappingArray(llvm::json::Object *Root) {
           }
 
         } else {
+
           // TODO: Log the fault via diagnostic
         }
       }
@@ -77,11 +78,7 @@ void DiagnosticMappingReader::readMappingArray(llvm::json::Object *Root) {
 } // namespace
 
 void ClangTidyCustomDiagnostic::setMessage(std::optional<StringRef> Message) {
-  if (Message) {
-    this->Message = Message->str();
-  } else {
-    this->Message = "";
-  }
+  this->Message = Message ? Message->str() : "";
 }
 
 ClangTidyDiagnosticMapping::ClangTidyDiagnosticMapping(
