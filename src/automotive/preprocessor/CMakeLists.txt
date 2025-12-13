@@ -8,6 +8,7 @@ add_clang_library(clangTidyAutomotivePreprocessorComponent STATIC
   AvoidMultipleHashOperatorsCheck.cpp
   AvoidReservedMacroIdentifierCheck.cpp
   AvoidUndefCheck.cpp
+  MissingHeaderGuardCheck.cpp
   PreprocessorComponent.cpp
   PreprocessorFlowCheck.cpp
   UnusedMacroCheck.cpp

@@ -8,6 +8,7 @@
 
 #include "ExpressionComponent.h"
 #include "AvoidAssignmentInExpressionCheck.h"
+#include "AvoidConstantWrapAroundCheck.h"
 #include "AvoidInappropriateEssentialTypeCheck.h"
 #include "AvoidNonBooleanInConditionCheck.h"
 #include "AvoidSideEffectInLogicalOperandCheck.h"
@@ -22,6 +23,10 @@ void ExpressionComponent::addCheckFactories(
   // Rule 10.1 - Inappropriate essential type (Required)
   CheckFactories.registerCheck<AvoidInappropriateEssentialTypeCheck>(
       "automotive-c23-req-10.1");
+
+  // Rule 12.4 - Constant expression wrap-around (Advisory)
+  CheckFactories.registerCheck<AvoidConstantWrapAroundCheck>(
+      "automotive-c23-adv-12.4");
 
   // Rule 13.4 - Assignment used as expression (Advisory)
   CheckFactories.registerCheck<AvoidAssignmentInExpressionCheck>(

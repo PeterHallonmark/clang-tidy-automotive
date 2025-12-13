@@ -15,6 +15,7 @@
 #include "AvoidMultipleHashOperatorsCheck.h"
 #include "AvoidReservedMacroIdentifierCheck.h"
 #include "AvoidUndefCheck.h"
+#include "MissingHeaderGuardCheck.h"
 #include "PreprocessorFlowCheck.h"
 #include "UnusedMacroCheck.h"
 
@@ -49,6 +50,10 @@ void PreprocessorComponent::addCheckFactories(
   // Rule 5.4 - Macro identifier conflicts
   CheckFactories.registerCheck<AvoidMacroIdentifierConflictCheck>(
       "automotive-c23-req-5.4");
+
+  // Directive 4.10 - Header guard protection
+  CheckFactories.registerCheck<MissingHeaderGuardCheck>(
+      "automotive-c23-req-dir-4.10");
 }
 
 } // namespace clang::tidy::automotive

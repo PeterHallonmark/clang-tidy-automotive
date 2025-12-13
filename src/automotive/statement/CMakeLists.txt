@@ -3,6 +3,7 @@ add_clang_library(clangTidyAutomotiveStatementComponent STATIC
   AvoidBooleanInSwitchCheck.cpp
   AvoidGotoCheck.cpp
   ForwardGotoLabelCheck.cpp
+  GotoLabelSameBlockCheck.cpp
   MissingBreakInCaseStmtCheck.cpp
   MissingCompoundStmtCheck.cpp
   MissingDefaultInSwitchStmtCheck.cpp

@@ -10,6 +10,7 @@
 #include "AvoidBooleanInSwitchCheck.h"
 #include "AvoidGotoCheck.h"
 #include "ForwardGotoLabelCheck.h"
+#include "GotoLabelSameBlockCheck.h"
 #include "MissingBreakInCaseStmtCheck.h"
 #include "MissingCompoundStmtCheck.h"
 #include "MissingDefaultInSwitchStmtCheck.h"
@@ -28,6 +29,8 @@ void StatementComponent::addCheckFactories(
   CheckFactories.registerCheck<AvoidGotoCheck>("automotive-avoid-goto");
   CheckFactories.registerCheck<ForwardGotoLabelCheck>(
       "automotive-forward-goto-label");
+  CheckFactories.registerCheck<GotoLabelSameBlockCheck>(
+      "automotive-c23-req-15.2");
 
   CheckFactories.registerCheck<MissingBreakInCaseStmtCheck>(
       "automotive-missing-break-in-case");
