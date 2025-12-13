@@ -7,11 +7,16 @@
 //===----------------------------------------------------------------------===//
 
 #include "ExpressionComponent.h"
+#include "AvoidSideEffectInLogicalOperandCheck.h"
 
 namespace clang::tidy::automotive {
 
 void ExpressionComponent::addCheckFactories(
     ClangTidyCheckFactories &CheckFactories) {
+
+  // Rule 13.5 - Side effects in logical operator operands (Required)
+  CheckFactories.registerCheck<AvoidSideEffectInLogicalOperandCheck>(
+      "automotive-c23-req-13.5");
 
 #if 0
     /* 14.
