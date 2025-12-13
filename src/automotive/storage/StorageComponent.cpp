@@ -7,6 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "StorageComponent.h"
+#include "AvoidReservedIdentifierDeclarationCheck.h"
 #include "AvoidRestrictTypeCheck.h"
 #include "MissingStaticInternalLinkageCheck.h"
 
@@ -14,6 +15,10 @@ namespace clang::tidy::automotive {
 
 void StorageComponent::addCheckFactories(
     ClangTidyCheckFactories &CheckFactories) {
+
+  // Rule 21.2 - Reserved identifier declarations (Required)
+  CheckFactories.registerCheck<AvoidReservedIdentifierDeclarationCheck>(
+      "automotive-c23-req-21.2");
 
   CheckFactories.registerCheck<AvoidRestrictTypeCheck>(
       "automotive-avoid-restrict-type");
