@@ -48,7 +48,7 @@ Tests are organized in two ways:
 | Test File | Check ID | MISRA Rule | Description |
 |-----------|----------|------------|-------------|
 | avoid-union.c | automotive-avoid-union | 19.2 | Union usage detection |
-| implicit-int.c | automotive-implict-int | 8.1 | Implicit int type |
+| implicit-int.c | automotive-implicit-int | 8.1 | Implicit int type |
 | unique-enum-value.c | automotive-unique-enum-value | 8.12 | Duplicate enum values |
 
 ### Bitfield Tests (test/checkers/automotive/bitfield/)
@@ -65,7 +65,7 @@ Tests are organized in two ways:
 | Test File | Check ID | MISRA Rule | Description |
 |-----------|----------|------------|-------------|
 | function-parameter-mismatch.c | automotive-function-declaration-mismatch | 8.3 | Declaration mismatch |
-| missing-static-inline.c | automotive-static-inline | 8.10 | Static inline detection |
+| missing-static-inline.c | automotive-missing-static-inline | 8.10 | Static inline detection |
 | no-implicit-func-decl.c | automotive-implicit-function-decl | 17.3 | Implicit function decl |
 | function-edge-cases.c | various | various | Edge case tests |
 
@@ -75,7 +75,7 @@ Tests are organized in two ways:
 |-----------|----------|------------|-------------|
 | missing-return-value-handling.c | automotive-missing-return-value-handling | 17.7 | Ignored return value |
 | multiple-return-stmt.c | automotive-avoid-multiple-return-stmt | 15.5 | Multiple returns |
-| no-return-void.c | automotive-no-return-void | 17.4 | Missing return |
+| no-return-void.c | automotive-missing-return-void | 17.4 | Missing return |
 
 ### Preprocessor Tests (test/checkers/automotive/preprocessor/)
 
@@ -93,9 +93,9 @@ Tests are organized in two ways:
 | avoid-atox.c | automotive-avoid-ascii-to-number | 21.7 | atoi/atof detection |
 | avoid-stdarg-copy.c | automotive-avoid-stdarg-header | 17.1 | stdarg.h with va_copy |
 | avoid-stdarg-no-copy.c | automotive-avoid-stdarg-header | 17.1 | stdarg.h without va_copy |
-| avoid-stdlib-exit.c | automotive-avoid-stdlib-exit-call | 21.8 | exit/abort detection |
+| avoid-stdlib-exit.c | automotive-avoid-stdlib-exit | 21.8 | exit/abort detection |
 | avoid-stdlib-malloc.c | automotive-avoid-stdlib-malloc | 21.3 | malloc/free detection |
-| avoid-stdlib-rand.c | automotive-avoid-stdlib-rand-call | 21.12 | rand() detection |
+| avoid-stdlib-rand.c | automotive-avoid-stdlib-rand | 21.12 | rand() detection |
 
 ### Pointer Tests (test/checkers/automotive/pointer/)
 

@@ -24,18 +24,18 @@ void StdlibComponent::addCheckFactories(
   CheckFactories.registerCheck<AvoidStdargHeaderCheck>(
       "automotive-avoid-stdarg-header");
   // CheckFactories.registerCheck<AvoidStdlibMemoryCheck>(
-  //     "automotive-avoid-stdlib-malloc-call");
+  //     "automotive-avoid-stdlib-malloc");
   CheckFactories.registerCheck<AvoidSetjmpHeaderCheck>(
       "automotive-avoid-setjmp-header");
   CheckFactories.registerCheck<AvoidSignalHeaderCheck>(
       "automotive-avoid-signal-header");
   CheckFactories.registerCheck<AtoXCheck>("automotive-avoid-ascii-to-number");
-  CheckFactories.registerCheck<ExitCheck>("automotive-avoid-stdlib-exit-call");
+  CheckFactories.registerCheck<ExitCheck>("automotive-avoid-stdlib-exit");
 
   CheckFactories.registerCheck<AvoidstdlibsystemcallCheck>(
-      "automotive-avoid-stdlib-system-call");
+      "automotive-avoid-stdlib-system");
   CheckFactories.registerCheck<AvoidStdlibRandCheck>(
-      "automotive-avoid-stdlib-rand-call");
+      "automotive-avoid-stdlib-rand");
 }
 
 } // namespace clang::tidy::automotive

@@ -17,7 +17,7 @@ namespace clang::tidy::automotive {
 void TypeComponent::addCheckFactories(ClangTidyCheckFactories &CheckFactories) {
 
   CheckFactories.registerCheck<AvoidUnionCheck>("automotive-avoid-union");
-  CheckFactories.registerCheck<ImplicitIntCheck>("automotive-implict-int");
+  CheckFactories.registerCheck<ImplicitIntCheck>("automotive-implicit-int");
   CheckFactories.registerCheck<UniqueEnumValuesCheck>(
       "automotive-unique-enum-value");
   CheckFactories.registerCheck<UnusedTypeCheck>("automotive-unused-type");

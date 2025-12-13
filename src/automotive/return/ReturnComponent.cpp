@@ -20,7 +20,7 @@ void ReturnComponent::addCheckFactories(
       "automotive-avoid-multiple-return-stmt");
   CheckFactories.registerCheck<MissingReturnValueHandlingCheck>(
       "automotive-missing-return-value-handling");
-  CheckFactories.registerCheck<NoReturnVoidCheck>("automotive-no-return-void");
+  CheckFactories.registerCheck<NoReturnVoidCheck>("automotive-missing-return-void");
 }
 
 } // namespace clang::tidy::automotive
