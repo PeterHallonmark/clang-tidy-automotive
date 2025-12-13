@@ -1,14 +1,15 @@
 
 add_clang_library(clangTidyAutomotiveStatementComponent STATIC
-  AvoidBooleanInSwitchCheck.cpp  
-  MissingBreakInCaseStmtCheck.cpp
-  MissingDefaultInSwitchStmtCheck.cpp
-  StatementComponent.cpp
-  UnstructuredSwitchStmtCheck.cpp
-  WrongOrderInSwitchStmtCheck.cpp
+  AvoidBooleanInSwitchCheck.cpp
   AvoidGotoCheck.cpp
   ForwardGotoLabelCheck.cpp
-  UnusedLabelCheck.cpp
+  MissingBreakInCaseStmtCheck.cpp
   MissingCompoundStmtCheck.cpp
+  MissingDefaultInSwitchStmtCheck.cpp
   MissingElseCheck.cpp
+  MultipleLoopTerminatorsCheck.cpp
+  StatementComponent.cpp
+  UnstructuredSwitchStmtCheck.cpp
+  UnusedLabelCheck.cpp
+  WrongOrderInSwitchStmtCheck.cpp
 )

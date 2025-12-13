@@ -14,6 +14,7 @@
 #include "MissingCompoundStmtCheck.h"
 #include "MissingDefaultInSwitchStmtCheck.h"
 #include "MissingElseCheck.h"
+#include "MultipleLoopTerminatorsCheck.h"
 #include "UnstructuredSwitchStmtCheck.h"
 #include "UnusedLabelCheck.h"
 #include "WrongOrderInSwitchStmtCheck.h"
@@ -46,6 +47,10 @@ void StatementComponent::addCheckFactories(
   CheckFactories.registerCheck<MissingCompoundStmtCheck>(
       "automotive-missing-compound");
   CheckFactories.registerCheck<MissingElseCheck>("automotive-missing-else");
+
+  // Rule 15.4 - Multiple loop terminators (Advisory)
+  CheckFactories.registerCheck<MultipleLoopTerminatorsCheck>(
+      "automotive-c23-adv-15.4");
 }
 
 } // namespace clang::tidy::automotive
