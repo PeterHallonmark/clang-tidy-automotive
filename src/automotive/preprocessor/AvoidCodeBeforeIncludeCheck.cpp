@@ -33,9 +33,8 @@ public:
       return;
 
     if (SeenCode) {
-      Check.diag(HashLoc,
-                 "#include directive should only be preceded by "
-                 "preprocessor directives or comments");
+      Check.diag(HashLoc, "#include directive should only be preceded by "
+                          "preprocessor directives or comments");
     }
   }
 
@@ -65,8 +64,7 @@ private:
 } // anonymous namespace
 
 void AvoidCodeBeforeIncludeCheck::registerPPCallbacks(
-    const SourceManager &SM, Preprocessor *PP,
-    Preprocessor *ModuleExpanderPP) {
+    const SourceManager &SM, Preprocessor *PP, Preprocessor *ModuleExpanderPP) {
   PP->addPPCallbacks(std::make_unique<IncludeOrderPPCallbacks>(*this, SM));
 }
 

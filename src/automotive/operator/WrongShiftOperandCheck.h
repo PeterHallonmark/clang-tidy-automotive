@@ -26,7 +26,8 @@ namespace clang::tidy::automotive {
 ///   uint32_t y = x << 32;  // Warning: shift amount equals bit width
 ///   uint32_t z = x << -1;  // Warning: negative shift amount
 ///   uint8_t  a = 1;
-///   uint8_t  b = a << 8;   // Warning: shift amount equals bit width of uint8_t
+///   uint8_t  b = a << 8;   // Warning: shift amount equals bit width of
+///   uint8_t
 /// @endcode
 class WrongShiftOperandCheck : public ClangTidyCheck {
 public:

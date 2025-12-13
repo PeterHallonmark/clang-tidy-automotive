@@ -85,10 +85,10 @@ private:
 
 void AvoidSideEffectInSizeofCheck::registerMatchers(MatchFinder *Finder) {
   // Match sizeof expressions with an argument expression (not just a type)
-  Finder->addMatcher(
-      unaryExprOrTypeTraitExpr(ofKind(UETT_SizeOf), hasArgumentOfType(anything()))
-          .bind("sizeof"),
-      this);
+  Finder->addMatcher(unaryExprOrTypeTraitExpr(ofKind(UETT_SizeOf),
+                                              hasArgumentOfType(anything()))
+                         .bind("sizeof"),
+                     this);
 }
 
 void AvoidSideEffectInSizeofCheck::check(

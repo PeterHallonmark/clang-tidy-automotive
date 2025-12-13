@@ -16,14 +16,11 @@ namespace clang::tidy::automotive {
 
 void UnusedParameterCheck::registerMatchers(MatchFinder *Finder) {
   // Match function definitions with parameters
-  Finder->addMatcher(
-      functionDecl(isDefinition(),
-                   hasBody(compoundStmt()),
-                   unless(isImplicit()),
-                   unless(isDefaulted()),
-                   unless(isDeleted()))
-          .bind("func"),
-      this);
+  Finder->addMatcher(functionDecl(isDefinition(), hasBody(compoundStmt()),
+                                  unless(isImplicit()), unless(isDefaulted()),
+                                  unless(isDeleted()))
+                         .bind("func"),
+                     this);
 }
 
 void UnusedParameterCheck::check(const MatchFinder::MatchResult &Result) {

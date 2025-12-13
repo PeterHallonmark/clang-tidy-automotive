@@ -22,8 +22,7 @@ void UnusedCodeModule::addCheckFactories(
       "automotive-c23-adv-2.8");
 
   // Rule 2.7 - Unused parameters (Advisory)
-  CheckFactories.registerCheck<UnusedParameterCheck>(
-      "automotive-c23-adv-2.7");
+  CheckFactories.registerCheck<UnusedParameterCheck>("automotive-c23-adv-2.7");
 
   /* C 2012
   ------------------------------------------------------------------ */

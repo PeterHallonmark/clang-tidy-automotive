@@ -17,20 +17,17 @@ namespace clang::tidy::automotive {
 void AvoidGlobalObjectCheck::registerMatchers(MatchFinder *Finder) {
   // Match file-scope static variables (internal linkage)
   // that are not const-qualified
-  Finder->addMatcher(
-      varDecl(hasGlobalStorage(),
-              isStaticStorageClass(),
-              unless(hasAncestor(functionDecl())),
-              unless(isConstexpr()),
-              unless(hasType(qualType(isConstQualified()))))
-          .bind("staticvar"),
-      this);
+  Finder->addMatcher(varDecl(hasGlobalStorage(), isStaticStorageClass(),
+                             unless(hasAncestor(functionDecl())),
+                             unless(isConstexpr()),
+                             unless(hasType(qualType(isConstQualified()))))
+                         .bind("staticvar"),
+                     this);
 
   // Match references to static file-scope variables within functions
   // Filter out const variables as they are typically intentional constants
   Finder->addMatcher(
-      declRefExpr(to(varDecl(hasGlobalStorage(),
-                             isStaticStorageClass(),
+      declRefExpr(to(varDecl(hasGlobalStorage(), isStaticStorageClass(),
                              unless(hasAncestor(functionDecl())),
                              unless(hasType(qualType(isConstQualified()))))
                          .bind("refvar")),

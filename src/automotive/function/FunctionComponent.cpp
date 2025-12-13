@@ -23,7 +23,8 @@ void FunctionComponent::addCheckFactories(
       "automotive-uncomplete-function-prototype");
   CheckFactories.registerCheck<FunctionDeclarationMismatchCheck>(
       "automotive-function-declaration-mismatch");
-  CheckFactories.registerCheck<StaticInlineCheck>("automotive-missing-static-inline");
+  CheckFactories.registerCheck<StaticInlineCheck>(
+      "automotive-missing-static-inline");
 
   CheckFactories.registerCheck<ImplicitFunctionDeclCheck>(
       "automotive-implicit-function-decl");

@@ -16,11 +16,10 @@ namespace clang::tidy::automotive {
 
 void AvoidIncompatiblePointerCastCheck::registerMatchers(MatchFinder *Finder) {
   // Match C-style casts and reinterpret_cast
-  Finder->addMatcher(
-      castExpr(hasSourceExpression(hasType(pointerType())),
-               hasType(pointerType()))
-          .bind("cast"),
-      this);
+  Finder->addMatcher(castExpr(hasSourceExpression(hasType(pointerType())),
+                              hasType(pointerType()))
+                         .bind("cast"),
+                     this);
 }
 
 void AvoidIncompatiblePointerCastCheck::check(

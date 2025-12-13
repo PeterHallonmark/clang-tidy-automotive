@@ -21,20 +21,18 @@ void AvoidUninitializedReadCheck::registerMatchers(MatchFinder *Finder) {
   // expressions that are not themselves initializers.
 
   // Match uninitialized local variables being read
-  Finder->addMatcher(
-      declRefExpr(
-          to(varDecl(
-              hasAutomaticStorageDuration(),
-              unless(hasInitializer(anything()))
-          ).bind("uninit_var")),
-          // Ensure we're in a context where the variable is being read
-          // (not just declared)
-          unless(hasParent(declStmt()))
-      ).bind("ref"),
-      this);
+  Finder->addMatcher(declRefExpr(to(varDecl(hasAutomaticStorageDuration(),
+                                            unless(hasInitializer(anything())))
+                                        .bind("uninit_var")),
+                                 // Ensure we're in a context where the variable
+                                 // is being read (not just declared)
+                                 unless(hasParent(declStmt())))
+                         .bind("ref"),
+                     this);
 }
 
-void AvoidUninitializedReadCheck::check(const MatchFinder::MatchResult &Result) {
+void AvoidUninitializedReadCheck::check(
+    const MatchFinder::MatchResult &Result) {
   const auto *Ref = Result.Nodes.getNodeAs<DeclRefExpr>("ref");
   const auto *Var = Result.Nodes.getNodeAs<VarDecl>("uninit_var");
 

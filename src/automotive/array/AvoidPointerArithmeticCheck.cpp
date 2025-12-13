@@ -16,19 +16,16 @@ namespace clang::tidy::automotive {
 
 void AvoidPointerArithmeticCheck::registerMatchers(MatchFinder *Finder) {
   // Match binary + and - with pointer operand
-  Finder->addMatcher(
-      binaryOperator(
-          hasAnyOperatorName("+", "-", "+=", "-="),
-          hasEitherOperand(hasType(pointerType())))
-          .bind("binop"),
-      this);
+  Finder->addMatcher(binaryOperator(hasAnyOperatorName("+", "-", "+=", "-="),
+                                    hasEitherOperand(hasType(pointerType())))
+                         .bind("binop"),
+                     this);
 
   // Match unary ++ and -- on pointers
-  Finder->addMatcher(
-      unaryOperator(hasAnyOperatorName("++", "--"),
-                    hasUnaryOperand(hasType(pointerType())))
-          .bind("unaryop"),
-      this);
+  Finder->addMatcher(unaryOperator(hasAnyOperatorName("++", "--"),
+                                   hasUnaryOperand(hasType(pointerType())))
+                         .bind("unaryop"),
+                     this);
 }
 
 void AvoidPointerArithmeticCheck::check(

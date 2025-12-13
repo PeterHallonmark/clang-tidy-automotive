@@ -44,10 +44,10 @@ void AvoidCastRemovingQualifierCheck::check(
   QualType DestPointee = DestType->getPointeeType();
 
   // Check for removed qualifiers
-  bool RemovedConst = SourcePointee.isConstQualified() &&
-                      !DestPointee.isConstQualified();
-  bool RemovedVolatile = SourcePointee.isVolatileQualified() &&
-                         !DestPointee.isVolatileQualified();
+  bool RemovedConst =
+      SourcePointee.isConstQualified() && !DestPointee.isConstQualified();
+  bool RemovedVolatile =
+      SourcePointee.isVolatileQualified() && !DestPointee.isVolatileQualified();
 
   if (RemovedConst && RemovedVolatile) {
     diag(Cast->getBeginLoc(),

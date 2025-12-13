@@ -18,7 +18,8 @@ namespace clang::tidy::automotive {
 namespace {
 
 /// Visitor to count break and goto statements that terminate a loop
-class LoopTerminatorCounter : public RecursiveASTVisitor<LoopTerminatorCounter> {
+class LoopTerminatorCounter
+    : public RecursiveASTVisitor<LoopTerminatorCounter> {
 public:
   explicit LoopTerminatorCounter(const Stmt *TargetLoop)
       : TargetLoop(TargetLoop) {}

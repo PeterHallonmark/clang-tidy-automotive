@@ -16,18 +16,16 @@ namespace clang::tidy::automotive {
 
 void AvoidPointerIntegerCastCheck::registerMatchers(MatchFinder *Finder) {
   // Match casts from pointer to integer
-  Finder->addMatcher(
-      castExpr(hasSourceExpression(hasType(pointerType())),
-               hasType(isInteger()))
-          .bind("ptrToInt"),
-      this);
+  Finder->addMatcher(castExpr(hasSourceExpression(hasType(pointerType())),
+                              hasType(isInteger()))
+                         .bind("ptrToInt"),
+                     this);
 
   // Match casts from integer to pointer
-  Finder->addMatcher(
-      castExpr(hasSourceExpression(hasType(isInteger())),
-               hasType(pointerType()))
-          .bind("intToPtr"),
-      this);
+  Finder->addMatcher(castExpr(hasSourceExpression(hasType(isInteger())),
+                              hasType(pointerType()))
+                         .bind("intToPtr"),
+                     this);
 }
 
 void AvoidPointerIntegerCastCheck::check(
@@ -46,8 +44,7 @@ void AvoidPointerIntegerCastCheck::check(
     // Only report explicit casts or pointer-to-integral conversions
     if (Cast->getCastKind() == CK_PointerToIntegral ||
         isa<CStyleCastExpr>(Cast) || isa<CXXReinterpretCastExpr>(Cast)) {
-      diag(Cast->getBeginLoc(),
-           "cast from pointer type %0 to integer type %1")
+      diag(Cast->getBeginLoc(), "cast from pointer type %0 to integer type %1")
           << Cast->getSubExpr()->getType() << Cast->getType();
     }
     return;
@@ -67,14 +64,13 @@ void AvoidPointerIntegerCastCheck::check(
     // Skip null pointer constant (0 or NULL)
     const Expr *SubExpr = Cast->getSubExpr()->IgnoreParenImpCasts();
     if (SubExpr->isNullPointerConstant(*Result.Context,
-                                        Expr::NPC_ValueDependentIsNull))
+                                       Expr::NPC_ValueDependentIsNull))
       return;
 
     // Only report explicit casts or integral-to-pointer conversions
     if (Cast->getCastKind() == CK_IntegralToPointer ||
         isa<CStyleCastExpr>(Cast) || isa<CXXReinterpretCastExpr>(Cast)) {
-      diag(Cast->getBeginLoc(),
-           "cast from integer type %0 to pointer type %1")
+      diag(Cast->getBeginLoc(), "cast from integer type %0 to pointer type %1")
           << Cast->getSubExpr()->getType() << Cast->getType();
     }
   }

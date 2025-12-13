@@ -20,19 +20,25 @@ namespace {
 
 // Standard library reserved names that should not be defined/undefined
 static const llvm::StringSet<> ReservedNames = {
-    "assert",   "errno",  "math_errhandling", "setjmp",  "va_arg",
-    "va_copy",  "va_end", "va_start",         "offsetof", "NULL",
-    "true",     "false",  "bool",             "FILE",     "fpos_t",
-    "size_t",   "ptrdiff_t", "wchar_t",       "int8_t",   "int16_t",
-    "int32_t",  "int64_t",   "uint8_t",       "uint16_t", "uint32_t",
-    "uint64_t", "intptr_t",  "uintptr_t",     "CHAR_BIT", "CHAR_MAX",
-    "CHAR_MIN", "INT_MAX",   "INT_MIN",       "LONG_MAX", "LONG_MIN",
-    "SCHAR_MAX","SCHAR_MIN", "SHRT_MAX",      "SHRT_MIN", "UCHAR_MAX",
-    "UINT_MAX", "ULONG_MAX", "USHRT_MAX",     "EOF",      "SEEK_CUR",
-    "SEEK_END", "SEEK_SET",  "BUFSIZ",        "FILENAME_MAX", "FOPEN_MAX",
-    "stdin",    "stdout",    "stderr",        "EXIT_FAILURE", "EXIT_SUCCESS",
-    "RAND_MAX", "MB_CUR_MAX"
-};
+    "assert",       "errno",     "math_errhandling",
+    "setjmp",       "va_arg",    "va_copy",
+    "va_end",       "va_start",  "offsetof",
+    "NULL",         "true",      "false",
+    "bool",         "FILE",      "fpos_t",
+    "size_t",       "ptrdiff_t", "wchar_t",
+    "int8_t",       "int16_t",   "int32_t",
+    "int64_t",      "uint8_t",   "uint16_t",
+    "uint32_t",     "uint64_t",  "intptr_t",
+    "uintptr_t",    "CHAR_BIT",  "CHAR_MAX",
+    "CHAR_MIN",     "INT_MAX",   "INT_MIN",
+    "LONG_MAX",     "LONG_MIN",  "SCHAR_MAX",
+    "SCHAR_MIN",    "SHRT_MAX",  "SHRT_MIN",
+    "UCHAR_MAX",    "UINT_MAX",  "ULONG_MAX",
+    "USHRT_MAX",    "EOF",       "SEEK_CUR",
+    "SEEK_END",     "SEEK_SET",  "BUFSIZ",
+    "FILENAME_MAX", "FOPEN_MAX", "stdin",
+    "stdout",       "stderr",    "EXIT_FAILURE",
+    "EXIT_SUCCESS", "RAND_MAX",  "MB_CUR_MAX"};
 
 bool isReservedIdentifier(StringRef Name) {
   if (Name.empty())
@@ -89,8 +95,7 @@ private:
 } // anonymous namespace
 
 void AvoidReservedMacroIdentifierCheck::registerPPCallbacks(
-    const SourceManager &SM, Preprocessor *PP,
-    Preprocessor *ModuleExpanderPP) {
+    const SourceManager &SM, Preprocessor *PP, Preprocessor *ModuleExpanderPP) {
   PP->addPPCallbacks(std::make_unique<ReservedMacroPPCallbacks>(*this, SM));
 }
 

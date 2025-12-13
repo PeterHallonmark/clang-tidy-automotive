@@ -17,7 +17,8 @@ namespace clang::tidy::automotive {
 void WrongShiftOperandCheck::registerMatchers(MatchFinder *Finder) {
   // Match left and right shift operators
   Finder->addMatcher(
-      binaryOperator(hasAnyOperatorName("<<", ">>", "<<=", ">>=")).bind("shift"),
+      binaryOperator(hasAnyOperatorName("<<", ">>", "<<=", ">>="))
+          .bind("shift"),
       this);
 }
 

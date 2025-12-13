@@ -18,8 +18,7 @@ namespace {
 
 class InvalidHeaderCharPPCallbacks : public PPCallbacks {
 public:
-  InvalidHeaderCharPPCallbacks(ClangTidyCheck &Check)
-      : Check(Check) {}
+  InvalidHeaderCharPPCallbacks(ClangTidyCheck &Check) : Check(Check) {}
 
   void InclusionDirective(SourceLocation HashLoc, const Token &IncludeTok,
                           StringRef FileName, bool IsAngled,
@@ -61,8 +60,7 @@ private:
 } // anonymous namespace
 
 void AvoidInvalidHeaderCharCheck::registerPPCallbacks(
-    const SourceManager &SM, Preprocessor *PP,
-    Preprocessor *ModuleExpanderPP) {
+    const SourceManager &SM, Preprocessor *PP, Preprocessor *ModuleExpanderPP) {
   PP->addPPCallbacks(std::make_unique<InvalidHeaderCharPPCallbacks>(*this));
 }
 

@@ -20,15 +20,25 @@ namespace {
 
 // Standard library reserved names that should not be declared
 static const llvm::StringSet<> ReservedNames = {
-    "errno",    "math_errhandling", "setjmp",    "va_arg",    "va_copy",
-    "va_end",   "va_start",         "offsetof",  "NULL",      "true",
-    "false",    "bool",             "FILE",      "fpos_t",    "size_t",
-    "ptrdiff_t", "wchar_t",         "int8_t",    "int16_t",   "int32_t",
-    "int64_t",  "uint8_t",          "uint16_t",  "uint32_t",  "uint64_t",
-    "intptr_t", "uintptr_t",        "intmax_t",  "uintmax_t", "div_t",
-    "ldiv_t",   "lldiv_t",          "sig_atomic_t", "time_t", "clock_t",
-    "tm",       "jmp_buf",          "va_list"
-};
+    "errno",        "math_errhandling",
+    "setjmp",       "va_arg",
+    "va_copy",      "va_end",
+    "va_start",     "offsetof",
+    "NULL",         "true",
+    "false",        "bool",
+    "FILE",         "fpos_t",
+    "size_t",       "ptrdiff_t",
+    "wchar_t",      "int8_t",
+    "int16_t",      "int32_t",
+    "int64_t",      "uint8_t",
+    "uint16_t",     "uint32_t",
+    "uint64_t",     "intptr_t",
+    "uintptr_t",    "intmax_t",
+    "uintmax_t",    "div_t",
+    "ldiv_t",       "lldiv_t",
+    "sig_atomic_t", "time_t",
+    "clock_t",      "tm",
+    "jmp_buf",      "va_list"};
 
 bool isReservedIdentifier(StringRef Name) {
   if (Name.empty())
@@ -106,8 +116,7 @@ void AvoidReservedIdentifierDeclarationCheck::check(
 
   StringRef Name = Decl->getName();
   if (isReservedIdentifier(Name)) {
-    diag(Decl->getLocation(),
-         "%0 declaration uses reserved identifier '%1'")
+    diag(Decl->getLocation(), "%0 declaration uses reserved identifier '%1'")
         << DeclType << Name;
   }
 }

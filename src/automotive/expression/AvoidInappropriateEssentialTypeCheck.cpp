@@ -19,30 +19,25 @@ void AvoidInappropriateEssentialTypeCheck::registerMatchers(
   // Match binary operators: arithmetic, bitwise, and relational
   // We focus on operators where essential type violations are most common
   Finder->addMatcher(
-      binaryOperator(
-          anyOf(
-              // Arithmetic operators
-              hasAnyOperatorName("+", "-", "*", "/", "%"),
-              // Bitwise operators
-              hasAnyOperatorName("&", "|", "^", "<<", ">>"),
-              // Compound assignment with arithmetic
-              hasAnyOperatorName("+=", "-=", "*=", "/=", "%=", "&=", "|=",
-                                 "^=", "<<=", ">>=")
-          )
-      ).bind("binop"),
+      binaryOperator(anyOf(
+                         // Arithmetic operators
+                         hasAnyOperatorName("+", "-", "*", "/", "%"),
+                         // Bitwise operators
+                         hasAnyOperatorName("&", "|", "^", "<<", ">>"),
+                         // Compound assignment with arithmetic
+                         hasAnyOperatorName("+=", "-=", "*=", "/=", "%=", "&=",
+                                            "|=", "^=", "<<=", ">>=")))
+          .bind("binop"),
       this);
 
   // Match unary operators that may have essential type issues
   Finder->addMatcher(
-      unaryOperator(
-          anyOf(
-              // Bitwise NOT
-              hasOperatorName("~"),
-              // Unary plus/minus
-              hasOperatorName("+"),
-              hasOperatorName("-")
-          )
-      ).bind("unop"),
+      unaryOperator(anyOf(
+                        // Bitwise NOT
+                        hasOperatorName("~"),
+                        // Unary plus/minus
+                        hasOperatorName("+"), hasOperatorName("-")))
+          .bind("unop"),
       this);
 }
 
