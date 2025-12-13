@@ -8,6 +8,7 @@
 
 #include "OperatorComponent.h"
 #include "AvoidCommaOperatorCheck.h"
+#include "WrongShiftOperandCheck.h"
 
 namespace clang::tidy::automotive {
 
@@ -16,6 +17,10 @@ void OperatorComponent::addCheckFactories(
 
   CheckFactories.registerCheck<AvoidCommaOperatorCheck>(
       "automotive-avoid-comma-operator");
+
+  // Rule 12.2 - Shift operator bounds (Required)
+  CheckFactories.registerCheck<WrongShiftOperandCheck>(
+      "automotive-c23-req-12.2");
 }
 
 } // namespace clang::tidy::automotive
