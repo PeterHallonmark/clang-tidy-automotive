@@ -56,10 +56,10 @@ void AvoidReservedIdentifierDeclarationCheck::registerMatchers(
   Finder->addMatcher(functionDecl(unless(isImplicit())).bind("func"), this);
 
   // Match typedef declarations
-  Finder->addMatcher(typedefDecl().bind("typedef"), this);
+  Finder->addMatcher(typedefDecl(unless(isImplicit())).bind("typedef"), this);
 
   // Match type alias declarations (using)
-  Finder->addMatcher(typeAliasDecl().bind("alias"), this);
+  Finder->addMatcher(typeAliasDecl(unless(isImplicit())).bind("alias"), this);
 
   // Match record declarations (struct, union, enum)
   Finder->addMatcher(recordDecl(unless(isImplicit())).bind("record"), this);

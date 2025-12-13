@@ -18,8 +18,8 @@ namespace {
 
 class InvalidHeaderCharPPCallbacks : public PPCallbacks {
 public:
-  InvalidHeaderCharPPCallbacks(ClangTidyCheck &Check, const SourceManager &SM)
-      : Check(Check), SM(SM) {}
+  InvalidHeaderCharPPCallbacks(ClangTidyCheck &Check)
+      : Check(Check) {}
 
   void InclusionDirective(SourceLocation HashLoc, const Token &IncludeTok,
                           StringRef FileName, bool IsAngled,
@@ -56,7 +56,6 @@ public:
 
 private:
   ClangTidyCheck &Check;
-  const SourceManager &SM;
 };
 
 } // anonymous namespace
@@ -64,7 +63,7 @@ private:
 void AvoidInvalidHeaderCharCheck::registerPPCallbacks(
     const SourceManager &SM, Preprocessor *PP,
     Preprocessor *ModuleExpanderPP) {
-  PP->addPPCallbacks(std::make_unique<InvalidHeaderCharPPCallbacks>(*this, SM));
+  PP->addPPCallbacks(std::make_unique<InvalidHeaderCharPPCallbacks>(*this));
 }
 
 } // namespace clang::tidy::automotive

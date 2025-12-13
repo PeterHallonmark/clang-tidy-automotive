@@ -53,7 +53,7 @@ void WrongShiftOperandCheck::check(const MatchFinder::MatchResult &Result) {
   if (ShiftAmount.isNegative()) {
     diag(RHS->getBeginLoc(),
          "shift amount is negative (%0), which is undefined behavior")
-        << ShiftAmount.toString(10);
+        << static_cast<int>(ShiftAmount.getSExtValue());
     return;
   }
 
@@ -62,7 +62,8 @@ void WrongShiftOperandCheck::check(const MatchFinder::MatchResult &Result) {
     diag(RHS->getBeginLoc(),
          "shift amount (%0) is greater than or equal to the width of the "
          "type (%1 bits)")
-        << ShiftAmount.toString(10) << static_cast<unsigned>(TypeBitWidth);
+        << static_cast<unsigned>(ShiftAmount.getZExtValue())
+        << static_cast<unsigned>(TypeBitWidth);
   }
 #endif
 }

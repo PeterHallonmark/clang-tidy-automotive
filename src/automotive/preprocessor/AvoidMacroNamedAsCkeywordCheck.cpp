@@ -18,8 +18,9 @@ namespace {
 
 class AvoidMacroNamedAsCkeywordPPCallbacks : public PPCallbacks {
 public:
-  AvoidMacroNamedAsCkeywordPPCallbacks(Preprocessor &PP, ClangTidyCheck &Check)
-      : PP(PP), CKeywords(PP.getLangOpts()), Check(Check) {}
+  AvoidMacroNamedAsCkeywordPPCallbacks(const LangOptions &LangOpts,
+                                       ClangTidyCheck &Check)
+      : CKeywords(LangOpts), Check(Check) {}
 
   void MacroDefined(const Token &MacroNameTok,
                     const MacroDirective *MD) override {
@@ -33,7 +34,6 @@ public:
   }
 
 private:
-  Preprocessor &PP;
   CKeywordSet CKeywords;
   ClangTidyCheck &Check;
 };
@@ -42,8 +42,8 @@ private:
 
 void AvoidMacroNamedAsCkeywordCheck::registerPPCallbacks(
     const SourceManager &SM, Preprocessor *PP, Preprocessor *ModuleExpanderPP) {
-  PP->addPPCallbacks(
-      std::make_unique<AvoidMacroNamedAsCkeywordPPCallbacks>(*PP, *this));
+  PP->addPPCallbacks(std::make_unique<AvoidMacroNamedAsCkeywordPPCallbacks>(
+      PP->getLangOpts(), *this));
 }
 
 } // namespace clang::tidy::automotive
