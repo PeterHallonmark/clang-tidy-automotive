@@ -21,8 +21,10 @@ void AvoidUninitializedReadCheck::registerMatchers(MatchFinder *Finder) {
   // expressions that are not themselves initializers.
 
   // Match uninitialized local variables being read
+  // Exclude function parameters (ParmVarDecl) - they are initialized by caller
   Finder->addMatcher(declRefExpr(to(varDecl(hasAutomaticStorageDuration(),
-                                            unless(hasInitializer(anything())))
+                                            unless(hasInitializer(anything())),
+                                            unless(parmVarDecl()))
                                         .bind("uninit_var")),
                                  // Ensure we're in a context where the variable
                                  // is being read (not just declared)
