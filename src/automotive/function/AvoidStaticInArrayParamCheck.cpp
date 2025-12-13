@@ -9,6 +9,7 @@
 #include "AvoidStaticInArrayParamCheck.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/ASTMatchers/ASTMatchFinder.h"
+#include "clang/Lex/Lexer.h"
 
 using namespace clang::ast_matchers;
 
@@ -16,9 +17,9 @@ namespace clang::tidy::automotive {
 
 void AvoidStaticInArrayParamCheck::registerMatchers(MatchFinder *Finder) {
   // Match function declarations with parameters
-  Finder->addMatcher(functionDecl(hasAnyParameter(parmVarDecl().bind("param")))
-                         .bind("func"),
-                     this);
+  Finder->addMatcher(
+      functionDecl(hasAnyParameter(parmVarDecl().bind("param"))).bind("func"),
+      this);
 }
 
 void AvoidStaticInArrayParamCheck::check(
@@ -31,50 +32,37 @@ void AvoidStaticInArrayParamCheck::check(
   if (Result.SourceManager->isInSystemHeader(Param->getLocation()))
     return;
 
-  // Check if the parameter has a decay-adjusted type that was originally an
-  // array with static
-  QualType ParamType = Param->getOriginalType();
+  // Get the source range of the parameter
+  SourceRange ParamRange = Param->getSourceRange();
+  if (ParamRange.isInvalid())
+    return;
 
-  // Check for DecayedType which indicates array-to-pointer decay
-  if (const auto *DT = ParamType->getAs<DecayedType>()) {
-    QualType OriginalType = DT->getOriginalType();
+  const SourceManager &SM = *Result.SourceManager;
+  const LangOptions &LangOpts = Result.Context->getLangOpts();
 
-    // Check if the original type is a variable array type with static
-    if (const auto *VAT =
-            dyn_cast<VariableArrayType>(OriginalType.getTypePtr())) {
-      // VariableArrayType with static has the static specifier
-      if (VAT->getIndexTypeQualifiers().hasQualifiers() ||
-          VAT->getSizeModifier() == ArraySizeModifier::Static) {
-        diag(Param->getLocation(),
-             "array parameter '%0' uses 'static' keyword which is not "
-             "permitted")
-            << Param->getName();
-        return;
-      }
-    }
+  // Get the source text for this parameter
+  CharSourceRange CharRange = CharSourceRange::getTokenRange(ParamRange);
+  StringRef ParamText = Lexer::getSourceText(CharRange, SM, LangOpts);
 
-    // Check for ConstantArrayType with static modifier
-    if (const auto *CAT =
-            dyn_cast<ConstantArrayType>(OriginalType.getTypePtr())) {
-      if (CAT->getSizeModifier() == ArraySizeModifier::Static) {
-        diag(Param->getLocation(),
-             "array parameter '%0' uses 'static' keyword which is not "
-             "permitted")
-            << Param->getName();
-        return;
-      }
-    }
+  if (ParamText.empty())
+    return;
 
-    // Check for IncompleteArrayType - it shouldn't have static, but check
-    // anyway
-    if (const auto *IAT =
-            dyn_cast<IncompleteArrayType>(OriginalType.getTypePtr())) {
-      if (IAT->getSizeModifier() == ArraySizeModifier::Static) {
-        diag(Param->getLocation(),
-             "array parameter '%0' uses 'static' keyword which is not "
-             "permitted")
-            << Param->getName();
-      }
+  // Look for [static pattern in the parameter declaration
+  // Valid patterns: [static N], [static N], [static sizeof(x)], etc.
+  size_t BracketPos = ParamText.find('[');
+  if (BracketPos == StringRef::npos)
+    return;
+
+  // Check if 'static' follows the opening bracket (allowing whitespace)
+  StringRef AfterBracket = ParamText.substr(BracketPos + 1).ltrim();
+  if (AfterBracket.starts_with("static")) {
+    // Verify it's actually the keyword (not part of identifier)
+    StringRef AfterStatic = AfterBracket.substr(6);
+    if (AfterStatic.empty() || !std::isalnum(AfterStatic[0])) {
+      diag(Param->getLocation(),
+           "array parameter '%0' uses 'static' keyword which is not permitted "
+           "by MISRA C")
+          << Param->getName();
     }
   }
 }
