@@ -8,6 +8,7 @@
 
 #include "FunctionComponent.h"
 #include "AvoidFunctionParameterModificationCheck.h"
+#include "AvoidStaticInArrayParamCheck.h"
 #include "FunctionDeclarationMismatchCheck.h"
 #include "ImplicitFunctionDeclCheck.h"
 #include "StaticInlineCheck.h"
@@ -28,6 +29,10 @@ void FunctionComponent::addCheckFactories(
       "automotive-implicit-function-decl");
   CheckFactories.registerCheck<AvoidFunctionParameterModificationCheck>(
       "automotive-avoid-function-parameter-modification");
+
+  // Rule 17.6 - Static keyword in array parameters (Mandatory)
+  CheckFactories.registerCheck<AvoidStaticInArrayParamCheck>(
+      "automotive-c23-mand-17.6");
 }
 
 } // namespace clang::tidy::automotive
