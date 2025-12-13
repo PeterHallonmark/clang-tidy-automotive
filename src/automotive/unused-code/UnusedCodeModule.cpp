@@ -8,6 +8,7 @@
 
 #include "UnusedCodeModule.h"
 #include "UnusedObjectDefinitionCheck.h"
+#include "UnusedParameterCheck.h"
 #include "UnusedTagCheck.h"
 
 namespace clang::tidy::automotive {
@@ -19,6 +20,10 @@ void UnusedCodeModule::addCheckFactories(
   ------------------------------------------------------------------ */
   CheckFactories.registerCheck<UnusedObjectDefinitionCheck>(
       "automotive-c23-adv-2.8");
+
+  // Rule 2.7 - Unused parameters (Advisory)
+  CheckFactories.registerCheck<UnusedParameterCheck>(
+      "automotive-c23-adv-2.7");
 
   /* C 2012
   ------------------------------------------------------------------ */
