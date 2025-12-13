@@ -10,6 +10,7 @@
 #include "AvoidGlobalObjectCheck.h"
 #include "AvoidReservedIdentifierDeclarationCheck.h"
 #include "AvoidRestrictTypeCheck.h"
+#include "AvoidUninitializedReadCheck.h"
 #include "MissingStaticInternalLinkageCheck.h"
 
 namespace clang::tidy::automotive {
@@ -24,6 +25,10 @@ void StorageComponent::addCheckFactories(
   // Rule 8.9 - Object at block scope (Advisory)
   CheckFactories.registerCheck<AvoidGlobalObjectCheck>(
       "automotive-c23-adv-8.9");
+
+  // Rule 9.1 - Uninitialized read (Required)
+  CheckFactories.registerCheck<AvoidUninitializedReadCheck>(
+      "automotive-c23-req-9.1");
 
   CheckFactories.registerCheck<AvoidRestrictTypeCheck>(
       "automotive-avoid-restrict-type");

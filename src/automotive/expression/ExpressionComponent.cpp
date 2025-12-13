@@ -8,6 +8,7 @@
 
 #include "ExpressionComponent.h"
 #include "AvoidAssignmentInExpressionCheck.h"
+#include "AvoidInappropriateEssentialTypeCheck.h"
 #include "AvoidNonBooleanInConditionCheck.h"
 #include "AvoidSideEffectInLogicalOperandCheck.h"
 #include "AvoidSideEffectInSizeofCheck.h"
@@ -17,6 +18,10 @@ namespace clang::tidy::automotive {
 
 void ExpressionComponent::addCheckFactories(
     ClangTidyCheckFactories &CheckFactories) {
+
+  // Rule 10.1 - Inappropriate essential type (Required)
+  CheckFactories.registerCheck<AvoidInappropriateEssentialTypeCheck>(
+      "automotive-c23-req-10.1");
 
   // Rule 13.4 - Assignment used as expression (Advisory)
   CheckFactories.registerCheck<AvoidAssignmentInExpressionCheck>(
