@@ -7,6 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "StorageComponent.h"
+#include "AvoidGlobalObjectCheck.h"
 #include "AvoidReservedIdentifierDeclarationCheck.h"
 #include "AvoidRestrictTypeCheck.h"
 #include "MissingStaticInternalLinkageCheck.h"
@@ -19,6 +20,10 @@ void StorageComponent::addCheckFactories(
   // Rule 21.2 - Reserved identifier declarations (Required)
   CheckFactories.registerCheck<AvoidReservedIdentifierDeclarationCheck>(
       "automotive-c23-req-21.2");
+
+  // Rule 8.9 - Object at block scope (Advisory)
+  CheckFactories.registerCheck<AvoidGlobalObjectCheck>(
+      "automotive-c23-adv-8.9");
 
   CheckFactories.registerCheck<AvoidRestrictTypeCheck>(
       "automotive-avoid-restrict-type");
