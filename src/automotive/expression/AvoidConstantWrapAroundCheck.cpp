@@ -71,7 +71,8 @@ public:
               else if (BO->getOpcode() == BO_Mul) {
                 if (!LHSVal.isZero() && !RHSVal.isZero()) {
                   // Check if we can divide back and get the original value
-                  llvm::APSInt Quotient = ResultVal.udiv(LHSVal);
+                  llvm::APInt QuotientInt = ResultVal.udiv(LHSVal);
+                  llvm::APSInt Quotient(QuotientInt, /*isUnsigned=*/true);
                   if (Quotient != RHSVal) {
                     FoundWrapAround = true;
                     WrapAroundLoc = BO->getOperatorLoc();
