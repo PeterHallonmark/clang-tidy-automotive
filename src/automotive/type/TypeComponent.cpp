@@ -8,6 +8,8 @@
 
 #include "TypeComponent.h"
 #include "AvoidUnionCheck.h"
+#include "DuplicateTagNameCheck.h"
+#include "DuplicateTypedefNameCheck.h"
 #include "ImplicitIntCheck.h"
 #include "UniqueEnumValuesCheck.h"
 #include "UnusedTypeCheck.h"
@@ -17,6 +19,9 @@ namespace clang::tidy::automotive {
 void TypeComponent::addCheckFactories(ClangTidyCheckFactories &CheckFactories) {
 
   CheckFactories.registerCheck<AvoidUnionCheck>("automotive-avoid-union");
+  CheckFactories.registerCheck<DuplicateTagNameCheck>("automotive-c23-req-5.7");
+  CheckFactories.registerCheck<DuplicateTypedefNameCheck>(
+      "automotive-c23-req-5.6");
   CheckFactories.registerCheck<ImplicitIntCheck>("automotive-implicit-int");
   CheckFactories.registerCheck<UniqueEnumValuesCheck>(
       "automotive-unique-enum-value");

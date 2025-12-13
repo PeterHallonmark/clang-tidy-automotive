@@ -10,6 +10,7 @@
 #include "AvoidCodeBeforeIncludeCheck.h"
 #include "AvoidHashOperatorCheck.h"
 #include "AvoidInvalidHeaderCharCheck.h"
+#include "AvoidMacroIdentifierConflictCheck.h"
 #include "AvoidMacroNamedAsCkeywordCheck.h"
 #include "AvoidMultipleHashOperatorsCheck.h"
 #include "AvoidReservedMacroIdentifierCheck.h"
@@ -44,6 +45,10 @@ void PreprocessorComponent::addCheckFactories(
   // Rule 21.1 - Reserved macro identifiers
   CheckFactories.registerCheck<AvoidReservedMacroIdentifierCheck>(
       "automotive-avoid-reserved-macro-identifier");
+
+  // Rule 5.4 - Macro identifier conflicts
+  CheckFactories.registerCheck<AvoidMacroIdentifierConflictCheck>(
+      "automotive-c23-req-5.4");
 }
 
 } // namespace clang::tidy::automotive
