@@ -7,9 +7,12 @@
 //===----------------------------------------------------------------------===//
 
 #include "PreprocessorComponent.h"
+#include "AvoidCodeBeforeIncludeCheck.h"
 #include "AvoidHashOperatorCheck.h"
+#include "AvoidInvalidHeaderCharCheck.h"
 #include "AvoidMacroNamedAsCkeywordCheck.h"
 #include "AvoidMultipleHashOperatorsCheck.h"
+#include "AvoidReservedMacroIdentifierCheck.h"
 #include "AvoidUndefCheck.h"
 #include "PreprocessorFlowCheck.h"
 #include "UnusedMacroCheck.h"
@@ -29,6 +32,18 @@ void PreprocessorComponent::addCheckFactories(
       "automotive-avoid-hash-operator");
   CheckFactories.registerCheck<AvoidMultipleHashOperatorsCheck>(
       "automotive-avoid-multiple-hash-operators");
+
+  // Rule 20.1 - Include directive order
+  CheckFactories.registerCheck<AvoidCodeBeforeIncludeCheck>(
+      "automotive-avoid-code-before-include");
+
+  // Rule 20.2 - Invalid characters in header names
+  CheckFactories.registerCheck<AvoidInvalidHeaderCharCheck>(
+      "automotive-avoid-invalid-header-char");
+
+  // Rule 21.1 - Reserved macro identifiers
+  CheckFactories.registerCheck<AvoidReservedMacroIdentifierCheck>(
+      "automotive-avoid-reserved-macro-identifier");
 }
 
 } // namespace clang::tidy::automotive
