@@ -13,10 +13,26 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects default case not at the end of switch statement.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/WrongOrderDefaultInSwitchStatement.html
+/// The default case should appear as the first or last clause in a switch
+/// statement for consistency and readability. Having default in the middle
+/// can make the code harder to understand.
+///
+/// @par MISRA C:2025 Rule 16.5
+/// A default label shall appear as either the first or the last switch label
+/// of a switch statement.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   switch (x) {
+///     case 1: break;
+///     default: break;  // Warning: default in middle
+///     case 2: break;
+///   }
+/// @endcode
 class WrongOrderInSwitchStmtCheck : public ClangTidyCheck {
 public:
   WrongOrderInSwitchStmtCheck(StringRef Name, ClangTidyContext *Context)

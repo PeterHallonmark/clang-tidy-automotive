@@ -19,10 +19,25 @@ struct GotoInfo {
   const GotoStmt *MatchedLabel = nullptr;
 };
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects goto statements that jump backward in code.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/UnusedLabel.html
+/// Backward jumps with goto create loops that are harder to understand and
+/// analyze than structured loop constructs (for, while, do-while). This check
+/// ensures goto statements only jump forward if they must be used at all.
+///
+/// @par MISRA C:2025 Rule 15.3
+/// Any label referenced by a goto statement shall be declared in the same
+/// block, or in any block enclosing the goto statement.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   label:
+///     x++;
+///     if (x < 10)
+///       goto label;  // Warning: backward jump
+/// @endcode
 class ForwardGotoLabelCheck : public ClangTidyCheck {
 public:
   ForwardGotoLabelCheck(StringRef Name, ClangTidyContext *Context)

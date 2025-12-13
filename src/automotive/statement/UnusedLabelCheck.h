@@ -13,10 +13,23 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects labels that are declared but never referenced by a goto.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/Standard-C.html
+/// Unused labels indicate dead code that should be removed. They may be
+/// remnants of removed goto statements or incomplete implementations.
+///
+/// @par MISRA C:2025 Rule 2.6
+/// A function should not contain unused label declarations.
+/// @par Category: Advisory
+///
+/// Example:
+/// @code
+///   void func(void) {
+///     unused_label:  // Warning: label never used
+///       do_something();
+///   }
+/// @endcode
 class UnusedLabelCheck : public ClangTidyCheck {
 public:
   UnusedLabelCheck(StringRef Name, ClangTidyContext *Context)

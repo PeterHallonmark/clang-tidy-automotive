@@ -1,43 +1,127 @@
-# Naming Convention for Check Classes
+# Naming Convention for Automotive Checks
 
-This project follows a clear and descriptive naming convention for `clang-tidy` check classes.  
-Each check is implemented in a C++ class whose name indicates **what the check detects**, rather than its MISRA rule ID. This makes the code easier to navigate, understand, and maintain.
+This document defines the naming conventions for clang-tidy-automotive checks, covering both C++ class names and check IDs used in configuration.
 
-## Prefixes Used
+## Check ID Convention
 
-We use the following prefixes to categorize the nature of the issue:
+All check IDs use the `automotive-` prefix. Two naming patterns are supported:
 
-- **Avoid**: Something that should not be done  
+### Pattern 1: Descriptive Names (Preferred)
+
+Descriptive names indicate what the check detects without requiring knowledge of MISRA rule numbers.
+
+**Format:** `automotive-{prefix}-{description}`
+
+**Examples:**
+- `automotive-avoid-goto` - Detects goto statements
+- `automotive-missing-default-in-switch` - Missing default case
+- `automotive-wrong-bitfield-type` - Incorrect bit-field type
+- `automotive-unused-label` - Unused label declarations
+
+**Prefixes:**
+| Prefix | Usage | Example |
+|--------|-------|---------|
+| `avoid` | Something that should not be done | `automotive-avoid-goto` |
+| `missing` | Something important is absent | `automotive-missing-compound` |
+| `wrong` | Violates a specific constraint | `automotive-wrong-null-pointer-value` |
+| `unused` | Unused code element | `automotive-unused-macro` |
+| `implicit` | Implicit behavior that should be explicit | `automotive-implicit-function-decl` |
+| `uncomplete` | Incomplete declaration/definition | `automotive-uncomplete-function-prototype` |
+
+### Pattern 2: Rule-Based Names (Version-Specific)
+
+Use rule-based names when behavior differs between MISRA versions or when mapping directly to specific rules is essential for compliance tracking.
+
+**Format:** `automotive-{version}-{category}-{rule}`
+
+**Version Identifiers:**
+- `c23` - MISRA C:2023/2025
+- `c12` - MISRA C:2012
+- `x` - Generic/cross-version
+
+**Category Identifiers:**
+- `req` - Required rule
+- `adv` - Advisory rule
+- `man` - Mandatory rule
+- `dir` - Directive
+
+**Examples:**
+- `automotive-c23-req-14.3` - MISRA C:2023 Required Rule 14.3
+- `automotive-c23-adv-13.4` - MISRA C:2023 Advisory Rule 13.4
+- `automotive-x-req-16.2` - Cross-version Required Rule 16.2
+
+### When to Use Each Pattern
+
+| Scenario | Pattern | Rationale |
+|----------|---------|-----------|
+| General checks | Descriptive | Easier to understand and remember |
+| Version-specific behavior | Rule-based | Clear version targeting |
+| Reused clang-tidy checks | Rule-based | Map to MISRA rule explicitly |
+| Compliance tracking | Rule-based | Direct rule reference |
+
+## Class Name Convention
+
+Check classes use descriptive names with standard prefixes. The class name does **not** include MISRA rule IDs.
+
+### Class Name Prefixes
+
+- **Avoid**: Something that should not be done
   _Example_: `AvoidCommentWithinCommentCheck`
-- **Missing**: Something important is absent  
-  _Example_: `MissingDefaultCaseCheck`
-- **Wrong**: Something is incorrect or violates a specific constraint  
-  _Example_: `Wrong TBD`
-- **Unstructured**: Formatting, layout or structure is unclear or inconsistent  
-  _Example_: `Unstructured TBD`
+- **Missing**: Something important is absent
+  _Example_: `MissingDefaultInSwitchStmtCheck`
+- **Wrong**: Something is incorrect or violates a constraint
+  _Example_: `WrongBitfieldTypeCheck`
+- **Unstructured**: Layout or structure issues
+  _Example_: `UnstructuredSwitchStmtCheck`
+- **Unused**: Unused code elements
+  _Example_: `UnusedLabelCheck`
 
-These prefixes help contributors quickly grasp the intent of each check.
+### Class and File Naming
 
-## Separation of Rule ID and Class Name
+1. Class name: `{Prefix}{Description}Check`
+2. Header file: `{Prefix}{Description}Check.h`
+3. Implementation: `{Prefix}{Description}Check.cpp`
 
-Although each check maps to one or more **MISRA rule IDs**, the class name does **not** include that ID.  
-Instead, the rule ID is used when registering the check:
+**Example:**
+```cpp
+// AvoidGotoCheck.h / AvoidGotoCheck.cpp
+class AvoidGotoCheck : public ClangTidyCheck {
+  // ...
+};
+```
 
-``cpp
-CheckFactories.registerCheck<AvoidCommentWithinCommentCheck>("misra-c2023-req-3.1");
+## Registration
 
+Register checks in the appropriate component's `*Component.cpp`:
 
-## Benefits of This Approach
+```cpp
+// Descriptive check ID
+CheckFactories.registerCheck<AvoidGotoCheck>("automotive-avoid-goto");
 
-* Clarity in Code: Developers don't need to memorize rule IDs to understand the code.
-* Clarity in Configuration: Users can configure .clang-tidy using the official rule IDs.
-* Compliance-Friendly: Keeps configuration and tooling consistent with regulatory guidelines.
-* Scalability: Encourages modularity and reuse across different MISRA versions.
+// Rule-based check ID
+CheckFactories.registerCheck<InvariantControlCheck>("automotive-c23-req-14.3");
+```
 
-## When Adding a New Check
+## MISRA Rule Mapping
 
-1. Name the class descriptively using one of the prefixes above.
-2. Keep the filename identical to the class name (e.g. AvoidSomethingCheck.{h,cpp}).
-3. Register the check with the appropriate MISRA rule ID(s).
-4. Add it to the appropriate module (comments, unused-code, etc).
+The relationship between check IDs and MISRA rules is documented in:
+- `docs/MISRA-RULE-INVENTORY.md` - Human-readable mapping
+- `config/misra-rule-mapping.json` - Machine-readable mapping for SonarQube
+
+## Benefits
+
+* **Clarity in Code**: Developers understand checks without memorizing rule IDs
+* **Compliance-Friendly**: Rule-based IDs enable direct MISRA compliance reporting
+* **Scalability**: Supports multiple MISRA versions simultaneously
+* **Tool Integration**: Consistent IDs work with SonarQube, CI/CD, and reporting tools
+
+## Adding a New Check
+
+1. Choose the appropriate naming pattern (descriptive or rule-based)
+2. Name the class descriptively using a standard prefix
+3. Create files: `{ClassName}.h` and `{ClassName}.cpp`
+4. Register with the chosen check ID in the component file
+5. Update `docs/MISRA-RULE-INVENTORY.md` with the rule mapping
+6. Add test file in `test/checkers/automotive/`
+7. Add example in `examples/rules/`
 

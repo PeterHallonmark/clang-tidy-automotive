@@ -13,10 +13,22 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-unused-code
+/// @brief Detects unused tag declarations (struct, union, enum tags).
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/Unused-Tag.html
+/// This check identifies tag declarations that are defined but never used
+/// in the code. Unused tags indicate dead code that should be removed to
+/// improve code clarity and maintainability.
+///
+/// @par MISRA C:2025 Rule 2.4
+/// A tag should be used when it is declared.
+/// @par Category: Advisory
+///
+/// Example:
+/// @code
+///   struct UnusedStruct { int x; };  // Warning: unused tag
+///   enum UnusedEnum { A, B, C };     // Warning: unused tag
+/// @endcode
 class UnusedTagCheck : public ClangTidyCheck {
 public:
   UnusedTagCheck(StringRef Name, ClangTidyContext *Context)

@@ -13,10 +13,25 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects switch statements with boolean controlling expressions.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/Avoid-Boolean-In-Switch.html
+/// A switch statement on a boolean expression is redundant since a boolean
+/// can only have two values (true/false). An if-else statement is clearer
+/// and more appropriate for boolean decisions.
+///
+/// @par MISRA C:2025 Rule 16.7
+/// A switch expression shall not have essentially Boolean type.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   bool flag = true;
+///   switch (flag) {  // Warning: boolean in switch
+///     case true: break;
+///     case false: break;
+///   }
+/// @endcode
 class AvoidBooleanInSwitchCheck : public ClangTidyCheck {
 public:
   AvoidBooleanInSwitchCheck(StringRef Name, ClangTidyContext *Context)

@@ -13,10 +13,29 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects improperly structured switch statements.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/UnstructuredCase.html
+/// Switch statements should be well-formed with cases appearing only at the
+/// top level of the switch body. Nested cases, cases inside loops, or other
+/// unstructured patterns make code harder to understand and maintain.
+///
+/// @par MISRA C:2025 Rule 16.2
+/// A switch label shall only be used when the most closely-enclosing
+/// compound statement is the body of a switch statement.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   switch (x) {
+///     case 1:
+///       if (y) {
+///         case 2:  // Warning: case inside if
+///           break;
+///       }
+///       break;
+///   }
+/// @endcode
 class UnstructuredSwitchStmtCheck : public ClangTidyCheck {
 public:
   UnstructuredSwitchStmtCheck(StringRef Name, ClangTidyContext *Context)

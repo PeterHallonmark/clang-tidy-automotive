@@ -13,10 +13,33 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects if-else-if chains without a final else clause.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/missing-else.html
+/// An if-else-if chain without a terminating else clause may indicate
+/// incomplete logic. The final else should handle unexpected conditions
+/// or document that all cases are intentionally covered.
+///
+/// @par MISRA C:2025 Rule 15.7
+/// All if ... else if constructs shall be terminated with an else statement.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   if (x == 1) {
+///     // handle 1
+///   } else if (x == 2) {
+///     // handle 2
+///   }  // Warning: missing final else
+///
+///   if (x == 1) {
+///     // handle 1
+///   } else if (x == 2) {
+///     // handle 2
+///   } else {
+///     // handle other  // OK
+///   }
+/// @endcode
 class MissingElseCheck : public ClangTidyCheck {
 public:
   MissingElseCheck(StringRef Name, ClangTidyContext *Context)

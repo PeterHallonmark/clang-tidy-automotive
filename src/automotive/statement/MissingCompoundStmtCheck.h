@@ -13,10 +13,28 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects control structures without compound statements (braces).
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/missing-compound.html
+/// Control flow statements (if, else, for, while, do, switch) without braces
+/// around their bodies are error-prone. Adding or removing statements can
+/// inadvertently change the control flow. Always using braces improves
+/// readability and reduces bugs during maintenance.
+///
+/// @par MISRA C:2025 Rule 15.6
+/// The body of an iteration-statement or a selection-statement shall be a
+/// compound-statement.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   if (condition)
+///     x++;  // Warning: missing braces
+///
+///   if (condition) {
+///     x++;  // OK: has braces
+///   }
+/// @endcode
 class MissingCompoundStmtCheck : public ClangTidyCheck {
 public:
   MissingCompoundStmtCheck(StringRef Name, ClangTidyContext *Context)

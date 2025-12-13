@@ -13,10 +13,28 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-statements
+/// @brief Detects fall-through in switch case statements.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/MissingBreakInSwitch.html
+/// Unintentional fall-through between switch cases is a common source of bugs.
+/// Each case should explicitly end with a break, return, or throw statement.
+/// If fall-through is intentional, it should be clearly documented.
+///
+/// @par MISRA C:2025 Rule 16.3
+/// An unconditional break statement shall terminate every switch-clause.
+/// @par Category: Required
+///
+/// Example:
+/// @code
+///   switch (x) {
+///     case 1:
+///       do_something();
+///       // Warning: missing break - falls through to case 2
+///     case 2:
+///       do_other();
+///       break;
+///   }
+/// @endcode
 class MissingBreakInCaseStmtCheck : public ClangTidyCheck {
 public:
   MissingBreakInCaseStmtCheck(StringRef Name, ClangTidyContext *Context)

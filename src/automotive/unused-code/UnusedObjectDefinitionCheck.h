@@ -13,10 +13,23 @@
 
 namespace clang::tidy::automotive {
 
-/// FIXME: Write a short description.
+/// @ingroup misra-c25-unused-code
+/// @brief Detects unused object (variable) definitions.
 ///
-/// For the user-facing documentation see:
-/// http://clang.llvm.org/extra/clang-tidy/checks/misra/Unused-Object-Definition.html
+/// This check identifies variables that are defined but never used in the code.
+/// Unused objects may indicate incomplete implementations, dead code, or
+/// refactoring remnants that should be cleaned up.
+///
+/// @par MISRA C:2025 Rule 2.8
+/// A variable should be used after being declared.
+/// @par Category: Advisory
+///
+/// Example:
+/// @code
+///   void func(void) {
+///     int unused_var = 42;  // Warning: unused variable
+///   }
+/// @endcode
 class UnusedObjectDefinitionCheck : public ClangTidyCheck {
 public:
   UnusedObjectDefinitionCheck(StringRef Name, ClangTidyContext *Context)
