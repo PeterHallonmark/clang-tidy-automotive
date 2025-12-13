@@ -8,12 +8,17 @@
 
 #include "PointerComponent.h"
 #include "AvoidAtomicVoidPointerCheck.h"
+#include "AvoidCastRemovingQualifierCheck.h"
 #include "WrongNullPointerValueCheck.h"
 
 namespace clang::tidy::automotive {
 
 void PointerComponent::addCheckFactories(
     ClangTidyCheckFactories &CheckFactories) {
+
+  // Rule 11.8 - Cast removing const/volatile (Required)
+  CheckFactories.registerCheck<AvoidCastRemovingQualifierCheck>(
+      "automotive-c23-req-11.8");
 
   CheckFactories.registerCheck<WrongNullPointerValueCheck>(
       "automotive-wrong-null-pointer-value");
