@@ -10,6 +10,7 @@
 #include "AvoidAtomicVoidPointerCheck.h"
 #include "AvoidCastRemovingQualifierCheck.h"
 #include "AvoidIncompatiblePointerCastCheck.h"
+#include "AvoidPointerIntegerCastCheck.h"
 #include "WrongNullPointerValueCheck.h"
 
 namespace clang::tidy::automotive {
@@ -20,6 +21,10 @@ void PointerComponent::addCheckFactories(
   // Rule 11.3 - Incompatible pointer cast (Required)
   CheckFactories.registerCheck<AvoidIncompatiblePointerCastCheck>(
       "automotive-c23-req-11.3");
+
+  // Rule 11.4 - Pointer to/from integer cast (Advisory)
+  CheckFactories.registerCheck<AvoidPointerIntegerCastCheck>(
+      "automotive-c23-adv-11.4");
 
   // Rule 11.8 - Cast removing const/volatile (Required)
   CheckFactories.registerCheck<AvoidCastRemovingQualifierCheck>(
