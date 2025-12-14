@@ -105,9 +105,10 @@ public:
     }
 
     // Check for files with #pragma once
-    // Note: Clang doesn't provide a direct PPCallbacks for #pragma once detection
-    // in the standard API, so we rely on the header guard mechanism above.
-    // Files with #pragma once are also marked with isUsedForHeaderGuard()
+    // Note: Clang doesn't provide a direct PPCallbacks for #pragma once
+    // detection in the standard API, so we rely on the header guard mechanism
+    // above. Files with #pragma once are also marked with
+    // isUsedForHeaderGuard()
 
     // Emit warnings for header files without guards
     checkGuardlessHeaders();
@@ -138,9 +139,9 @@ public:
                   "consider adding '#ifndef %0' / '#define %0' at the start "
                   "and '#endif' at the end, or use '#pragma once'")
           << GuardName
-          << FixItHint::CreateInsertion(
-                 StartLoc,
-                 "#ifndef " + GuardName + "\n#define " + GuardName + "\n\n")
+          << FixItHint::CreateInsertion(StartLoc, "#ifndef " + GuardName +
+                                                      "\n#define " + GuardName +
+                                                      "\n\n")
           << FixItHint::CreateInsertion(SM.getLocForEndOfFile(FID),
                                         "\n\n#endif // " + GuardName + "\n");
     }

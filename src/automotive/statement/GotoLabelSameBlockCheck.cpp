@@ -28,8 +28,8 @@ static const LabelStmt *getLabelStmt(const GotoStmt *Goto) {
 
 /// Helper function to find the immediate parent CompoundStmt for a given Stmt
 /// Returns nullptr if no CompoundStmt parent is found
-static const CompoundStmt *
-findImmediateCompoundStmt(const Stmt *S, ASTContext &Context) {
+static const CompoundStmt *findImmediateCompoundStmt(const Stmt *S,
+                                                     ASTContext &Context) {
   if (!S)
     return nullptr;
 

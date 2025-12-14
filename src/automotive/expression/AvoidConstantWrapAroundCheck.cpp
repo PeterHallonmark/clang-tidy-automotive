@@ -67,7 +67,8 @@ public:
                   return false;
                 }
               }
-              // For multiplication: check if result/lhs != rhs (simplified overflow check)
+              // For multiplication: check if result/lhs != rhs (simplified
+              // overflow check)
               else if (BO->getOpcode() == BO_Mul) {
                 if (!LHSVal.isZero() && !RHSVal.isZero()) {
                   // Check if we can divide back and get the original value
@@ -91,8 +92,7 @@ public:
 
   bool VisitUnaryOperator(UnaryOperator *UO) {
     // Unary minus on unsigned type (except for 0)
-    if (UO->getOpcode() == UO_Minus &&
-        UO->getType()->isUnsignedIntegerType()) {
+    if (UO->getOpcode() == UO_Minus && UO->getType()->isUnsignedIntegerType()) {
       Expr::EvalResult Operand;
       if (UO->getSubExpr()->EvaluateAsRValue(Operand, Context)) {
         if (Operand.Val.isInt() && !Operand.Val.getInt().isZero()) {
@@ -151,8 +151,9 @@ void AvoidConstantWrapAroundCheck::check(
   Checker.TraverseStmt(const_cast<Expr *>(InitExpr));
 
   if (Checker.foundWrapAround()) {
-    diag(Checker.getWrapAroundLoc(),
-         "constant expression evaluation leads to unsigned integer wrap-around");
+    diag(
+        Checker.getWrapAroundLoc(),
+        "constant expression evaluation leads to unsigned integer wrap-around");
   }
 }
 

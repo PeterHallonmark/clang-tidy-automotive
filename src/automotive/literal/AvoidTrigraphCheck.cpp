@@ -56,11 +56,9 @@ private:
     static const struct {
       const char *Sequence;
       char Replacement;
-    } Trigraphs[] = {
-        {"\?\?=", '#'}, {"\?\?(", '['}, {"\?\?)", ']'}, {"\?\?<", '{'},
-        {"\?\?>", '}'}, {"\?\?/", '\\'}, {"\?\?'", '^'}, {"\?\?!", '|'},
-        {"\?\?-", '~'}
-    };
+    } Trigraphs[] = {{"\?\?=", '#'}, {"\?\?(", '['}, {"\?\?)", ']'},
+                     {"\?\?<", '{'}, {"\?\?>", '}'}, {"\?\?/", '\\'},
+                     {"\?\?'", '^'}, {"\?\?!", '|'}, {"\?\?-", '~'}};
 
     SourceLocation FileStart = SM.getLocForStartOfFile(FID);
 
@@ -83,8 +81,8 @@ private:
           // Format the warning message with the trigraph and its replacement
           SmallString<64> Message;
           llvm::raw_svector_ostream OS(Message);
-          OS << "avoid trigraph sequence '??" << ThirdChar
-             << "' (expands to '" << Replacement << "')";
+          OS << "avoid trigraph sequence '??" << ThirdChar << "' (expands to '"
+             << Replacement << "')";
 
           Check.diag(TrigraphLoc, Message);
         }
