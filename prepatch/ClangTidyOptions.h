@@ -37,6 +37,10 @@ struct FileFilter {
   std::vector<LineRange> LineRanges;
 };
 
+class RelativePath {
+
+};
+
 /// Global options. These options are neither stored nor read from
 /// configuration files.
 struct ClangTidyGlobalOptions {
@@ -328,7 +332,7 @@ std::error_code parseLineFilter(llvm::StringRef LineFilter,
 /// Parses configuration from JSON and returns \c ClangTidyOptions or an
 /// error.
 llvm::ErrorOr<ClangTidyOptions>
-parseConfiguration(llvm::MemoryBufferRef Config);
+parseConfiguration2(llvm::MemoryBufferRef Config);
 
 using DiagCallback = llvm::function_ref<void(const llvm::SMDiagnostic &)>;
 

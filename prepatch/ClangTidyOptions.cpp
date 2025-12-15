@@ -275,6 +275,7 @@ ClangTidyOptions
 ClangTidyOptionsProvider::getOptions(llvm::StringRef FileName) {
   ClangTidyOptions Result;
   unsigned Priority = 0;
+  
   for (auto &Source : getRawOptions(FileName))
     Result.mergeWith(Source.first, ++Priority);
   return Result;
@@ -294,12 +295,15 @@ ConfigOptionsProvider::ConfigOptionsProvider(
     : FileOptionsBaseProvider(std::move(GlobalOptions),
                               std::move(DefaultOptions),
                               std::move(OverrideOptions), std::move(FS)),
-      ConfigOptions(std::move(ConfigOptions)) {}
+      ConfigOptions(std::move(ConfigOptions)) {
+        llvm::outs() << "trace 4\n";
+      }
 
 std::vector<OptionsSource>
 ConfigOptionsProvider::getRawOptions(llvm::StringRef FileName) {
   std::vector<OptionsSource> RawOptions =
       DefaultOptionsProvider::getRawOptions(FileName);
+  
   if (ConfigOptions.InheritParentConfig.value_or(false)) {
     LLVM_DEBUG(llvm::dbgs()
                << "Getting options for file " << FileName << "...\n");
@@ -324,9 +328,12 @@ FileOptionsBaseProvider::FileOptionsBaseProvider(
     : DefaultOptionsProvider(std::move(GlobalOptions),
                              std::move(DefaultOptions)),
       OverrideOptions(std::move(OverrideOptions)), FS(std::move(VFS)) {
+
+  llvm::outs() << "trace 1\n";      
   if (!FS)
     FS = llvm::vfs::getRealFileSystem();
-  ConfigHandlers.emplace_back(".clang-tidy", parseConfiguration);
+  ConfigHandlers.emplace_back(".clang-tidy", parseConfiguration2);
+  llvm::outs() << "trace 2\n";      
 }
 
 FileOptionsBaseProvider::FileOptionsBaseProvider(
@@ -343,6 +350,7 @@ FileOptionsBaseProvider::getNormalizedAbsolutePath(llvm::StringRef Path) {
   assert(FS && "FS must be set.");
   llvm::SmallString<128> NormalizedAbsolutePath = {Path};
   std::error_code Err = FS->makeAbsolute(NormalizedAbsolutePath);
+  llvm::outs() << "trace 5\n";
   if (Err)
     return Err;
   llvm::sys::path::remove_dots(NormalizedAbsolutePath, /*remove_dot_dot=*/true);
@@ -412,7 +420,7 @@ std::vector<OptionsSource>
 FileOptionsProvider::getRawOptions(StringRef FileName) {
   LLVM_DEBUG(llvm::dbgs() << "Getting options for file " << FileName
                           << "...\n");
-
+  llvm::outs() << "trace 6\n";
   llvm::ErrorOr<llvm::SmallString<128>> AbsoluteFilePath =
       getNormalizedAbsolutePath(FileName);
   if (!AbsoluteFilePath)
@@ -444,7 +452,6 @@ FileOptionsBaseProvider::tryReadConfigFile(StringRef Directory) {
     SmallString<128> ConfigFile(Directory);
     llvm::sys::path::append(ConfigFile, ConfigHandler.first);
     LLVM_DEBUG(llvm::dbgs() << "Trying " << ConfigFile << "...\n");
-
     llvm::ErrorOr<llvm::vfs::Status> FileStatus = FS->status(ConfigFile);
 
     if (!FileStatus || !FileStatus->isRegularFile())
@@ -457,7 +464,7 @@ FileOptionsBaseProvider::tryReadConfigFile(StringRef Directory) {
                    << "\n";
       continue;
     }
-
+    llvm::outs() << "trace 7\n";
     // Skip empty files, e.g. files opened for writing via shell output
     // redirection.
     if ((*Text)->getBuffer().empty())
@@ -484,12 +491,19 @@ std::error_code parseLineFilter(StringRef LineFilter,
 }
 
 llvm::ErrorOr<ClangTidyOptions>
-parseConfiguration(llvm::MemoryBufferRef Config) {
+parseConfiguration2(llvm::MemoryBufferRef Config) {
   llvm::yaml::Input Input(Config);
   ClangTidyOptions Options;
   Input >> Options;
+
+  auto x = Config.getBufferIdentifier();
+
+  llvm::outs() << "trace 0\n";
   if (Input.error())
     return Input.error();
+  
+  llvm::outs() << "trace " << Options.MappingFiles.value()[0] << " " << Config.getBufferIdentifier() << "\n";
+  
   return Options;
 }
 
@@ -503,10 +517,15 @@ parseConfigurationWithDiags(llvm::MemoryBufferRef Config,
   llvm::yaml::Input Input(Config, nullptr, Handler ? diagHandlerImpl : nullptr,
                           &Handler);
   ClangTidyOptions Options;
+
+  llvm::outs() << "trace 3\n";
   Input >> Options;
   if (Input.error())
     return Input.error();
-  return Options;
+
+    llvm::outs() << "trace " << Options.MappingFiles.value()[0] << "\n";
+
+    return Options;
 }
 
 std::string configurationAsText(const ClangTidyOptions &Options) {
