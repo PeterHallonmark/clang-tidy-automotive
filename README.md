@@ -53,6 +53,26 @@ See [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) for more information.
 The repository follows LLVM's license structure to make it easier to upstream
 changes to the LLVM project if and when that happens. :)
 
+## Design note: MISRA mapping layer
+
+A significant part of this project is the MISRA mapping layer.
+
+The purpose of the mapping layer is to strictly separate normative MISRA rule
+content from the clang-tidy checks themselves. This separation is essential in
+order to:
+
+- avoid embedding copyrighted MISRA rule text in the codebase
+- allow different interpretations or future revisions of MISRA rules without
+  rewriting the checks
+- make the design acceptable for potential upstreaming in LLVM
+
+The mapping layer is still under active development. Once it is complete and
+proven, an RFC will be written and proposed to LLVM to evaluate whether this
+architecture could be upstreamed.
+
+For background and context, see the
+[LLVM discussion](https://discourse.llvm.org/t/will-clang-frontend-plan-accept-misra-check-tools/84754/33?u=peterhallonmark).
+
 ## Future Improvements
 
 Move setup scripts to a Docker container for easier setup and environment
