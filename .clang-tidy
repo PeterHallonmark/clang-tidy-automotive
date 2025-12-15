@@ -1,3 +1,2 @@
 Checks: "-*,clang-analyzer-*,misra-c2023-*"
-
 MappingFiles: ["./M_C_2023_mapping.json"]
