@@ -25,13 +25,12 @@ static const StringRef ForbiddenFunctionNames[] = {
 
 void AvoidSignalHeaderCheck::registerPPCallbacks(
     const SourceManager &SM, Preprocessor *PP, Preprocessor *ModuleExpanderPP) {
-  // Registrera vår PPCallbacks-klass med den förbjudna headern och namnen
-  //  PP->addPPCallbacks(std::make_unique<AvoidApiPPCallbacks>(
-  //      *this, *PP, "signal.h", ForbiddenFunctionNames));
+    // TODO: Add preprocessor support for the forbidden functions.
+    //  PP->addPPCallbacks(std::make_unique<AvoidApiPPCallbacks>(
+    //      *this, *PP, "signal.h", ForbiddenFunctionNames));
 }
 
 void AvoidSignalHeaderCheck::registerMatchers(MatchFinder *Finder) {
-  // Registrera en AST-matcher för att hitta anrop till förbjudna funktioner
   Finder->addMatcher(
       callExpr(callee(functionDecl(hasAnyName(ForbiddenFunctionNames))))
           .bind("forbiddenFunctionCall"),
@@ -39,7 +38,6 @@ void AvoidSignalHeaderCheck::registerMatchers(MatchFinder *Finder) {
 }
 
 void AvoidSignalHeaderCheck::check(const MatchFinder::MatchResult &Result) {
-  // Hantera matchningar från AST-matchern
   if (const auto *Call =
           Result.Nodes.getNodeAs<CallExpr>("forbiddenFunctionCall")) {
     const FunctionDecl *Func = Call->getDirectCallee();
