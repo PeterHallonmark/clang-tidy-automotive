@@ -225,7 +225,7 @@ Software.
 ==============================================================================
 Software from third parties included in the clang-tidy-misra plugin:
 ==============================================================================
-The clang-tidy-misra plugin contains third party software which is under 
+The clang-tidy-automotive plugin contains third party software which is under 
 different license terms. All such code will be identified clearly using at 
 least one of two mechanisms:
 1) It will be in a separate directory tree with its own `LICENSE.txt` or
