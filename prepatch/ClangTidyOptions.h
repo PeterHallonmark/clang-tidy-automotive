@@ -37,16 +37,16 @@ struct FileFilter {
   std::vector<LineRange> LineRanges;
 };
 
-struct ExternalConfigFile {
-  ExternalConfigFile() = default;
-  explicit ExternalConfigFile(std::string ConfigFile) : ConfigFile(std::move(ConfigFile)) {}    
+struct AdditionalConfigFile {
+  AdditionalConfigFile() = default;
+  explicit AdditionalConfigFile(std::string ConfigFile) : ConfigFile(std::move(ConfigFile)) {}    
 
   const std::string &str() const noexcept { 
     return ConfigFile; 
   }
 
   const llvm::StringRef getFile() const;
-  void setPath(std::string Path); 
+  void setParentFile(llvm::StringRef ParentFile); 
 
 private:
   std::string ConfigFile;
@@ -108,7 +108,7 @@ struct ClangTidyOptions {
   std::optional<bool> SystemHeaders;
 
   /// TODO
-  std::optional<std::vector<ExternalConfigFile>> MappingFiles;
+  std::optional<std::vector<AdditionalConfigFile>> MappingFiles;
 
   /// Format code around applied fixes with clang-format using this
   /// style.

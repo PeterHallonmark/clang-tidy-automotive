@@ -25,24 +25,24 @@
 
 using clang::tidy::ClangTidyOptions;
 using clang::tidy::FileFilter;
-using clang::tidy::ExternalConfigFile;
+using clang::tidy::AdditionalConfigFile;
 using OptionsSource = clang::tidy::ClangTidyOptionsProvider::OptionsSource;
 
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(FileFilter)
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(FileFilter::LineRange)
-LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ExternalConfigFile)
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(AdditionalConfigFile)
 
 namespace llvm::yaml {
 
 template <>
-struct ScalarTraits<clang::tidy::ExternalConfigFile> {
-  static void output(const clang::tidy::ExternalConfigFile &ConfigFile, void*,
+struct ScalarTraits<AdditionalConfigFile> {
+  static void output(const AdditionalConfigFile &ConfigFile, void*,
                      llvm::raw_ostream &Out) {
     Out << ConfigFile.str();
   }
 
-  static StringRef input(StringRef Scalar, void*, clang::tidy::ExternalConfigFile &ConfigFile) {
-    ConfigFile = clang::tidy::ExternalConfigFile(Scalar.str());
+  static StringRef input(StringRef Scalar, void*, AdditionalConfigFile &ConfigFile) {
+    ConfigFile = AdditionalConfigFile(Scalar.str());
     return {};
   }
 
@@ -209,11 +209,11 @@ template <> struct MappingTraits<ClangTidyOptions> {
 
 namespace clang::tidy {
 
-const llvm::StringRef ExternalConfigFile::getFile() const {
+const llvm::StringRef AdditionalConfigFile::getFile() const {
   return llvm::StringRef();
 }
 
-void ExternalConfigFile::setPath(std::string Path) {
+void AdditionalConfigFile::setParentFile(llvm::StringRef ParentFile) {
 
 }
 
@@ -519,7 +519,10 @@ parseConfiguration(llvm::MemoryBufferRef Config) {
   if (Input.error())
     return Input.error();
 
-  //llvm::outs() << "trace " << Options.MappingFiles.value()[0] << " " << Config.getBufferIdentifier() << "\n";
+  // Insert the full path into the MappingFiles
+  for (auto &MappingFile : *Options.MappingFiles) {
+    MappingFile.setParentFile(Config.getBufferIdentifier());
+  }
   return Options;
 }
 
