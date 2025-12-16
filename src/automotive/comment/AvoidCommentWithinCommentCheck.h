@@ -36,6 +36,8 @@ private:
 
   private:
     void CheckComment(SourceLocation CommentLoc, StringRef CommentText);
+    void checkURLProtocol(SourceLocation CommentLoc, StringRef CommentText,
+                          size_t Index);
 
     AvoidCommentWithinCommentCheck &Check;
     llvm::StringSet<> Protocols;
