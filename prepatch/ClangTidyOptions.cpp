@@ -25,12 +25,31 @@
 
 using clang::tidy::ClangTidyOptions;
 using clang::tidy::FileFilter;
+using clang::tidy::ExternalConfigFile;
 using OptionsSource = clang::tidy::ClangTidyOptionsProvider::OptionsSource;
 
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(FileFilter)
 LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(FileFilter::LineRange)
+LLVM_YAML_IS_FLOW_SEQUENCE_VECTOR(ExternalConfigFile)
 
 namespace llvm::yaml {
+
+template <>
+struct ScalarTraits<clang::tidy::ExternalConfigFile> {
+  static void output(const clang::tidy::ExternalConfigFile &ConfigFile, void*,
+                     llvm::raw_ostream &Out) {
+    Out << ConfigFile.str();
+  }
+
+  static StringRef input(StringRef Scalar, void*, clang::tidy::ExternalConfigFile &ConfigFile) {
+    ConfigFile = clang::tidy::ExternalConfigFile(Scalar.str());
+    return {};
+  }
+
+  static QuotingType mustQuote(StringRef) { 
+    return QuotingType::Double; 
+  }
+};
 
 // Map std::pair<int, int> to a JSON array of size 2.
 template <> struct SequenceTraits<FileFilter::LineRange> {
@@ -190,6 +209,14 @@ template <> struct MappingTraits<ClangTidyOptions> {
 
 namespace clang::tidy {
 
+const llvm::StringRef ExternalConfigFile::getFile() const {
+  return llvm::StringRef();
+}
+
+void ExternalConfigFile::setPath(std::string Path) {
+
+}
+
 ClangTidyOptions ClangTidyOptions::getDefaults() {
   ClangTidyOptions Options;
   Options.Checks = "";
@@ -295,9 +322,7 @@ ConfigOptionsProvider::ConfigOptionsProvider(
     : FileOptionsBaseProvider(std::move(GlobalOptions),
                               std::move(DefaultOptions),
                               std::move(OverrideOptions), std::move(FS)),
-      ConfigOptions(std::move(ConfigOptions)) {
-        llvm::outs() << "trace 4\n";
-      }
+      ConfigOptions(std::move(ConfigOptions)) {}
 
 std::vector<OptionsSource>
 ConfigOptionsProvider::getRawOptions(llvm::StringRef FileName) {
@@ -329,11 +354,9 @@ FileOptionsBaseProvider::FileOptionsBaseProvider(
                              std::move(DefaultOptions)),
       OverrideOptions(std::move(OverrideOptions)), FS(std::move(VFS)) {
 
-  llvm::outs() << "trace 1\n";      
   if (!FS)
     FS = llvm::vfs::getRealFileSystem();
-  ConfigHandlers.emplace_back(".clang-tidy", parseConfiguration2);
-  llvm::outs() << "trace 2\n";      
+  ConfigHandlers.emplace_back(".clang-tidy", parseConfiguration);
 }
 
 FileOptionsBaseProvider::FileOptionsBaseProvider(
@@ -350,7 +373,6 @@ FileOptionsBaseProvider::getNormalizedAbsolutePath(llvm::StringRef Path) {
   assert(FS && "FS must be set.");
   llvm::SmallString<128> NormalizedAbsolutePath = {Path};
   std::error_code Err = FS->makeAbsolute(NormalizedAbsolutePath);
-  llvm::outs() << "trace 5\n";
   if (Err)
     return Err;
   llvm::sys::path::remove_dots(NormalizedAbsolutePath, /*remove_dot_dot=*/true);
@@ -420,7 +442,6 @@ std::vector<OptionsSource>
 FileOptionsProvider::getRawOptions(StringRef FileName) {
   LLVM_DEBUG(llvm::dbgs() << "Getting options for file " << FileName
                           << "...\n");
-  llvm::outs() << "trace 6\n";
   llvm::ErrorOr<llvm::SmallString<128>> AbsoluteFilePath =
       getNormalizedAbsolutePath(FileName);
   if (!AbsoluteFilePath)
@@ -464,7 +485,6 @@ FileOptionsBaseProvider::tryReadConfigFile(StringRef Directory) {
                    << "\n";
       continue;
     }
-    llvm::outs() << "trace 7\n";
     // Skip empty files, e.g. files opened for writing via shell output
     // redirection.
     if ((*Text)->getBuffer().empty())
@@ -491,19 +511,15 @@ std::error_code parseLineFilter(StringRef LineFilter,
 }
 
 llvm::ErrorOr<ClangTidyOptions>
-parseConfiguration2(llvm::MemoryBufferRef Config) {
+parseConfiguration(llvm::MemoryBufferRef Config) {
   llvm::yaml::Input Input(Config);
   ClangTidyOptions Options;
   Input >> Options;
 
-  auto x = Config.getBufferIdentifier();
-
-  llvm::outs() << "trace 0\n";
   if (Input.error())
     return Input.error();
-  
-  llvm::outs() << "trace " << Options.MappingFiles.value()[0] << " " << Config.getBufferIdentifier() << "\n";
-  
+
+  //llvm::outs() << "trace " << Options.MappingFiles.value()[0] << " " << Config.getBufferIdentifier() << "\n";
   return Options;
 }
 
@@ -518,12 +534,9 @@ parseConfigurationWithDiags(llvm::MemoryBufferRef Config,
                           &Handler);
   ClangTidyOptions Options;
 
-  llvm::outs() << "trace 3\n";
   Input >> Options;
   if (Input.error())
     return Input.error();
-
-    llvm::outs() << "trace " << Options.MappingFiles.value()[0] << "\n";
 
     return Options;
 }

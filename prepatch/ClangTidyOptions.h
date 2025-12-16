@@ -37,8 +37,20 @@ struct FileFilter {
   std::vector<LineRange> LineRanges;
 };
 
-class RelativePath {
+struct ExternalConfigFile {
+  ExternalConfigFile() = default;
+  explicit ExternalConfigFile(std::string ConfigFile) : ConfigFile(std::move(ConfigFile)) {}    
 
+  const std::string &str() const noexcept { 
+    return ConfigFile; 
+  }
+
+  const llvm::StringRef getFile() const;
+  void setPath(std::string Path); 
+
+private:
+  std::string ConfigFile;
+  std::string Path;
 };
 
 /// Global options. These options are neither stored nor read from
@@ -96,7 +108,7 @@ struct ClangTidyOptions {
   std::optional<bool> SystemHeaders;
 
   /// TODO
-  std::optional<std::vector<std::string>> MappingFiles;
+  std::optional<std::vector<ExternalConfigFile>> MappingFiles;
 
   /// Format code around applied fixes with clang-format using this
   /// style.
@@ -332,7 +344,7 @@ std::error_code parseLineFilter(llvm::StringRef LineFilter,
 /// Parses configuration from JSON and returns \c ClangTidyOptions or an
 /// error.
 llvm::ErrorOr<ClangTidyOptions>
-parseConfiguration2(llvm::MemoryBufferRef Config);
+parseConfiguration(llvm::MemoryBufferRef Config);
 
 using DiagCallback = llvm::function_ref<void(const llvm::SMDiagnostic &)>;
 
