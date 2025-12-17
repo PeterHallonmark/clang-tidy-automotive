@@ -62,24 +62,6 @@ bool AvoidCommentWithinCommentCheck::InternalCommentHandler::HandleComment(
   return false;
 }
 
-void AvoidCommentWithinCommentCheck::InternalCommentHandler::checkURLProtocol(
-    SourceLocation CommentLoc, StringRef CommentText, size_t Index) {
-  if (CommentText.substr(Index, 3) != "://")
-    return;
-
-  // Find the start of the protocol by scanning backwards
-  size_t Start = Index;
-  while (Start > 0 && llvm::isAlnum(CommentText[Start - 1]))
-    --Start;
-
-  StringRef Protocol = CommentText.substr(Start, Index - Start);
-  if (!Protocols.contains(Protocol)) {
-    Check.diag(CommentLoc.getLocWithOffset(Index),
-               "unknown protocol '%0'", DiagnosticIDs::Note)
-        << Protocol;
-  }
-}
-
 void AvoidCommentWithinCommentCheck::InternalCommentHandler::CheckComment(
     SourceLocation CommentLoc, StringRef CommentText) {
 
@@ -111,15 +93,33 @@ void AvoidCommentWithinCommentCheck::InternalCommentHandler::CheckComment(
 
     case ExpectURLPattern:
       Index = It.position();
-      checkURLProtocol(CommentLoc, CommentText, Index);
-      if (CommentText.substr(Index, 3) == "://")
-        std::advance(It, 2);
+      std::advance(It, checkURLProtocol(CommentLoc, CommentText, Index));
       break;
 
     default:
       break;
     }
   }
+}
+
+size_t AvoidCommentWithinCommentCheck::InternalCommentHandler::checkURLProtocol(
+    SourceLocation CommentLoc, StringRef CommentText, size_t Index) {
+  if (CommentText.substr(Index, 3) != "://")
+    return 0;
+
+  // Find the start of the protocol by scanning backwards
+  size_t Start = Index;
+  while (Start > 0 && llvm::isAlnum(CommentText[Start - 1]))
+    --Start;
+
+  StringRef Protocol = CommentText.substr(Start, Index - Start);
+  if (!Protocols.contains(Protocol)) {
+    Check.diag(CommentLoc.getLocWithOffset(Index),
+               "unknown protocol '%0'", DiagnosticIDs::Note)
+        << Protocol;
+    return 2;  
+  }
+  return 0;
 }
 
 static constexpr State getNextState(State CurrentState, char Ch) {
