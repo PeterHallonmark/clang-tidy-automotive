@@ -25,9 +25,9 @@ static const StringRef ForbiddenFunctionNames[] = {
 
 void AvoidSignalHeaderCheck::registerPPCallbacks(
     const SourceManager &SM, Preprocessor *PP, Preprocessor *ModuleExpanderPP) {
-    // TODO: Add preprocessor support for the forbidden functions.
-    //  PP->addPPCallbacks(std::make_unique<AvoidApiPPCallbacks>(
-    //      *this, *PP, "signal.h", ForbiddenFunctionNames));
+  // TODO: Add preprocessor support for the forbidden functions.
+  //  PP->addPPCallbacks(std::make_unique<AvoidApiPPCallbacks>(
+  //      *this, *PP, "signal.h", ForbiddenFunctionNames));
 }
 
 void AvoidSignalHeaderCheck::registerMatchers(MatchFinder *Finder) {
