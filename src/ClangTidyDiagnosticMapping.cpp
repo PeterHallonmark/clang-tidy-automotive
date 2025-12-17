@@ -94,10 +94,7 @@ void ClangTidyDiagnosticMapping::readMappingOptions() {
   if (Options.MappingFiles) {
 
     for (const auto &MappingFilename : *Options.MappingFiles) {
-      llvm::outs() << MappingFilename << "\n";
-
-      // TODO: This needs to read the relative file path somehow.
-      readMappingFile(MappingFilename);
+      readMappingFile(MappingFilename.getFile());
     }
   }
 }

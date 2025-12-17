@@ -285,7 +285,7 @@ ClangTidyContext::getProfileStorageParams() const {
 
 bool ClangTidyContext::isDiagnosticEnabled(StringRef CheckName) const {
   assert(CheckFilter != nullptr);
-  //return CheckFilter->contains(CheckName) && 
+  //return CheckFilter->contains(CheckName); 
   return true;
 }
 
