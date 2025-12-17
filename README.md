@@ -63,6 +63,7 @@ the clang-tidy checks themselves. This separation is essential in order to:
 - avoid embedding copyrighted MISRA rule text in the codebase
 - allow different interpretations or future revisions of MISRA rules without
   rewriting the checks
+- Map native clang diagnostics towards MISRA rules
 - make the design acceptable for potential upstreaming in LLVM
 
 The mapping layer is still under active development. Once it is complete and
