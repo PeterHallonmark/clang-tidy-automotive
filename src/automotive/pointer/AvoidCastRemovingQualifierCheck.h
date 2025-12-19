@@ -13,7 +13,6 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-pointer
 /// @brief Detects casts that remove const or volatile qualifiers from pointers.
 ///
 /// A cast shall not remove any const or volatile qualification from the type
@@ -21,11 +20,6 @@ namespace clang::tidy::automotive {
 /// that were intended to be read-only, potentially causing undefined behavior.
 /// Casting away volatile may cause the compiler to optimize away necessary
 /// accesses.
-///
-/// @par MISRA C:2025 Rule 11.8
-/// A cast shall not remove any const or volatile qualification from the type
-/// pointed to by a pointer.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

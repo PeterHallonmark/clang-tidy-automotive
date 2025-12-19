@@ -13,16 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-preprocessor
 /// @brief Detects macros that are defined but never used.
 ///
 /// Unused macros indicate dead code that should be removed. They may be
 /// remnants of old code, debugging aids left behind, or incomplete
 /// implementations that were never finished.
-///
-/// @par MISRA C:2025 Rule 2.5
-/// A project should not contain unused macro declarations.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

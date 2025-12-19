@@ -13,18 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-preprocessor
 /// @brief Detects #define and #undef of reserved identifiers.
 ///
 /// Reserved identifiers (those starting with underscore followed by uppercase
 /// or another underscore, and standard library names) shall not be defined or
 /// undefined. Modifying these can cause undefined behavior and break the
 /// standard library.
-///
-/// @par MISRA C:2025 Rule 21.1
-/// #define and #undef shall not be used on a reserved identifier or reserved
-/// macro name.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

@@ -13,16 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-unused-code
 /// @brief Detects unused tag declarations (struct, union, enum tags).
 ///
 /// This check identifies tag declarations that are defined but never used
 /// in the code. Unused tags indicate dead code that should be removed to
 /// improve code clarity and maintainability.
-///
-/// @par MISRA C:2025 Rule 2.4
-/// A tag should be used when it is declared.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

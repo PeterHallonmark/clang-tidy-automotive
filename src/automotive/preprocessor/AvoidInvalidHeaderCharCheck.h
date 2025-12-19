@@ -13,16 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-preprocessor
 /// @brief Detects invalid characters in #include header file names.
 ///
 /// The characters ', ", and \ shall not appear in header file names used
 /// with #include directives. These characters can cause portability issues
 /// and undefined behavior across different compilers and platforms.
-///
-/// @par MISRA C:2025 Rule 20.2
-/// The ', " and \ characters shall not occur in a header file name.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

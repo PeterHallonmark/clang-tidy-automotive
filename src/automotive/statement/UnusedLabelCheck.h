@@ -13,15 +13,10 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-statements
 /// @brief Detects labels that are declared but never referenced by a goto.
 ///
 /// Unused labels indicate dead code that should be removed. They may be
 /// remnants of removed goto statements or incomplete implementations.
-///
-/// @par MISRA C:2025 Rule 2.6
-/// A function should not contain unused label declarations.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

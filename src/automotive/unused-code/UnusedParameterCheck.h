@@ -13,17 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-unused-code
 /// @brief Detects unused function parameters.
 ///
 /// Function parameters that are not used in the function body may indicate
 /// incomplete implementations, interface mismatches, or dead code. Unused
 /// parameters should be removed or marked to suppress the warning if they
 /// are intentionally unused (e.g., for API compatibility).
-///
-/// @par MISRA C:2025 Rule 2.7
-/// There should be no unused parameters in functions.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

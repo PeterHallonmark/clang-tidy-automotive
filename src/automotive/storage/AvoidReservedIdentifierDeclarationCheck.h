@@ -13,17 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-storage
 /// @brief Detects declarations that use reserved identifiers.
 ///
 /// Reserved identifiers (those starting with underscore followed by uppercase
 /// or another underscore, or identifiers reserved by the C standard library)
 /// shall not be declared. Such declarations may cause undefined behavior
 /// and conflict with compiler or library internals.
-///
-/// @par MISRA C:2025 Rule 21.2
-/// A reserved identifier or macro name shall not be declared.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

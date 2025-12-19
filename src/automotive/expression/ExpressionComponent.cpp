@@ -8,6 +8,10 @@
 
 #include "ExpressionComponent.h"
 #include "AvoidSideEffectInLogicalOperandCheck.h"
+#include "AvoidAssignmentInExpressionCheck.h"
+#include "AvoidNonBooleanInConditionCheck.h"
+#include "AvoidSideEffectInLogicalOperandCheck.h"
+#include "InvariantControlCheck.h"
 
 namespace clang::tidy::automotive {
 
@@ -18,7 +22,6 @@ void ExpressionComponent::addCheckFactories(
   CheckFactories.registerCheck<AvoidSideEffectInLogicalOperandCheck>(
       "automotive-c23-req-13.5");
 
-#if 0
     /* 14.
     ---------------------------------------------------------------- */
     CheckFactories.registerCheck<InvariantControlCheck>(
@@ -30,7 +33,6 @@ void ExpressionComponent::addCheckFactories(
         "automotive-c23-adv-13.4");
     CheckFactories.registerCheck<AvoidNonBooleanInConditionCheck>(
         "automotive-c23-req-14.4");
-#endif
 }
 
 } // namespace clang::tidy::automotive

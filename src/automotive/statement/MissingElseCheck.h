@@ -13,16 +13,9 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-statements
-/// @brief Detects if-else-if chains without a final else clause.
-///
 /// An if-else-if chain without a terminating else clause may indicate
 /// incomplete logic. The final else should handle unexpected conditions
 /// or document that all cases are intentionally covered.
-///
-/// @par MISRA C:2025 Rule 15.7
-/// All if ... else if constructs shall be terminated with an else statement.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

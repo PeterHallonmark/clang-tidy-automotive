@@ -13,18 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-expression
 /// @brief Detects persistent side effects in the right operand of && and ||.
 ///
 /// The right-hand operand of a logical && or || operator shall not contain
 /// persistent side effects. Due to short-circuit evaluation, the right operand
 /// may not be evaluated, making side effects in it unreliable and potentially
 /// leading to unexpected behavior.
-///
-/// @par MISRA C:2025 Rule 13.5
-/// The right hand operand of a logical && or || operator shall not contain
-/// persistent side effects.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

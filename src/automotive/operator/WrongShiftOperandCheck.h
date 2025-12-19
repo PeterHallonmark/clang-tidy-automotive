@@ -13,19 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-operator
 /// @brief Detects shift operators with out-of-bounds shift amounts.
 ///
 /// The right-hand operand of a shift operator shall lie in the range zero to
 /// one less than the width in bits of the essential type of the left-hand
 /// operand. Shifting by negative amounts or by amounts equal to or greater
 /// than the bit width results in undefined behavior.
-///
-/// @par MISRA C:2025 Rule 12.2
-/// The right hand operand of a shift operator shall lie in the range zero to
-/// one less than the width in bits of the essential type of the left hand
-/// operand.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

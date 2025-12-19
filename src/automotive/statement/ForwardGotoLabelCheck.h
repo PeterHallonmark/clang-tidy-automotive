@@ -19,17 +19,11 @@ struct GotoInfo {
   const GotoStmt *MatchedLabel = nullptr;
 };
 
-/// @ingroup misra-c25-statements
 /// @brief Detects goto statements that jump backward in code.
 ///
 /// Backward jumps with goto create loops that are harder to understand and
 /// analyze than structured loop constructs (for, while, do-while). This check
 /// ensures goto statements only jump forward if they must be used at all.
-///
-/// @par MISRA C:2025 Rule 15.3
-/// Any label referenced by a goto statement shall be declared in the same
-/// block, or in any block enclosing the goto statement.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

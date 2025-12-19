@@ -13,18 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-preprocessor
 /// @brief Detects #include directives preceded by code other than preprocessor
 /// directives or comments.
 ///
 /// Header file inclusions should appear at the beginning of a file, before any
 /// code. Only preprocessor directives and comments should precede #include
 /// statements to ensure headers are processed in a clean environment.
-///
-/// @par MISRA C:2025 Rule 20.1
-/// #include directives should only be preceded by preprocessor directives or
-/// comments.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

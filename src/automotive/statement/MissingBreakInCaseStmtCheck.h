@@ -13,16 +13,9 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-statements
-/// @brief Detects fall-through in switch case statements.
-///
 /// Unintentional fall-through between switch cases is a common source of bugs.
 /// Each case should explicitly end with a break, return, or throw statement.
 /// If fall-through is intentional, it should be clearly documented.
-///
-/// @par MISRA C:2025 Rule 16.3
-/// An unconditional break statement shall terminate every switch-clause.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

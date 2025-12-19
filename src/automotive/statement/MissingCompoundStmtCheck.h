@@ -13,18 +13,10 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-statements
-/// @brief Detects control structures without compound statements (braces).
-///
 /// Control flow statements (if, else, for, while, do, switch) without braces
 /// around their bodies are error-prone. Adding or removing statements can
 /// inadvertently change the control flow. Always using braces improves
 /// readability and reduces bugs during maintenance.
-///
-/// @par MISRA C:2025 Rule 15.6
-/// The body of an iteration-statement or a selection-statement shall be a
-/// compound-statement.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

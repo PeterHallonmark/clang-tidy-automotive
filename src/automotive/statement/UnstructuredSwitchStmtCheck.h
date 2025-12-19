@@ -13,17 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-statements
 /// @brief Detects improperly structured switch statements.
 ///
 /// Switch statements should be well-formed with cases appearing only at the
 /// top level of the switch body. Nested cases, cases inside loops, or other
 /// unstructured patterns make code harder to understand and maintain.
-///
-/// @par MISRA C:2025 Rule 16.2
-/// A switch label shall only be used when the most closely-enclosing
-/// compound statement is the body of a switch statement.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

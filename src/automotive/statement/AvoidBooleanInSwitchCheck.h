@@ -13,16 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-statements
 /// @brief Detects switch statements with boolean controlling expressions.
 ///
 /// A switch statement on a boolean expression is redundant since a boolean
 /// can only have two values (true/false). An if-else statement is clearer
 /// and more appropriate for boolean decisions.
-///
-/// @par MISRA C:2025 Rule 16.7
-/// A switch expression shall not have essentially Boolean type.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

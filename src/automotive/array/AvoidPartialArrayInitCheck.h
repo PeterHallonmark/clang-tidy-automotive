@@ -13,17 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-arrays
 /// @brief Detects partially initialized arrays.
 ///
 /// Partial array initialization (where only some elements are explicitly
 /// initialized) can be error-prone. It may be unclear which elements are
 /// initialized and to what values. Either initialize all elements explicitly
 /// or use {0} to zero-initialize the entire array.
-///
-/// @par MISRA C:2025 Rule 9.3
-/// Arrays shall not be partially initialized.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

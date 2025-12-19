@@ -13,17 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-arrays
 /// @brief Detects extern array declarations without explicit size.
 ///
 /// Extern array declarations without an explicit size make it impossible
 /// to perform bounds checking at compile time. The size should be specified
 /// to enable static analysis and prevent buffer overflows.
-///
-/// @par MISRA C:2025 Rule 8.11
-/// When an array with external linkage is declared, its size should be
-/// explicitly specified.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code
