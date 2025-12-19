@@ -48,7 +48,7 @@ void WrongShiftOperandCheck::check(const MatchFinder::MatchResult &Result) {
     return; // Can't evaluate at compile time, skip
 
   llvm::APSInt ShiftAmount = EvalResult.Val.getInt();
-
+#if 0 // Broken code
   // Check for negative shift amount
   if (ShiftAmount.isNegative()) {
     diag(RHS->getBeginLoc(),
@@ -64,6 +64,7 @@ void WrongShiftOperandCheck::check(const MatchFinder::MatchResult &Result) {
          "type (%1 bits)")
         << ShiftAmount.toString(10) << static_cast<unsigned>(TypeBitWidth);
   }
+#endif
 }
 
 } // namespace clang::tidy::automotive
