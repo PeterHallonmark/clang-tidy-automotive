@@ -17,3 +17,4 @@ src/add_new_check.py
 src/rename_check.py
 build
 test-build
+openspec
