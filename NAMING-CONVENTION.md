@@ -71,6 +71,7 @@ CheckFactories.registerCheck<AvoidGotoCheck>("automotive-avoid-goto");
 
 * **Clarity in Code**: Developers understand checks without memorizing rule IDs
 * **Scalability**: Supports multiple MISRA versions simultaneously
+* **Moveable**: A check can be moved to a more generic set of checks within LLVM without renaming
 
 ## Adding a New Check
 
