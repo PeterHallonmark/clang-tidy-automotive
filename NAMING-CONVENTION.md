@@ -64,11 +64,7 @@ class AvoidGotoCheck : public ClangTidyCheck {
 Register checks in the appropriate component's `*Component.cpp`:
 
 ```cpp
-// Descriptive check ID
 CheckFactories.registerCheck<AvoidGotoCheck>("automotive-avoid-goto");
-
-// Rule-based check ID
-CheckFactories.registerCheck<InvariantControlCheck>("automotive-c23-req-14.3");
 ```
 
 ## Benefits
