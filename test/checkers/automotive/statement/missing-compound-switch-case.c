@@ -1,106 +1,38 @@
-// RUN: %check_clang_tidy %s misra-c2023-req-15.6 %t -- -- -std=c90
-// RUN: %check_clang_tidy %s misra-c2023-req-15.6 %t -- -- -std=c99
-// RUN: %check_clang_tidy %s misra-c2023-req-15.6 %t -- -- -std=c11
+// Test file for: automotive-missing-compound
+//
+// This file tests the detection of missing compound statements for switch statements
+
+// RUN: %check_clang_tidy %s automotive-missing-compound %t -- -- -std=c90
+// RUN: %check_clang_tidy %s automotive-missing-compound %t -- -- -std=c99
+// RUN: %check_clang_tidy %s automotive-missing-compound %t -- -- -std=c11
+
+//===----------------------------------------------------------------------===//
+// Violation Cases (should trigger warnings)
+//===----------------------------------------------------------------------===//
 
 int f1(int x) {
-  if (x == 2)
-  {
-    x = x + 2;       /* Compliant */
-  }
+  switch (x)         /* Not compliant */
+    case 1:
+      x += 3;        
+  // CHECK-MESSAGES: :[[@LINE-2]]:5: warning: missing compound statement
 
-  if (x == 3)
-    x = x + 3;       /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: missing compound statement [misra-c2023-req-15.6]
   return x;
 }
+
+//===----------------------------------------------------------------------===//
+// Compliant Cases (should NOT trigger warnings)
+//===----------------------------------------------------------------------===//
 
 int f2(int x) {
-  if (x < 2) {
-    x = x + 2;       /* Compliant */
-  } else {
-    x = x + 4;       /* Compliant */
+
+  switch (x)
+  {                  
+  case 1:            /* Compliant */
+    x += 1;
+    break;
+  default:
+    x += 2;
+    break;
   }
-  return x;
+  return x;               
 }
-
-int f3(int x)
-{
-  if (x < 10)
-    x = x + 3;       /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: missing compound statement [misra-c2023-req-15.6]
-  else
-    x = x + 4;       /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: missing compound statement [misra-c2023-req-15.6]
-
-  if (x < 20)
-  {
-    x = x + 5;       /* Compliant */
-  }
-  else
-    x = x + 6;       /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: missing compound statement [misra-c2023-req-15.6]
-
-  return x;
-}
-
-int f4(int x)
-{
-  if (x < 30)
-  {
-    x = x + 5;       /* Compliant */
-  }
-  else if (x < 40)   /* Compliant */
-    x = x + 6;       /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: missing compound statement [misra-c2023-req-15.6]
-
-
-  if (x < 30)
-  {
-    x = x + 5;       /* Compliant */
-  }
-  else if (x < 40)   /* Compliant */
-  {
-    x = x + 6;       /* Compliant */
-  }
-
-  if (x < 40)
-  {
-    x = x + 5;       /* Compliant */
-  }
-  else if (x < 50)   /* Compliant */
-  {
-    x = x + 6;       /* Compliant */
-  } else
-    x = x + 7;       /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: missing compound statement [misra-c2023-req-15.6]
-
-  return x;
-}
-
-int f5(int x)
-{
-  if (x < 10) if (x < 20) { /* Not compliant */
-  // CHECK-MESSAGES: :[[@LINE-1]]:15: warning: missing compound statement [misra-c2023-req-15.6]
-    x = x + 10;
-  }
-  return x;
-}
-
-int f6(int x)
-{
-  /* Test case where all if and else statements are correct. */
-  if (x < 60)
-  {
-    x = x + 5;       /* Compliant */
-  }
-  else if (x < 70)   /* Compliant */
-  {
-    x = x + 6;       /* Compliant */
-  }
-  else
-  {
-    x = x + 7;       /* Compliant */
-  }
-  return x;
-}
-
