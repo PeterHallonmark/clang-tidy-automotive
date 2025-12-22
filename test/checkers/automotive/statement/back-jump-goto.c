@@ -1,8 +1,8 @@
 // Test file for: automotive-forward-goto-label
 //
-// This file tests the rule that goto statements should only jump forward
-// to labels. Backward jumps (jumping to a label earlier in the code)
-// are considered not compliant and should trigger a warning.
+// This file tests that goto statements should only jump forward to labels. 
+// Backward jumps (jumping to a label earlier in the code) are considered not 
+// compliant and should trigger a warning.
 
 // RUN: %check_clang_tidy %s automotive-forward-goto-label %t -- -- -std=c90
 // RUN: %check_clang_tidy %s automotive-forward-goto-label %t -- -- -std=c99
