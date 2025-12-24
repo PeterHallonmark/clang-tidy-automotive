@@ -25,4 +25,5 @@ Label2:
 void g(void) {
   goto Label1;    /* Compliant */
 Label1:
+  (void)0;  // Prevent C23 extension warning about label at end of compound statement
 }
