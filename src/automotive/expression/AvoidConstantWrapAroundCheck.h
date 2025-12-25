@@ -13,18 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-expression
 /// @brief Detects unsigned integer wrap-around in constant expressions.
 ///
 /// Evaluating constant expressions should not lead to unsigned integer
 /// wrap-around. While wrap-around behavior is well-defined for unsigned types
 /// in C, it is often a sign of a programming error when it occurs in constant
 /// expressions at compile time.
-///
-/// @par MISRA C:2023 Rule 12.4
-/// Evaluation of constant expressions should not lead to unsigned integer
-/// wrap-around.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

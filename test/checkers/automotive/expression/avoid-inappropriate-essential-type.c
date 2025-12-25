@@ -1,5 +1,4 @@
 // Test file for: automotive-c23-req-10.1
-// Related MISRA C:2023 Rule: 10.1
 //
 // This file tests the detection of inappropriate essential type mixing
 

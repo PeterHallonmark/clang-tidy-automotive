@@ -15,17 +15,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-storage
 /// @brief Detects file-scope objects that could be defined at block scope.
 ///
 /// An object should be defined at block scope if its identifier only appears
 /// in a single function. This improves locality and makes the code easier to
 /// understand and maintain.
-///
-/// @par MISRA C:2025 Rule 8.9
-/// An object should be defined at block scope if its identifier only appears
-/// in a single function.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

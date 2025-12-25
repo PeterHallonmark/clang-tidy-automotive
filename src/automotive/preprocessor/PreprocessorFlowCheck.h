@@ -13,7 +13,7 @@
 
 namespace clang::tidy::automotive {
 
-/// @brief Monitors preprocessor flow for MISRA compliance checks.
+/// @brief Monitors preprocessor flow
 ///
 /// This check provides infrastructure for monitoring preprocessor directives
 /// and their flow through the compilation process. It can detect issues with

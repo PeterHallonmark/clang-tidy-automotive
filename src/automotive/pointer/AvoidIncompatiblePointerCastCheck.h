@@ -13,17 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-pointer
 /// @brief Detects casts between pointers to incompatible object types.
 ///
 /// A cast shall not be performed between a pointer to object type and a
 /// pointer to a different object type. Such casts can violate alignment
 /// requirements and lead to undefined behavior due to strict aliasing rules.
-///
-/// @par MISRA C:2025 Rule 11.3
-/// A cast shall not be performed between a pointer to object type and a
-/// pointer to a different object type.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

@@ -13,17 +13,11 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-expression
 /// @brief Detects inappropriate essential type mixing in operations.
 ///
-/// Implements MISRA Rule 10.1: Operands shall not be of an inappropriate
-/// essential type. This check enforces the Essential Type Model which
+/// This check enforces the Essential Type Model which
 /// categorizes types into Boolean, Character, Signed, Unsigned, Floating,
 /// and Enum, and detects inappropriate mixing of these categories.
-///
-/// @par MISRA C:2023 Rule 10.1
-/// Operands shall not be of an inappropriate essential type.
-/// @par Category: Required
 ///
 /// Common violations detected:
 /// - Boolean types used in arithmetic operations

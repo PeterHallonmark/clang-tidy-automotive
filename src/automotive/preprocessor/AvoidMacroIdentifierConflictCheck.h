@@ -15,17 +15,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-preprocessor
 /// @brief Detects macro identifiers that conflict with other identifiers.
 ///
 /// Macro identifiers shall be distinct from other identifiers (variables,
 /// functions, types, labels) in the translation unit. Having the same name
 /// for a macro and another identifier can lead to confusion and unexpected
 /// behavior during preprocessing.
-///
-/// @par MISRA C:2023 Rule 5.4
-/// Macro identifiers shall be distinct from other identifiers.
-/// @par Category: Required
 ///
 /// Example:
 /// @code

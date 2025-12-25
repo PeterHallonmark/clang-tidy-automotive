@@ -23,8 +23,6 @@ namespace clang::tidy::automotive {
 /// confusion and violates the principle that identifiers should have unique
 /// meanings. This check ensures that each tag name is used only once.
 ///
-/// Related MISRA C:2023 Rule 5.7 - A tag name shall be a unique identifier.
-///
 /// Example:
 /// \code
 ///   struct Point { int x, y; };

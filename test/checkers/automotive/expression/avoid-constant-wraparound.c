@@ -2,9 +2,6 @@
 
 #include <limits.h>
 
-// Test cases for MISRA C:2023 Rule 12.4
-// Evaluation of constant expressions should not lead to unsigned integer wrap-around
-
 // Non-compliant: unsigned subtraction wrap-around
 const unsigned int x1 = 0u - 1u;
 // CHECK-MESSAGES: :[[@LINE-1]]:25: warning: constant expression evaluation leads to unsigned integer wrap-around [automotive-c23-adv-12.4]
