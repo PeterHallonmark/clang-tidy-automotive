@@ -1,6 +1,7 @@
 // Test file for: automotive-missing-compound
 //
-// This file tests the detection of missing compound statements for for statements
+// This file tests the detection of missing compound statements for 
+// 'for' statements
 
 // RUN: %check_clang_tidy %s automotive-missing-compound %t -- -- -std=c90
 // RUN: %check_clang_tidy %s automotive-missing-compound %t -- -- -std=c99
@@ -26,7 +27,7 @@ int f2(int x) {
   int i;
 
   for (i = 0; i < x; ++i)
-  {                  
+  {
     x += i;          /* Compliant */
   }
   return x;
