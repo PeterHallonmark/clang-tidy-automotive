@@ -1,11 +1,6 @@
 // RUN: %check_clang_tidy %s automotive-c23-req-12.2 %t -- -- -std=c99
 // RUN: %check_clang_tidy %s automotive-c23-req-12.2 %t -- -- -std=c11
 
-// MISRA C:2025 Rule 12.2 (Required)
-// The right hand operand of a shift operator shall lie in the range zero to
-// one less than the width in bits of the essential type of the left hand
-// operand.
-
 #include <stdint.h>
 
 void test_shift_bounds(void) {

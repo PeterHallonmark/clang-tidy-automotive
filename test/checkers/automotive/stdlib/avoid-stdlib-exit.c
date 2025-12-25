@@ -1,5 +1,4 @@
 // Test file for: automotive-avoid-stdlib-exit
-// Related MISRA C:2025 Rule: 21.8
 //
 // This file tests the detection of exit/abort function usage
 

@@ -1,5 +1,4 @@
 // Test file for: automotive-avoid-stdlib-rand
-// Related MISRA C:2025 Rule: 21.24
 //
 // This file tests the detection of rand/srand function usage
 

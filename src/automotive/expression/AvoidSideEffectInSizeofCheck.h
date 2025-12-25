@@ -13,18 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-expression
 /// @brief Detects sizeof operands with potential side effects.
 ///
 /// The operand of the sizeof operator shall not contain any expression which
 /// has potential side effects. Since sizeof typically evaluates at compile
 /// time, any side effects in its operand would not be executed, which could
 /// lead to unexpected behavior.
-///
-/// @par MISRA C:2025 Rule 13.6
-/// The operand of the sizeof operator shall not contain any expression which
-/// has potential side effects.
-/// @par Category: Mandatory
 ///
 /// Example:
 /// @code

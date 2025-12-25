@@ -13,18 +13,12 @@
 
 namespace clang::tidy::automotive {
 
-/// @ingroup misra-c25-array
 /// @brief Detects arithmetic operations on pointer types.
 ///
 /// The +, -, += and -= operators should not be applied to an expression of
 /// pointer type. Pointer arithmetic is error-prone and can easily lead to
 /// out-of-bounds access. Array indexing (ptr[i]) is preferred as it's more
 /// readable and intention is clearer.
-///
-/// @par MISRA C:2025 Rule 18.4
-/// The +, -, += and -= operators should not be applied to an expression of
-/// pointer type.
-/// @par Category: Advisory
 ///
 /// Example:
 /// @code

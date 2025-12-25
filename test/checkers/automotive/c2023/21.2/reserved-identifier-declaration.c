@@ -1,9 +1,6 @@
 // RUN: %check_clang_tidy %s automotive-c23-req-21.2 %t -- -- -std=c99
 // RUN: %check_clang_tidy %s automotive-c23-req-21.2 %t -- -- -std=c11
 
-// MISRA C:2025 Rule 21.2 (Required)
-// A reserved identifier or macro name shall not be declared.
-
 // Non-compliant: underscore followed by uppercase
 int _Reserved;
 // CHECK-MESSAGES: :[[@LINE-1]]:5: warning: variable declaration uses reserved identifier '_Reserved' [automotive-c23-req-21.2]

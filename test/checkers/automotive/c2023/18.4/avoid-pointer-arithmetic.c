@@ -1,10 +1,6 @@
 // RUN: %check_clang_tidy %s automotive-c23-adv-18.4 %t -- -- -std=c99
 // RUN: %check_clang_tidy %s automotive-c23-adv-18.4 %t -- -- -std=c11
 
-// MISRA C:2025 Rule 18.4 (Advisory)
-// The +, -, += and -= operators should not be applied to an expression of
-// pointer type.
-
 void test_pointer_addition(void) {
   int arr[10];
   int *p = arr;

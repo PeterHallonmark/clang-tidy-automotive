@@ -1,10 +1,6 @@
 // RUN: %check_clang_tidy %s automotive-c23-req-13.5 %t -- -- -std=c99
 // RUN: %check_clang_tidy %s automotive-c23-req-13.5 %t -- -- -std=c11
 
-// MISRA C:2025 Rule 13.5 (Required)
-// The right hand operand of a logical && or || operator shall not contain
-// persistent side effects.
-
 int foo(void);
 int bar(int x);
 int pure_check(int x);

@@ -1,5 +1,4 @@
 // Test file for: automotive-implicit-int
-// Related MISRA C:2025 Rule: 8.1
 //
 // This file tests the detection of implicit int declarations
 // Note: Most of these are C90 only and may cause warnings in C99+

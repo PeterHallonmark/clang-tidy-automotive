@@ -1,5 +1,4 @@
 // Test file for: automotive-avoid-stdlib-malloc
-// Related MISRA C:2025 Rule: 21.3
 //
 // This file tests the detection of dynamic memory allocation functions
 

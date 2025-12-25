@@ -2,9 +2,6 @@
 // RUN: %check_clang_tidy %s automotive-c23-adv-2.7 %t -- -- -std=c99
 // RUN: %check_clang_tidy %s automotive-c23-adv-2.7 %t -- -- -std=c11
 
-// MISRA C:2023 Rule 2.7 (Advisory)
-// There should be no unused parameters in functions.
-
 // Non-compliant: unused parameter
 void func_with_unused(int used, int unused) {
   // CHECK-MESSAGES: :[[@LINE-1]]:32: warning: unused parameter 'unused' [automotive-c23-adv-2.7]

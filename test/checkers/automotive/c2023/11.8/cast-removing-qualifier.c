@@ -1,10 +1,6 @@
 // RUN: %check_clang_tidy %s automotive-c23-req-11.8 %t -- -- -std=c99
 // RUN: %check_clang_tidy %s automotive-c23-req-11.8 %t -- -- -std=c11
 
-// MISRA C:2025 Rule 11.8 (Required)
-// A cast shall not remove any const or volatile qualification from the type
-// pointed to by a pointer.
-
 void test_const_removal(void) {
   int x = 10;
   const int *pc = &x;
