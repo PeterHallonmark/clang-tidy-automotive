@@ -209,12 +209,12 @@ template <> struct MappingTraits<ClangTidyOptions> {
 
 namespace clang::tidy {
 
-const llvm::StringRef AdditionalConfigFile::getFile() const {
-  return llvm::StringRef();
-}
-
-void AdditionalConfigFile::setParentFile(llvm::StringRef ParentFile) {
-
+void AdditionalConfigFile::resolveFullPath(llvm::StringRef ParentConfigFile) {
+  if (!llvm::sys::path::is_absolute(ConfigFile)) {
+    ResolvedConfigFile = (llvm::sys::path::parent_path(ParentConfigFile) + "/" + ConfigFile).str();
+  } else {
+    ResolvedConfigFile = ConfigFile;
+  }
 }
 
 ClangTidyOptions ClangTidyOptions::getDefaults() {
@@ -519,9 +519,9 @@ parseConfiguration(llvm::MemoryBufferRef Config) {
   if (Input.error())
     return Input.error();
 
-  // Insert the full path into the MappingFiles
+  // Resolve the full path of the MappingFiles
   for (auto &MappingFile : *Options.MappingFiles) {
-    MappingFile.setParentFile(Config.getBufferIdentifier());
+    MappingFile.resolveFullPath(Config.getBufferIdentifier());
   }
   return Options;
 }
@@ -541,7 +541,11 @@ parseConfigurationWithDiags(llvm::MemoryBufferRef Config,
   if (Input.error())
     return Input.error();
 
-    return Options;
+  // Resolve the full path of the MappingFiles
+  for (auto &MappingFile : *Options.MappingFiles) {
+    MappingFile.resolveFullPath(Config.getBufferIdentifier());
+  }
+  return Options;
 }
 
 std::string configurationAsText(const ClangTidyOptions &Options) {

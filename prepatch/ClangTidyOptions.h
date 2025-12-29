@@ -44,13 +44,15 @@ struct AdditionalConfigFile {
   const std::string &str() const noexcept { 
     return ConfigFile; 
   }
+  const llvm::StringRef getFile() const {
+    return ResolvedConfigFile;
+  }
 
-  const llvm::StringRef getFile() const;
-  void setParentFile(llvm::StringRef ParentFile); 
+  void resolveFullPath(llvm::StringRef ParentConfigFile); 
 
 private:
   std::string ConfigFile;
-  std::string Path;
+  std::string ResolvedConfigFile;
 };
 
 /// Global options. These options are neither stored nor read from
