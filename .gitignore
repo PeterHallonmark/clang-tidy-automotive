@@ -18,3 +18,4 @@ src/rename_check.py
 build
 test-build
 openspec
+test/checkers/automotive/automotive
