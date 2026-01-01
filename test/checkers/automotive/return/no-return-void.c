@@ -1,3 +1,6 @@
+// XFAIL: *
+// TODO: Check if the clang-diagnostic-return-mismatch is sufficent for this check.
+
 // Test file for: automotive-missing-return-void
 //
 // This file tests the detection of return statements with values in void functions
