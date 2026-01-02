@@ -108,6 +108,7 @@ void f7() {
   }
 }
 
+//===----------------------------------------------------------------------===//
 // Compliant Cases (should NOT trigger warnings)
 //===----------------------------------------------------------------------===//
 
@@ -124,6 +125,19 @@ void f8() {
 }
 
 void f9() {
+  int x = 5;
+  int y = 10;
+
+  // Test ternary operator returning int
+  switch ((x > 0) ? x : y) {  // Compliant
+    case true:
+      break;
+    case false:
+      break;
+  }
+}
+
+void f10() {
   int x = 5;
 
   // Test correct integer switch case
