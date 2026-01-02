@@ -94,22 +94,20 @@ void f6() {
   }
 }
 
-// Broken test...
-// void f7() {
-//   int x = 5;
-//   int y = 10;
-// 
-//   // Test ternary operator returning boolean
-//   switch ((x > 0) ? true : false) {  // Not compliant
-//   // -MESSAGES: :[[@LINE-1]]:3: warning: avoid boolean expression in switch statement
-//     case true:
-//       break;
-//     case false:
-//       break;
-//   }
-// }
+void f7() {
+  int x = 5;
+  int y = 10;
 
-//===----------------------------------------------------------------------===//
+  // Test ternary operator returning boolean
+  switch ((x > 0) ? (x > 1) : (x < 0)) {  // Not compliant
+  // CHECK-MESSAGES: :[[@LINE-1]]:3: warning: avoid boolean expression in switch statement
+    case true:
+      break;
+    case false:
+      break;
+  }
+}
+
 // Compliant Cases (should NOT trigger warnings)
 //===----------------------------------------------------------------------===//
 

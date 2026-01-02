@@ -65,6 +65,12 @@ static bool isEssentiallyBooleanHelper(const Expr &Node) {
     return isEssentiallyBooleanHelper(*Cast->getSubExpr());
   }
 
+  // The expression is essentially Boolean if both branches are Boolean.
+  if (const auto *Cond = dyn_cast<ConditionalOperator>(&Node)) {
+    return isEssentiallyBooleanHelper(*Cond->getTrueExpr()) &&
+           isEssentiallyBooleanHelper(*Cond->getFalseExpr());
+  }
+
   // If none of the above conditions match, the expression is not essentially
   // Boolean.
   return false;
