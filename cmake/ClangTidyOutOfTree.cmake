@@ -11,6 +11,10 @@ function(add_clang_library name)
   set_target_properties(${name} PROPERTIES
     PREFIX ""
   )
+
+  # Remove "Module" from the filename if it exists.
+  string(REPLACE "Module" "" base_name ${name})
+  set_target_properties(${name} PROPERTIES OUTPUT_NAME ${base_name})
 endfunction()
 
 function(clang_target_link_libraries target)
