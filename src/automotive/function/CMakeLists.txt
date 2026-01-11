@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveFunctionComponent STATIC
+add_automotive_component(clangTidyAutomotiveFunctionComponent
   AvoidFunctionParameterModificationCheck.cpp
   AvoidStaticInArrayParamCheck.cpp
   FunctionComponent.cpp

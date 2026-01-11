@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotivePointerComponent STATIC
+add_automotive_component(clangTidyAutomotivePointerComponent
   AvoidAtomicVoidPointerCheck.cpp
   AvoidCastRemovingQualifierCheck.cpp
   AvoidIncompatiblePointerCastCheck.cpp

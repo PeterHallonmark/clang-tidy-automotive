@@ -37,7 +37,6 @@ namespace automotive {
 class AutomotiveModule : public ClangTidyModule {
 public:
   void addCheckFactories(ClangTidyCheckFactories &CheckFactories) override {
-
     ArrayComponent::addCheckFactories(CheckFactories);
     BitfieldComponent::addCheckFactories(CheckFactories);
     CommentComponent::addCheckFactories(CheckFactories);

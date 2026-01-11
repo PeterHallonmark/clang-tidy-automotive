@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveExpressionComponent STATIC
+add_automotive_component(clangTidyAutomotiveExpressionComponent
   AvoidAssignmentInExpressionCheck.cpp
   AvoidConstantWrapAroundCheck.cpp
   AvoidInappropriateEssentialTypeCheck.cpp

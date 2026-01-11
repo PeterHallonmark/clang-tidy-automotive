@@ -1,4 +1,4 @@
 
-add_clang_library(clangTidyAutomotiveUtils STATIC
+add_automotive_component(clangTidyAutomotiveUtils
   CKeywordSet.cpp
 )

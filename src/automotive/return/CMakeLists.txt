@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveReturnComponent STATIC
+add_automotive_component(clangTidyAutomotiveReturnComponent
   MissingReturnValueHandlingCheck.cpp
   MultipleReturnStmtCheck.cpp
   NoReturnVoidCheck.cpp

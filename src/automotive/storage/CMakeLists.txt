@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveStorageComponent STATIC
+add_automotive_component(clangTidyAutomotiveStorageComponent
   AvoidGlobalObjectCheck.cpp
   AvoidReservedIdentifierDeclarationCheck.cpp
   AvoidRestrictTypeCheck.cpp
