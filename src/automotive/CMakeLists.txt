@@ -4,7 +4,7 @@ set(LLVM_LINK_COMPONENTS
   )
 
 function(add_automotive_component name)
-  add_library(${name} OBJECT ${ARGN})
+  add_library(${name} STATIC ${ARGN})
   set_property(TARGET ${name} PROPERTY POSITION_INDEPENDENT_CODE ON)
 endfunction()
 
@@ -34,23 +34,22 @@ add_clang_library(clangTidyAutomotiveModule
   clangTidyMiscModule
   clangTidyCERTModule
 
-  $<TARGET_OBJECTS:clangTidyAutomotiveArrayComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveArrayComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveBitfieldComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveCommentComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveExpressionComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveFunctionComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveLiteralComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveOperatorComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotivePointerComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotivePreprocessorComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveReturnComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveStatementComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveStdlibComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveStorageComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveTypeComponent>
-  $<TARGET_OBJECTS:clangTidyAutomotiveUnusedCode>
-  $<TARGET_OBJECTS:clangTidyAutomotiveUtils>
+  clangTidyAutomotiveArrayComponent
+  clangTidyAutomotiveBitfieldComponent
+  clangTidyAutomotiveCommentComponent
+  clangTidyAutomotiveExpressionComponent
+  clangTidyAutomotiveFunctionComponent
+  clangTidyAutomotiveLiteralComponent
+  clangTidyAutomotiveOperatorComponent
+  clangTidyAutomotivePointerComponent
+  clangTidyAutomotivePreprocessorComponent
+  clangTidyAutomotiveReturnComponent
+  clangTidyAutomotiveStatementComponent
+  clangTidyAutomotiveStdlibComponent
+  clangTidyAutomotiveStorageComponent
+  clangTidyAutomotiveTypeComponent
+  clangTidyAutomotiveUnusedCode
+  clangTidyAutomotiveUtils
 
   DEPENDS
   ClangDriverOptions

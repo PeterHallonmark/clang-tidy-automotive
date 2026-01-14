@@ -12,6 +12,7 @@
 #include "../cert/FloatLoopCounter.h"
 #include "../misc/NoRecursionCheck.h"
 #include "../misc/UnusedParametersCheck.h"
+
 #include "array/ArrayComponent.h"
 #include "bitfield/BitfieldComponent.h"
 #include "comment/CommentComponent.h"
@@ -37,6 +38,7 @@ namespace automotive {
 class AutomotiveModule : public ClangTidyModule {
 public:
   void addCheckFactories(ClangTidyCheckFactories &CheckFactories) override {
+
     ArrayComponent::addCheckFactories(CheckFactories);
     BitfieldComponent::addCheckFactories(CheckFactories);
     CommentComponent::addCheckFactories(CheckFactories);
@@ -66,7 +68,7 @@ public:
 
     /* 2. Unused code
     ---------------------------------------------------------------- */
-    UnusedCodeModule::addCheckFactories(CheckFactories);
+    //UnusedCodeModule::addCheckFactories(CheckFactories);
   }
 };
 
