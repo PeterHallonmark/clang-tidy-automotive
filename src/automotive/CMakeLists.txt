@@ -3,10 +3,8 @@ set(LLVM_LINK_COMPONENTS
   support
   )
 
-function(add_automotive_component name)
-  add_library(${name} STATIC ${ARGN})
-  set_property(TARGET ${name} PROPERTY POSITION_INDEPENDENT_CODE ON)
-endfunction()
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(AutomotiveBuildMode)
 
 add_subdirectory(array)
 add_subdirectory(comment)
