@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveArrayComponent STATIC
+add_automotive_component(clangTidyAutomotiveArrayComponent
   ArrayComponent.cpp
   AvoidFlexibleArrayMemberCheck.cpp
   AvoidPartialArrayInitCheck.cpp

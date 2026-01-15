@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveOperatorComponent STATIC
+add_automotive_component(clangTidyAutomotiveOperatorComponent
   AvoidCommaOperatorCheck.cpp
   OperatorComponent.cpp
   WrongShiftOperandCheck.cpp

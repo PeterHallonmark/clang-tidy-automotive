@@ -12,6 +12,7 @@
 #include "../cert/FloatLoopCounter.h"
 #include "../misc/NoRecursionCheck.h"
 #include "../misc/UnusedParametersCheck.h"
+
 #include "array/ArrayComponent.h"
 #include "bitfield/BitfieldComponent.h"
 #include "comment/CommentComponent.h"
@@ -67,7 +68,7 @@ public:
 
     /* 2. Unused code
     ---------------------------------------------------------------- */
-    UnusedCodeModule::addCheckFactories(CheckFactories);
+    //UnusedCodeModule::addCheckFactories(CheckFactories);
   }
 };
 

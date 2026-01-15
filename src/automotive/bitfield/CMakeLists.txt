@@ -1,5 +1,5 @@
 
-add_clang_library(clangTidyAutomotiveBitfieldComponent STATIC
+add_automotive_component(clangTidyAutomotiveBitfieldComponent
   AvoidBitfieldInUnionCheck.cpp
   AvoidSignedSingleBitFieldCheck.cpp
   BitfieldComponent.cpp

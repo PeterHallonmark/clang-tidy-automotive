@@ -3,6 +3,9 @@ set(LLVM_LINK_COMPONENTS
   support
   )
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(AutomotiveBuildMode)
+
 add_subdirectory(array)
 add_subdirectory(comment)
 add_subdirectory(expression)
