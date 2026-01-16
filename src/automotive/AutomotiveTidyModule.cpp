@@ -68,7 +68,7 @@ public:
 
     /* 2. Unused code
     ---------------------------------------------------------------- */
-    //UnusedCodeModule::addCheckFactories(CheckFactories);
+    // UnusedCodeModule::addCheckFactories(CheckFactories);
   }
 };
 
