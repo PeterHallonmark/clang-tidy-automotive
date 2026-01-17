@@ -61,3 +61,7 @@ clang_target_link_libraries(clangTidyAutomotiveModule
   clangBasic
   clangLex
   )
+
+add_custom_target(automotive-plugin
+  DEPENDS clangTidyAutomotiveModule
+)
