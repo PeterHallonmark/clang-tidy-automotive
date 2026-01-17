@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "container",
+      "generator": "Ninja",
+      "binaryDir": "build"
+    }
+  ]
+}
