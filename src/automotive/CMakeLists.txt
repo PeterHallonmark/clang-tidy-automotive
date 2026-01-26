@@ -29,8 +29,6 @@ add_clang_library(clangTidyAutomotiveModule
   LINK_LIBS
   clangTidy
   clangTidyUtils
-  clangTidyMiscModule
-  clangTidyCERTModule
 
   clangTidyAutomotiveArrayComponent
   clangTidyAutomotiveBitfieldComponent
