@@ -1,3 +1,4 @@
+
 FROM docker.io/silkeh/clang:20
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,5 +16,11 @@ RUN apt-get update && apt-get install -y \
     libzstd-dev \
     libcurl4-openssl-dev \
  && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y \
+    doxygen \
+    graphviz \
+    python3-sphinx \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
