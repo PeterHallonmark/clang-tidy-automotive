@@ -17,3 +17,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(ClangTidyOutOfTree)
 
 add_subdirectory(src/automotive)
+
+add_custom_target(automotive-plugin
+  DEPENDS clangTidyAutomotiveModule
+)
