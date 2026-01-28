@@ -11,13 +11,20 @@ include_directories(
 
 add_definitions(${LLVM_DEFINITIONS})
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(ClangTidyOutOfTree)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+option(CT_AUTOMOTIVE_ENABLE_DOCS "Enable documentation targets" ON)
+
+if (CT_AUTOMOTIVE_ENABLE_DOCS)
+  add_subdirectory(docs)
+endif()
+
 add_subdirectory(src/automotive)
 
+add_custom_target(docs DEPENDS doxygen)
 add_custom_target(automotive-plugin
   DEPENDS clangTidyAutomotiveModule
 )

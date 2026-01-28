@@ -1,0 +1,11 @@
+PROJECT_NAME           = clang-tidy-automotive
+PROJECT_NUMBER         = @PROJECT_VERSION@
+
+INPUT                  = @CMAKE_SOURCE_DIR@/src
+RECURSIVE              = YES
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = YES
