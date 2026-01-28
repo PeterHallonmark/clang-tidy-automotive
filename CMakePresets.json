@@ -1,10 +1,26 @@
 {
-  "version": 3,
+  "version": 6,
   "configurePresets": [
     {
       "name": "container",
       "generator": "Ninja",
       "binaryDir": "build"
+    },
+    {
+      "name": "docs",
+      "displayName": "Docs (Doxygen)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/docs",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "docs",
+      "configurePreset": "docs",
+      "targets": ["doxygen"]
     }
   ]
 }
