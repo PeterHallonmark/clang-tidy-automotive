@@ -8,8 +8,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IMAGE_NAME="clang-tidy-automotive"
-DOCKERFILE_DIR="docker"
+DOCKERFILE_DIR="${SCRIPT_DIR}/../docker"
 
 # Detects container runtime (podman or docker)
 # ------------------------------------------------------------------------------
