@@ -1,7 +1,3 @@
-llvm-project-llvmorg-20.1.8
-llvmorg-20.1.8.tar.gz
-src/cert
-src/misc
 build
 test-build
 openspec
