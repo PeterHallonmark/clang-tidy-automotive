@@ -1,0 +1,45 @@
+llvm_map_components_to_libnames(llvm_libs
+  support
+  core
+  AllTargetsAsmParsers
+  AllTargetsDescs
+  AllTargetsInfos
+  FrontendOpenMP
+  Option
+  )
+
+add_clang_tool(clang-tidy
+  ClangTidyMain.cpp
+  )
+
+clang_target_link_libraries(clang-tidy
+  PRIVATE
+  clangAnalysis
+  clangAST
+  clangASTMatchers
+  clangBasic
+  clangCrossTU
+  clangDriver
+  clangEdit
+  clangFormat
+  clangFrontend
+  clangIndex
+  clangParse
+  clangRewrite
+  clangSerialization
+  clangSema
+  clangStaticAnalyzerCore
+  clangStaticAnalyzerCheckers
+  clangStaticAnalyzerFrontend
+  clangTooling
+  clangToolingCore
+  clangToolingInclusions
+  clangLex
+  )
+
+target_link_libraries(clang-tidy
+  PRIVATE
+  clangTidy
+  ${llvm_libs}
+  ${ALL_CLANG_TIDY_CHECKS}
+  )
