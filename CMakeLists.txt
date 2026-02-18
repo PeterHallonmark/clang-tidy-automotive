@@ -23,8 +23,7 @@ if (CT_AUTOMOTIVE_ENABLE_DOCS)
 endif()
 
 add_subdirectory(src/automotive)
+add_subdirectory(clang-tidy)
 
 add_custom_target(docs DEPENDS doxygen)
-add_custom_target(automotive-plugin
-  DEPENDS clangTidyAutomotiveModule
-)
+add_custom_target(automotive-plugin DEPENDS clangTidyAutomotiveModule)
