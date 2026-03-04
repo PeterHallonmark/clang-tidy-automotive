@@ -8,6 +8,8 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 IMAGE_NAME="clang-tidy-automotive"
 DOCKERFILE_DIR="docker"
 WORKDIR="/workspace"
@@ -39,7 +41,7 @@ fi
 echo "Starting container: ${IMAGE_NAME}"
 
 ${RUNTIME} run --rm -it \
-  -v "$(pwd):${WORKDIR}" \
+  -v "${PROJECT_ROOT}:${WORKDIR}" \
   -w "${WORKDIR}" \
   "${IMAGE_NAME}" \
   bash
