@@ -1,10 +1,11 @@
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(AutomotiveBuildMode)
+
 set(LLVM_LINK_COMPONENTS
   FrontendOpenMP
   support
   )
-
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(AutomotiveBuildMode)
 
 add_subdirectory(array)
 add_subdirectory(comment)
@@ -29,8 +30,6 @@ add_clang_library(clangTidyAutomotiveModule
   LINK_LIBS
   clangTidy
   clangTidyUtils
-  clangTidyMiscModule
-  clangTidyCERTModule
 
   clangTidyAutomotiveArrayComponent
   clangTidyAutomotiveBitfieldComponent

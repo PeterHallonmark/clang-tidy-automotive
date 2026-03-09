@@ -9,9 +9,6 @@
 #include "../ClangTidy.h"
 #include "../ClangTidyModule.h"
 #include "../ClangTidyModuleRegistry.h"
-#include "../cert/FloatLoopCounter.h"
-#include "../misc/NoRecursionCheck.h"
-#include "../misc/UnusedParametersCheck.h"
 
 #include "array/ArrayComponent.h"
 #include "bitfield/BitfieldComponent.h"
@@ -53,18 +50,6 @@ public:
     StdlibComponent::addCheckFactories(CheckFactories);
     StorageComponent::addCheckFactories(CheckFactories);
     TypeComponent::addCheckFactories(CheckFactories);
-
-    /* C 2023
-    ---------------------------------------------------------------- */
-    CheckFactories.registerCheck<cert::FloatLoopCounter>(
-        "automotive-c23-req-14.1");
-    CheckFactories.registerCheck<misc::NoRecursionCheck>(
-        "automotive-c23-req-17.2");
-
-    /* C 2012
-    ---------------------------------------------------------------- */
-    CheckFactories.registerCheck<cert::FloatLoopCounter>(
-        "automotive-c12-req-14.1");
 
     /* 2. Unused code
     ---------------------------------------------------------------- */

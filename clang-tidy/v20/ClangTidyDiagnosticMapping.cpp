@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "ClangTidyDiagnosticMapping.h"
-#include "ClangTidy.h"
+//#include "ClangTidy.h"
 #include "clang/Basic/DiagnosticIDs.h"
 #include "llvm/Support/Error.h"
 #include "llvm/Support/JSON.h"
