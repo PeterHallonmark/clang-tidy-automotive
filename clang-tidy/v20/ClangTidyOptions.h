@@ -37,6 +37,24 @@ struct FileFilter {
   std::vector<LineRange> LineRanges;
 };
 
+struct AdditionalConfigFile {
+  AdditionalConfigFile() = default;
+  explicit AdditionalConfigFile(std::string ConfigFile) : ConfigFile(std::move(ConfigFile)) {}    
+
+  const std::string &str() const noexcept { 
+    return ConfigFile; 
+  }
+  const llvm::StringRef getFile() const {
+    return ResolvedConfigFile;
+  }
+
+  void resolveFullPath(llvm::StringRef ParentConfigFile); 
+
+private:
+  std::string ConfigFile;
+  std::string ResolvedConfigFile;
+};
+
 /// Global options. These options are neither stored nor read from
 /// configuration files.
 struct ClangTidyGlobalOptions {
@@ -90,6 +108,9 @@ struct ClangTidyOptions {
 
   /// Output warnings from system headers matching \c HeaderFilterRegex.
   std::optional<bool> SystemHeaders;
+
+  /// TODO
+  std::optional<std::vector<AdditionalConfigFile>> MappingFiles;
 
   /// Format code around applied fixes with clang-format using this
   /// style.

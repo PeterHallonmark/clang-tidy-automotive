@@ -17,6 +17,7 @@
 #include "ClangTidy.h"
 #include "ClangTidyCheck.h"
 #include "ClangTidyDiagnosticConsumer.h"
+#include "ClangTidyDiagnosticMapping.h"
 #include "ClangTidyModuleRegistry.h"
 #include "ClangTidyProfiling.h"
 #include "ExpandModularHeadersPPCallbacks.h"
@@ -346,6 +347,7 @@ ClangTidyASTConsumerFactory::ClangTidyASTConsumerFactory(
     IntrusiveRefCntPtr<llvm::vfs::OverlayFileSystem> OverlayFS)
     : Context(Context), OverlayFS(std::move(OverlayFS)),
       CheckFactories(new ClangTidyCheckFactories) {
+
   for (ClangTidyModuleRegistry::entry E : ClangTidyModuleRegistry::entries()) {
     std::unique_ptr<ClangTidyModule> Module = E.instantiate();
     Module->addCheckFactories(*CheckFactories);
@@ -474,8 +476,9 @@ ClangTidyASTConsumerFactory::createASTConsumer(
 std::vector<std::string> ClangTidyASTConsumerFactory::getCheckNames() {
   std::vector<std::string> CheckNames;
   for (const auto &CheckFactory : *CheckFactories) {
-    if (Context.isCheckEnabled(CheckFactory.getKey()))
+    if (Context.isCheckEnabled(CheckFactory.getKey())) {
       CheckNames.emplace_back(CheckFactory.getKey());
+    }
   }
 
 #if CLANG_TIDY_ENABLE_STATIC_ANALYZER
@@ -554,14 +557,19 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
 
   Tool.appendArgumentsAdjuster(PerFileExtraArgumentsInserter);
   Tool.appendArgumentsAdjuster(getStripPluginsAdjuster());
+
   Context.setEnableProfiling(EnableCheckProfile);
   Context.setProfileStoragePrefix(StoreCheckProfile);
 
   ClangTidyDiagnosticConsumer DiagConsumer(Context, nullptr, true, ApplyAnyFix);
+  ClangTidyDiagnosticMapping DiagMapping(Context, DiagConsumer);
+  
+  Tool.appendArgumentsAdjuster(DiagMapping.getArgumentsAdjuster());
+
   DiagnosticsEngine DE(new DiagnosticIDs(), new DiagnosticOptions(),
-                       &DiagConsumer, /*ShouldOwnClient=*/false);
+                      DiagMapping.getDiagnosticConsumer(), /*ShouldOwnClient=*/false);
   Context.setDiagnosticsEngine(&DE);
-  Tool.setDiagnosticConsumer(&DiagConsumer);
+  Tool.setDiagnosticConsumer(DiagMapping.getDiagnosticConsumer());
 
   class ActionFactory : public FrontendActionFactory {
   public:
@@ -578,6 +586,7 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
                        DiagnosticConsumer *DiagConsumer) override {
       // Explicitly ask to define __clang_analyzer__ macro.
       Invocation->getPreprocessorOpts().SetUpStaticAnalyzer = true;
+      Invocation->getDiagnosticOpts().Warnings.push_back("comment");
       return FrontendActionFactory::runInvocation(
           Invocation, Files, PCHContainerOps, DiagConsumer);
     }

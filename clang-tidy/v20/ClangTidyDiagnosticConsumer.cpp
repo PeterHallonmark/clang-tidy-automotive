@@ -63,7 +63,7 @@ protected:
     // using getCustomDiagID.
     std::string CheckNameInMessage = " [" + Error.DiagnosticName + "]";
     Message.consume_back(CheckNameInMessage);
-
+  
     auto TidyMessage =
         Loc.isValid()
             ? tooling::DiagnosticMessage(Message, Loc.getManager(), Loc)
@@ -95,6 +95,7 @@ protected:
                                                ToCharRange(SourceRange));
       return;
     }
+
     assert(Error.Message.Message.empty() && "Overwriting a diagnostic message");
     Error.Message = TidyMessage;
     for (const CharSourceRange &SourceRange : ValidRanges)
@@ -282,6 +283,12 @@ ClangTidyContext::getProfileStorageParams() const {
   return ClangTidyProfiling::StorageParams(ProfilePrefix, CurrentFile);
 }
 
+bool ClangTidyContext::isDiagnosticEnabled(StringRef CheckName) const {
+  assert(CheckFilter != nullptr);
+  return CheckFilter->contains(CheckName); 
+  //return true;
+}
+
 bool ClangTidyContext::isCheckEnabled(StringRef CheckName) const {
   assert(CheckFilter != nullptr);
   return CheckFilter->contains(CheckName);
@@ -318,7 +325,7 @@ void ClangTidyDiagnosticConsumer::finalizeLastError() {
     ClangTidyError &Error = Errors.back();
     if (Error.DiagnosticName == "clang-tidy-config") {
       // Never ignore these.
-    } else if (!Context.isCheckEnabled(Error.DiagnosticName) &&
+    } else if (!Context.isDiagnosticEnabled(Error.DiagnosticName) &&
                Error.DiagLevel != ClangTidyError::Error) {
       ++Context.Stats.ErrorsIgnoredCheckFilter;
       Errors.pop_back();
@@ -373,7 +380,7 @@ void ClangTidyDiagnosticConsumer::HandleDiagnostic(
       Context.diag(Error);
     return;
   }
-
+  
   LastErrorWasIgnored = false;
   // Count warnings/errors.
   DiagnosticConsumer::HandleDiagnostic(DiagLevel, Info);
@@ -438,6 +445,7 @@ void ClangTidyDiagnosticConsumer::HandleDiagnostic(
     else if (Context.DiagEngine->hasSourceManager())
       Loc = FullSourceLoc(Info.getLocation(),
                           Context.DiagEngine->getSourceManager());
+  
     Converter.emitDiagnostic(Loc, DiagLevel, Message, Info.getRanges(),
                              Info.getFixItHints());
   }

@@ -144,6 +144,11 @@ public:
   /// diagnostic ID.
   std::string getCheckName(unsigned DiagnosticID) const;
 
+  /// Returns \c true if the diagnostic is enabled for the \c CurrentFile.
+  ///
+  /// The \c CurrentFile can be changed using \c setCurrentFile.
+  bool isDiagnosticEnabled(StringRef CheckName) const;
+
   /// Returns \c true if the check is enabled for the \c CurrentFile.
   ///
   /// The \c CurrentFile can be changed using \c setCurrentFile.
@@ -230,6 +235,7 @@ public:
 private:
   // Writes to Stats.
   friend class ClangTidyDiagnosticConsumer;
+  friend class ClangTidyDiagnosticMapping;
 
   DiagnosticsEngine *DiagEngine = nullptr;
   std::unique_ptr<ClangTidyOptionsProvider> OptionsProvider;

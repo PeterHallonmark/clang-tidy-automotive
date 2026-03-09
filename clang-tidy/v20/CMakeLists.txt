@@ -41,6 +41,7 @@ add_executable(clang-tidy-standalone
   ClangTidyCheck.cpp
   ClangTidyModule.cpp
   ClangTidyDiagnosticConsumer.cpp
+  ClangTidyDiagnosticMapping.cpp
   ClangTidyOptions.cpp
   ClangTidyProfiling.cpp
   ExpandModularHeadersPPCallbacks.cpp
