@@ -28,9 +28,9 @@ bool AvoidLinesplicingWithinCommentCheck::InternalCommentHandler::HandleComment(
       SourceLocation LineSpliceLoc = StartLoc.getLocWithOffset(Pos);
 
       if (!FixitEnabled) {
-        Check.diag(LineSpliceLoc, "avoid line-spliceing within a '//' comment");
+        Check.diag(LineSpliceLoc, "avoid line-splicing within a '//' comment");
       } else {
-        Check.diag(LineSpliceLoc, "avoid line-spliceing within a '//' comment")
+        Check.diag(LineSpliceLoc, "avoid line-splicing within a '//' comment")
             << FixItHint::CreateRemoval(SourceRange(
                    LineSpliceLoc, LineSpliceLoc.getLocWithOffset(1)));
       }
