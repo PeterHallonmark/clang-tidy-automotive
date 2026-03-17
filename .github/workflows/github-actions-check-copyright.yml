@@ -18,4 +18,4 @@ jobs:
           python-version: '3.x'
 
       - name: Run copyright check
-        run: python3 scripts/check_copyright.py
+        run: python3 scripts/check-copyright.py
