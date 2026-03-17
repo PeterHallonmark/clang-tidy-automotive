@@ -1,7 +1,7 @@
 import sys
 
 def main():
-    violations = True  # exempel
+    violations = False  # exempel
 
     if violations:
         print("Copyright violation found!")
