@@ -6,32 +6,6 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/clang-tidy-config.h
 )
 
-set(ALL_CLANG_TIDY_CHECKS
-  clangTidyAndroidModule
-  clangTidyAbseilModule
-  clangTidyAlteraModule
-  clangTidyBoostModule
-  clangTidyBugproneModule
-  clangTidyCERTModule
-  clangTidyConcurrencyModule
-  clangTidyCppCoreGuidelinesModule
-  clangTidyDarwinModule
-  clangTidyFuchsiaModule
-  clangTidyGoogleModule
-  clangTidyHICPPModule
-  clangTidyLinuxKernelModule
-  clangTidyLLVMModule
-  clangTidyLLVMLibcModule
-  clangTidyMiscModule
-  clangTidyModernizeModule
-  clangTidyObjCModule
-  clangTidyOpenMPModule
-  clangTidyPerformanceModule
-  clangTidyPortabilityModule
-  clangTidyReadabilityModule
-  clangTidyZirconModule
-)
-
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
@@ -48,6 +22,7 @@ add_executable(clang-tidy-standalone
   GlobList.cpp
   NoLintDirectiveHandler.cpp
 
+  tool/ClangTidyMain.cpp
   tool/ClangTidyToolMain.cpp
 )
 
@@ -60,11 +35,9 @@ target_include_directories(clang-tidy-standalone SYSTEM PRIVATE
 
 # Link only the core clang-tidy libraries
 target_link_libraries(clang-tidy-standalone PRIVATE
-  clangTidyMain
+
   clangAST
   clangASTMatchers
   clangBasic
   clangTooling
-
-  ${ALL_CLANG_TIDY_CHECKS}
 )
