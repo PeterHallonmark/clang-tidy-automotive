@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotiveStatementComponent
+add_automotive_component(StatementComponent
   AvoidBooleanInSwitchCheck.cpp
   AvoidGotoCheck.cpp
   ForwardGotoLabelCheck.cpp

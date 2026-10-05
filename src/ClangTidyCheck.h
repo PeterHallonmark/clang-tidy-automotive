@@ -12,6 +12,10 @@
 #ifndef CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYCHECK_H
 #define CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYCHECK_H
 
-#include <clang-tidy/ClangTidyCheck.h>
+  //#ifdef CLANG_TIDY_AUTOMOTIVE_PLUGIN
+    #include <clang-tidy/ClangTidyCheck.h>
+  //#else
+    //#include "../clang-tidy/v20/ClangTidyCheck.h"
+  //#endif // CLANG_TIDY_AUTOMOTIVE_PLUGIN
 
 #endif // CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYCHECK_H

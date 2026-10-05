@@ -1,4 +1,4 @@
 
-add_automotive_component(clangTidyAutomotiveUtils
+add_automotive_component(Utils
   CKeywordSet.cpp
 )

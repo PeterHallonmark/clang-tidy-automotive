@@ -12,6 +12,10 @@
 #ifndef CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYMODULEREGISTRY_H
 #define CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYMODULEREGISTRY_H
 
-#include <clang-tidy/ClangTidyModuleRegistry.h>
+  //#ifdef CLANG_TIDY_AUTOMOTIVE_PLUGIN
+    #include <clang-tidy/ClangTidyModuleRegistry.h>
+  //#else
+    //#include "../clang-tidy/v20/ClangTidyModuleRegistry.h"
+  //#endif // CLANG_TIDY_AUTOMOTIVE_PLUGIN
 
 #endif // CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYMODULEREGISTRY_H

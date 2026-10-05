@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotiveLiteralComponent
+add_automotive_component(LiteralComponent
   AvoidLowercaseLiteralSuffixCheck.cpp
   AvoidOctalNumberCheck.cpp
   AvoidTrigraphCheck.cpp

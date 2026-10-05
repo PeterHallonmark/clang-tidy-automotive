@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotiveTypeComponent
+add_automotive_component(TypeComponent
   AvoidUnionCheck.cpp
   DuplicateTagNameCheck.cpp
   DuplicateTypedefNameCheck.cpp

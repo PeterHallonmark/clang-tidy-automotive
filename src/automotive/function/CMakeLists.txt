@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotiveFunctionComponent
+add_automotive_component(FunctionComponent
   AvoidFunctionParameterModificationCheck.cpp
   AvoidStaticInArrayParamCheck.cpp
   FunctionComponent.cpp

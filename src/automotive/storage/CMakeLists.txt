@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotiveStorageComponent
+add_automotive_component(StorageComponent
   AvoidGlobalObjectCheck.cpp
   AvoidReservedIdentifierDeclarationCheck.cpp
   AvoidRestrictTypeCheck.cpp

@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotiveStdlibComponent
+add_automotive_component(StdlibComponent
   AtoXCheck.cpp
   AvoidApiCheck.cpp
   AvoidSetjmpHeaderCheck.cpp

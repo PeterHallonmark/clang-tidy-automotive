@@ -1,5 +1,5 @@
 # ==============================================================================
-# ClangTidyOutOfTree.cmake
+# ClangTidyOutOfTreeEmulation.cmake
 #
 # Provides compatibility helpers for building the Automotive clang-tidy plugin
 # as out-of-tree (standalone) builds.

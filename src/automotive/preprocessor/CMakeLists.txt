@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotivePreprocessorComponent
+add_automotive_component(PreprocessorComponent
   AvoidCodeBeforeIncludeCheck.cpp
   AvoidHashOperatorCheck.cpp
   AvoidInvalidHeaderCharCheck.cpp

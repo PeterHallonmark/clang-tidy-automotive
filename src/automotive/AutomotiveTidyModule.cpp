@@ -27,8 +27,6 @@
 
 #include "unused-code/UnusedCodeModule.h"
 
-// using namespace clang::ast_matchers;
-
 namespace clang::tidy {
 namespace automotive {
 

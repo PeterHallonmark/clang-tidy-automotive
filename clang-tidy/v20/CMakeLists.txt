@@ -11,16 +11,16 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 add_executable(clang-tidy-standalone
-  #ClangTidy.cpp
-  #ClangTidyCheck.cpp
-  #ClangTidyModule.cpp
-  #ClangTidyDiagnosticConsumer.cpp
-  # ClangTidyDiagnosticMapping.cpp
-  #ClangTidyOptions.cpp
-  #ClangTidyProfiling.cpp
-  #ExpandModularHeadersPPCallbacks.cpp
-  #GlobList.cpp
-  #NoLintDirectiveHandler.cpp
+  ClangTidy.cpp
+  ClangTidyCheck.cpp
+  ClangTidyModule.cpp
+  ClangTidyDiagnosticConsumer.cpp
+  ClangTidyDiagnosticMapping.cpp
+  ClangTidyOptions.cpp
+  ClangTidyProfiling.cpp
+  ExpandModularHeadersPPCallbacks.cpp
+  GlobList.cpp
+  NoLintDirectiveHandler.cpp
 
   tool/ClangTidyToolMain.cpp
   tool/ClangTidyMain.cpp

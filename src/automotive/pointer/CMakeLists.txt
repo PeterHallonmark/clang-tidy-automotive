@@ -1,5 +1,5 @@
 
-add_automotive_component(clangTidyAutomotivePointerComponent
+add_automotive_component(PointerComponent
   AvoidAtomicVoidPointerCheck.cpp
   AvoidCastRemovingQualifierCheck.cpp
   AvoidIncompatiblePointerCastCheck.cpp

@@ -17,16 +17,3 @@ if (AUTOMOTIVE_OUT_OF_TREE)
 else()
   set(AUTOMOTIVE_IN_TREE ON)
 endif()
-
-function(add_automotive_component name)
-  if (AUTOMOTIVE_IN_TREE)
-    # LLVM in-tree build
-    add_clang_library(${name} STATIC ${ARGN})
-  else()
-    # Standalone plugin / out-of-tree build
-    add_library(${name} STATIC ${ARGN})
-
-    # Required for linking static libraries into shared modules (.so)
-    set_target_properties(${name} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-  endif()
-endfunction()  
