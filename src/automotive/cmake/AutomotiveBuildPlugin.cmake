@@ -5,11 +5,14 @@
 # ==============================================================================
 
 function(automotive_plugin__add_component prefix name)
+  set(target_name ${prefix}${name})
+
   # Standalone plugin
-  add_library(${prefix}${name} STATIC ${ARGN})
+  add_library(${target_name} STATIC ${ARGN})
+
 
   # Required for linking static libraries into shared modules (.so)
-  set_target_properties(${prefix}${name} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  set_target_properties(${target_name} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endfunction()  
 
 
@@ -30,7 +33,9 @@ function(automotive_plugin__add_library prefix name)
     )
   endforeach()
 
-  add_clang_library(${prefix}Module
+  set(target_name ${prefix}Module)
+
+  add_clang_library(${target_name}
     ${name}TidyModule.cpp
 
     LINK_LIBS

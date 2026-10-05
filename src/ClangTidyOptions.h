@@ -12,10 +12,10 @@
 #ifndef CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYOPTIONS_H
 #define CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYOPTIONS_H
 
-  //#ifdef CLANG_TIDY_AUTOMOTIVE_PLUGIN
+  #if CT_AUTOMOTIVE_USE_LOCAL_HEADERS
+
+  #else
     #include <clang-tidy/ClangTidyOptions.h>
-  //#else
-    //#include "../clang-tidy/v20/ClangTidyOptions.h"
-  //#endif // CLANG_TIDY_AUTOMOTIVE_PLUGIN
+  #endif // CT_AUTOMOTIVE_USE_LOCAL_HEADERS
 
 #endif // CLANG_TIDY_PLUGIN_WRAPPER_CLANGTIDYOPTIONS_H
